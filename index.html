@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rahul &amp; Kashish — 21.06.2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Brittany Signature';
+      src: url('fonts/BrittanySignature.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'TAN Mon Cheri';
+      src: url('fonts/tan-mon-cheri.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'SangBleu Sans';
+      src: url('fonts/SangBleuSans-Regular.otf') format('opentype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'SangBleu Sans';
+      src: url('fonts/SangBleuSans-Bold.otf') format('opentype');
+      font-weight: 700;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      overflow-x: hidden;
+      background: #1a0a0a;
+    }
+
+    /* ── Page container: smooth scroll (JS handles snap on desktop) ── */
+    #pageContainer {
+      width: 100vw; height: 100vh;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    #pageContainer::-webkit-scrollbar { display: none; }
+
+    /* ── Each section fills the viewport ── */
+    .page-section {
+      width: 100vw; height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Section backgrounds ── */
+    .section-bg {
+      position: absolute;
+      inset: 0; z-index: 0;
+      overflow: hidden;
+    }
+    .section-bg > img {
+      width: 100%; height: 115%;
+      object-fit: cover; display: block;
+      transform: translateY(0px);
+      will-change: transform;
+    }
+
+    /* ── Reduced motion: disable all animations & parallax ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #pageContainer { scroll-behavior: auto; }
+      .section-bg > img { will-change: auto; }
+    }
+
+    /* ── Scale roots ── */
+    .scale-root {
+      position: absolute;
+      left: 0; top: 0;
+      transform-origin: top left;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ════════════════════════════════════════════
+       HERO — responsive (all breakpoints)
+    ════════════════════════════════════════════ */
+
+    /* Hero section: flex container so content is truly centered */
+    #heroSection {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Max-width wrapper, centered with padding */
+    .hero-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Title: scales from ~29px at 375px up to 48px at 1440px */
+    .hero-headline {
+      font-family: 'Brittany Signature', cursive;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: #1a1a1a;
+      text-align: center;
+      line-height: normal;
+      width: 100%;
+      opacity: 0; transform: translateY(-28px);
+      animation: fadeSlideDown 1s ease-out 1s forwards;
+    }
+
+    /* Composition row: [Rahul] [photo-grid] [Kashish] */
+    .hero-composition {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(0.75rem, 3vw, 3.5rem);
+      width: 100%;
+    }
+
+    /* Names: clamp so they scale with viewport and never overflow */
+    .hero-name {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: clamp(1.5rem, 5vw, 5rem);
+      color: #ae1919;
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: normal;
+    }
+    .hero-name--left {
+      opacity: 0; transform: translateX(-80px);
+      animation: slideFromLeft 0.9s cubic-bezier(0.22,1,0.36,1) 2.9s forwards;
+    }
+    .hero-name--right {
+      opacity: 0; transform: translateX(80px);
+      animation: slideFromRight 0.9s cubic-bezier(0.22,1,0.36,1) 2.9s forwards;
+    }
+
+    /* Photo grid: proportional container for brush arcs + oval.
+       Grid dimensions from Figma: 418 × 594 px.
+       All children positioned as % of this box. */
+    .hero-photo-grid {
+      position: relative;
+      width: clamp(200px, 28vw, 420px);
+      aspect-ratio: 418 / 594;
+      flex-shrink: 0;
+    }
+
+    /* Brush arc — top-left (Figma: 206×229.5 at 0,0 in 418×594 grid) */
+    .hero-arc-top {
+      position: absolute;
+      left: 0; top: 0;
+      width: 49.3%; height: 38.6%;
+      overflow: hidden;
+      opacity: 0; animation: arcFadeIn 0.4s ease-out 2.4s forwards;
+    }
+    .hero-arc-top .arc-wipe {
+      position: absolute; inset: 0;
+      clip-path: inset(0 100% 0 0);
+      animation: paintWipe 0.85s cubic-bezier(0.4,0,0.2,1) 2.4s forwards;
+    }
+    .hero-arc-top .arc-wipe img { display: block; width: 100%; height: 100%; max-width: none; }
+
+    /* Brush arc — bottom-right (Figma: 206×238 at left:212,top:356 in 418×594 grid) */
+    .hero-arc-bot {
+      position: absolute;
+      left: 50.7%; top: 59.9%;
+      width: 49.3%; height: 40.1%;
+      overflow: hidden;
+      opacity: 0; animation: arcFadeIn 0.4s ease-out 2.6s forwards;
+    }
+    .hero-arc-bot .arc-wipe {
+      position: absolute; inset: 0;
+      transform: rotate(180deg);
+      clip-path: inset(0 100% 0 0);
+      animation: paintWipe 0.85s cubic-bezier(0.4,0,0.2,1) 2.6s forwards;
+    }
+    .hero-arc-bot .arc-wipe img { display: block; width: 100%; height: 100%; max-width: none; }
+
+    /* Oval photo (Figma: 364×533 at left:27,top:30 in 418×594 grid) */
+    .hero-photo {
+      position: absolute;
+      left: 6.5%; top: 5.1%;
+      width: 87.1%; height: 89.7%;
+      border-radius: 999px; overflow: hidden;
+      opacity: 0; transform: scale(0.8);
+      animation: photoReveal 1.1s cubic-bezier(0.22,1,0.36,1) 1.9s forwards;
+    }
+    .hero-photo img.photo-img {
+      position: absolute; left: 0.06%; top: 0;
+      width: 109.82%; height: 100%;
+      object-fit: cover; max-width: none; filter: grayscale(100%);
+    }
+
+    /* Date + envelope (Figma: top:419/533=78.6%, left/right:110/364=30.2% of photo) */
+    .hero-date-cta {
+      position: absolute;
+      left: 30.2%; right: 30.2%; top: 78.6%;
+      display: flex; flex-direction: column; align-items: center; gap: 8%;
+    }
+    .hero-date {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: clamp(10px, 1.5vw, 20px);
+      color: #fff; text-align: center; white-space: nowrap; line-height: normal;
+      opacity: 0; animation: gentleFadeIn 1s ease-out 3s forwards;
+    }
+    .hero-envelope {
+      width: 14%; aspect-ratio: 1; position: relative; flex-shrink: 0;
+      opacity: 0;
+      animation: gentleFadeIn 1s ease-out 3.5s forwards, pulse 2.2s ease-in-out 4.6s infinite;
+    }
+    .hero-envelope img {
+      position: absolute; top: 0; bottom: -68.97%; left: -34.48%; right: -34.48%;
+      width: calc(100% + 68.96%); height: calc(100% + 68.97%); max-width: none; display: block;
+    }
+
+    /* ════════════════════════════════════════════
+       HERO — MOBILE layout (shown ≤ 767px)
+    ════════════════════════════════════════════ */
+    #heroMobileContent { display: none; }
+
+    @media (max-width: 767px) {
+      /* Swap layouts */
+      .hero-container       { display: none !important; }
+      #heroMobileContent    { display: flex; }
+      /* No sparkles on mobile */
+      #heroSparkleLayer     { display: none !important; }
+      /* Section grows to natural content height */
+      #heroSection {
+        height: auto !important;
+        min-height: 100svh;
+        overflow-x: hidden;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+    }
+
+    /* Mobile hero shell */
+    #heroMobileContent {
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 12px;
+      width: 100%;
+      position: relative; z-index: 1;
+    }
+
+    /* Title */
+    .hero-mob-headline {
+      font-family: 'Brittany Signature', cursive;
+      font-size: 32px; color: #1a1a1a;
+      text-align: center; line-height: normal; white-space: nowrap;
+      opacity: 0; transform: translateY(-20px);
+      animation: fadeSlideDown 1s ease-out 0.4s forwards;
+    }
+
+    /* Inner group: photo + date+arrow */
+    .hero-mob-body {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 48px;
+    }
+
+    /* Photo composition — CSS grid overlap (exact Figma dimensions) */
+    .hero-mob-photo {
+      display: inline-grid;
+      grid-template-columns: max-content; grid-template-rows: max-content;
+      line-height: 0; place-items: start; flex-shrink: 0;
+    }
+    .hero-mob-arc-tl {
+      grid-column: 1; grid-row: 1;
+      width: 177.416px; height: 197.656px;
+      margin-left: 0; margin-top: 0;
+      overflow: hidden; position: relative;
+      opacity: 0; animation: arcFadeIn 0.5s ease-out 1s forwards;
+    }
+    .hero-mob-arc-br {
+      grid-column: 1; grid-row: 1;
+      width: 177.416px; height: 204.976px;
+      margin-left: 182.58px; margin-top: 306.6px;
+      transform: rotate(180deg);
+      overflow: hidden; position: relative;
+      opacity: 0; animation: arcFadeIn 0.5s ease-out 1.1s forwards;
+    }
+    .hero-mob-oval {
+      grid-column: 1; grid-row: 1;
+      width: 313.493px; height: 459.043px;
+      margin-left: 23.25px; margin-top: 25.84px;
+      border-radius: 860px; overflow: hidden; position: relative;
+      opacity: 0; transform: scale(0.88);
+      animation: photoReveal 1.1s cubic-bezier(0.22,1,0.36,1) 0.7s forwards;
+    }
+    .hero-mob-arc-tl img, .hero-mob-arc-br img {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
+    }
+    .hero-mob-oval img {
+      position: absolute; left: 0.06%; top: 0;
+      width: 109.82%; height: 100%; max-width: none; display: block;
+      object-fit: cover; filter: grayscale(100%);
+    }
+
+    /* Date + arrow row */
+    .hero-mob-cta {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+      opacity: 0; animation: gentleFadeIn 0.9s ease-out 1.6s forwards;
+    }
+    .hero-mob-date {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 24px; color: #1a1a1a;
+      text-align: center; line-height: normal; white-space: nowrap;
+    }
+    .hero-mob-arrow {
+      width: 48px; height: 48px; display: block; flex-shrink: 0;
+      animation: arrowBounce 1.3s ease-in-out 2.4s infinite;
+    }
+
+    /* ════════════════════════════════════════════
+       INVITATION SECTION — desktop (1440 × 1024)
+    ════════════════════════════════════════════ */
+    #invDesktopRoot { width: 1440px; height: 1024px; }
+
+    /* Background texture — full screen cover */
+    .inv-bg-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; max-width: none; display: block;
+    }
+
+    /* ── Full-section layout: flex-col, vertically centered ── */
+    .inv-layout {
+      position: absolute;
+      top: 50%; left: 0; width: 1440px;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding-top: 48px; padding-bottom: 88px;
+    }
+
+    /* ── Kolam border strips: fade in on .inv-show ── */
+    .inv-border {
+      display: flex; gap: 11.542px;
+      align-items: flex-start;
+      width: 100%; flex-shrink: 0;
+      margin-bottom: -40px;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .inv-border.inv-show { opacity: 1; }
+    .inv-border-flip { transform: scaleY(-1); }
+
+    /* Border tile elements */
+    .inv-b-big   { width: 157.805px; height: 157.228px; position: relative; flex-shrink: 0; }
+    .inv-b-curl  { width:  67.946px; height:  67.32px;  position: relative; flex-shrink: 0; }
+    .inv-b-diamond { width: 87.533px; height: 87.533px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .inv-b-diamond-inner { width: 62.219px; height: 61.571px; position: relative; transform: rotate(135deg); }
+    .inv-b-mirror { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .inv-b-mirror-inner { width: 67.946px; height: 67.32px; position: relative; transform: rotate(180deg) scaleY(-1); }
+    .inv-b-big img, .inv-b-curl img, .inv-b-diamond-inner img, .inv-b-mirror-inner img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; max-width: none; display: block;
+    }
+
+    /* ── Cards row ── */
+    .inv-cards-row {
+      display: flex; gap: 34.626px;
+      align-items: center; flex-shrink: 0;
+      margin-bottom: -40px;
+    }
+
+    /* ── Hover wrapper — lift effect separate from entrance anim ── */
+    .inv-card-wrap {
+      cursor: pointer;
+      transition: transform 0.35s ease, filter 0.35s ease;
+    }
+    .inv-card-wrap:hover {
+      transform: translateY(-12px);
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.38));
+    }
+
+    /* ── Card base: all start hidden ── */
+    .inv-card {
+      width: 400.123px; height: 615.574px;
+      border-radius: 960.873px;
+      border: 1.924px solid #873f3a;
+      overflow: hidden; position: relative;
+      box-shadow: 0 7.695px 38.473px rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .inv-card--thick { border-width: 4.809px; }
+    .inv-card--soft  { box-shadow: 0 7.695px 19.237px rgba(0,0,0,0.5); }
+
+    /* Directional entrance states */
+    .inv-card-center { transform: scale(0.9) translateY(20px); }
+    .inv-card-center.inv-show { opacity: 1; transform: none; }
+    .inv-card-left   { transform: translateX(-80px); }
+    .inv-card-left.inv-show   { opacity: 1; transform: none; }
+    .inv-card-right  { transform: translateX(80px); }
+    .inv-card-right.inv-show  { opacity: 1; transform: none; }
+
+    .inv-card-bg {
+      position: absolute; inset: 0;
+      border-radius: 960.873px; background: #F8F4EC; overflow: hidden;
+    }
+    .inv-card-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── Ornaments: fade+scale in ── */
+    .inv-orn {
+      flex-shrink: 0; position: relative;
+      opacity: 0; transform: scale(0.75);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .inv-orn img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block; }
+    .inv-orn.inv-show { opacity: 1; transform: scale(1); }
+
+    .inv-orn-flipped {
+      flex-shrink: 0; position: relative;
+      opacity: 0; transform: rotate(180deg) scale(0.75);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .inv-orn-flipped img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block; }
+    .inv-orn-flipped.inv-show { opacity: 1; transform: rotate(180deg) scale(1); }
+
+    /* Center card mandala — fades in then pulses golden glow */
+    .inv-orn-mandala {
+      flex-shrink: 0; position: relative;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    .inv-orn-mandala img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block; }
+    .inv-orn-mandala.inv-show {
+      opacity: 1;
+      animation: invGoldenGlow 2.8s ease-in-out 0.4s infinite alternate;
+    }
+    @keyframes invGoldenGlow {
+      from { filter: drop-shadow(0 0 2px rgba(180,130,0,0.15)); }
+      to   { filter: drop-shadow(0 0 12px rgba(210,160,0,0.6)); }
+    }
+
+    /* ── Rahul card ── */
+    .rahul-inner {
+      position: absolute;
+      left: 52.9px; top: 41.36px; width: 284.703px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 134.657px;
+    }
+    .rahul-name-block {
+      height: 180.657px; width: 284.703px; flex-shrink: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+
+    /* ── Wedding details card ── */
+    .wedding-inner {
+      position: absolute;
+      left: 26.93px; top: 29.82px; width: 342.413px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 47.13px;
+    }
+    .wedding-details {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 61.557px;
+      color: #ae1919; text-align: center; width: 100%;
+    }
+
+    /* Animated text elements */
+    .wedding-invited {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 15.389px; letter-spacing: 1.5389px;
+      text-transform: uppercase; line-height: 1.5;
+      color: #ae1919; width: 260.657px;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .wedding-invited.inv-show { opacity: 1; }
+
+    .wedding-date-block {
+      display: inline-grid;
+      grid-template-columns: max-content; grid-template-rows: max-content;
+      place-items: start; white-space: nowrap; line-height: 0;
+    }
+    .wedding-date-on {
+      grid-column: 1; grid-row: 1;
+      margin-left: 155.82px;
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 11.542px; letter-spacing: 1.1542px;
+      text-transform: uppercase; line-height: 1.5; color: #ae1919;
+      opacity: 0; transition: opacity 0.6s ease;
+    }
+    .wedding-date-on.inv-show { opacity: 1; }
+
+    .wedding-date {
+      grid-column: 1; grid-row: 1;
+      margin-top: 34.63px;
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 34.626px; letter-spacing: 3.4626px;
+      line-height: 1.5; color: #ae1919;
+      opacity: 0; transform: scale(0.82);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .wedding-date.inv-show { opacity: 1; transform: scale(1); }
+
+    .wedding-venue {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      text-transform: uppercase; text-align: center;
+      color: #ae1919; line-height: 0;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .wedding-venue.inv-show { opacity: 1; }
+    .wedding-venue-name { font-size: 19.237px; letter-spacing: 2.0776px; line-height: 2; display: block; }
+    .wedding-venue-loc  { font-size: 11.542px; letter-spacing: 2.0776px; line-height: 2; display: block; }
+
+    /* ── Kashish card ── */
+    .kashish-inner {
+      position: absolute;
+      left: 38.47px; top: 44.24px; width: 318.367px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 141.39px;
+    }
+    .kashish-name-block {
+      height: 167.191px; width: 319px; flex-shrink: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+
+    /* ── Shared text ── */
+    .person-name {
+      font-family: 'TAN Mon Cheri', serif;
+      color: #ae1919; line-height: normal;
+      text-align: center; white-space: nowrap;
+    }
+    .person-parentage {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 13px; color: #ae1919;
+      text-align: center; letter-spacing: 1.5389px;
+      text-transform: uppercase; line-height: 1.5;
+    }
+
+    /* ── Mobile invitation: 402×940 scale-root canvas ── */
+    #invMobileRoot {
+      display: none;
+      width: 402px; height: 940px;
+      position: absolute; z-index: 1; overflow: hidden;
+      transform-origin: top left;
+    }
+
+    /* Background: wide panoramic texture crop (Figma offsets) */
+    .imob-bg {
+      position: absolute; inset: 0; overflow: hidden;
+    }
+    .imob-bg img {
+      position: absolute;
+      width: 322.08%; height: 107.39%;
+      left: -111.04%; top: -3.67%;
+      max-width: none; display: block;
+    }
+
+    /* Main layout column: vertically centered in canvas */
+    .imob-layout {
+      position: absolute;
+      top: 50%; left: 0; width: 402px;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Kolam border strips */
+    .imob-border-top {
+      display: flex; gap: 8.218px;
+      align-items: flex-start;
+      width: 100%; flex-shrink: 0;
+      margin-bottom: -40px;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .imob-border-top.inv-show { opacity: 1; }
+
+    .imob-border-bot-wrap {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; flex-shrink: 0; margin-bottom: -40px;
+    }
+    .imob-border-bot {
+      transform: scaleY(-1); width: 100%;
+      display: flex; gap: 8.218px; align-items: flex-start;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .imob-border-bot.inv-show { opacity: 1; }
+
+    /* Border tile elements (Figma exact sizes) */
+    .imob-b-big    { width: 108.064px; height: 107.669px; position: relative; flex-shrink: 0; }
+    .imob-b-curl   { width: 46.53px;   height: 46.1px;   position: relative; flex-shrink: 0; }
+    .imob-b-diamond { width: 59.942px; height: 59.942px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .imob-b-diamond-i { width: 42.607px; height: 42.164px; position: relative; transform: rotate(135deg); }
+    .imob-b-mirror  { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .imob-b-mirror-i  { width: 46.53px; height: 46.1px; position: relative; transform: rotate(180deg) scaleY(-1); }
+    .imob-b-big img, .imob-b-curl img, .imob-b-diamond-i img, .imob-b-mirror-i img {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
+    }
+
+    /* Single main card: 354×674px */
+    .imob-card {
+      width: 354px; height: 674px;
+      border-radius: 170px;
+      border: 3px solid #873f3a;
+      overflow: hidden; position: relative; flex-shrink: 0;
+      background: #F8F4EC;
+      box-shadow: 0 6.923px 34.615px rgba(0,0,0,0.5);
+      margin-bottom: -40px;
+      opacity: 0; transform: scale(0.92) translateY(24px);
+      transition: opacity 1s ease, transform 1s cubic-bezier(0.22,1,0.36,1);
+    }
+    .imob-card.inv-show { opacity: 1; transform: none; }
+    .imob-card-bg { position: absolute; inset: 0; overflow: hidden; border-radius: 170px; }
+    .imob-card-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Card inner: centered — outer gap between mandala / content block / ornament */
+    .imob-inner {
+      position: absolute;
+      left: 50%; top: calc(50% - 0.14px);
+      transform: translate(-50%, -50%);
+      display: flex; flex-direction: column;
+      gap: 48px; align-items: center;
+      width: 300px;
+    }
+
+    /* Inner content block: invited text, names-group, date, venue */
+    .imob-content {
+      display: flex; flex-direction: column;
+      gap: 36px; align-items: center;
+      width: 100%;
+    }
+
+    /* Names group: Rahul block + "and" + Kashish block (Figma gap-24px) */
+    .imob-names-group {
+      display: flex; flex-direction: column;
+      gap: 24px; align-items: center;
+      width: 100%;
+    }
+
+    /* Mandala ornament */
+    .imob-mandala {
+      width: 36.001px; height: 44.167px;
+      position: relative; flex-shrink: 0;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    .imob-mandala img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block; }
+    .imob-mandala.inv-show {
+      opacity: 1;
+      animation: invGoldenGlow 2.8s ease-in-out 0.4s infinite alternate;
+    }
+
+    /* Invited text */
+    .imob-invited {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 12px; letter-spacing: 1.2px;
+      text-transform: uppercase; line-height: 1.5;
+      color: #ae1919; text-align: center; width: 100%;
+      flex-shrink: 0;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    .imob-invited.inv-show { opacity: 1; }
+
+    /* Names block: small gap between parentage and name text */
+    .imob-names {
+      display: flex; flex-direction: column;
+      align-items: center; flex-shrink: 0;
+      gap: 8px;
+      width: 100%;
+    }
+    .imob-name {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 36px; color: #ae1919;
+      line-height: normal; text-align: center;
+      white-space: nowrap;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .imob-name.inv-show { opacity: 1; transform: none; }
+    .imob-parentage {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; line-height: 1.5;
+      color: #ae1919; text-align: center;
+      opacity: 0; transition: opacity 0.6s ease;
+    }
+    .imob-parentage.inv-show { opacity: 1; }
+
+    /* Script "and" between names */
+    .imob-and {
+      font-family: 'Brittany Signature', cursive;
+      font-size: 24px; line-height: 1;
+      color: #ae1919; text-align: center;
+      white-space: nowrap; flex-shrink: 0;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    .imob-and.inv-show { opacity: 1; }
+
+    /* Date block */
+    .imob-date-block {
+      display: inline-grid;
+      grid-template-columns: max-content; grid-template-rows: max-content;
+      place-items: start; white-space: nowrap; line-height: 0;
+      flex-shrink: 0;
+    }
+    .imob-date-on {
+      grid-column: 1; grid-row: 1;
+      margin-left: 107.19px;
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; line-height: 1.5; color: #ae1919;
+      opacity: 0; transition: opacity 0.6s ease;
+    }
+    .imob-date-on.inv-show { opacity: 1; }
+    .imob-date {
+      grid-column: 1; grid-row: 1;
+      margin-top: 23px;
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 24px; letter-spacing: 2.4px;
+      line-height: 1.5; color: #ae1919;
+      opacity: 0; transform: scale(0.85);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .imob-date.inv-show { opacity: 1; transform: scale(1); }
+
+    /* Venue */
+    .imob-venue {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      text-transform: uppercase; text-align: center;
+      color: #ae1919; line-height: 0; flex-shrink: 0;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    .imob-venue.inv-show { opacity: 1; }
+    .imob-venue-name { font-size: 16px; letter-spacing: 1.8692px; line-height: 1.5; display: block; }
+    .imob-venue-loc  { font-size: 10px;  letter-spacing: 1.8692px; line-height: 1.5; display: block; }
+
+    /* Bottom ornament */
+    .imob-orn-bot {
+      width: 72.692px; height: 32.885px;
+      position: relative; flex-shrink: 0;
+      transform: rotate(180deg) scale(0.8);
+      opacity: 0; transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .imob-orn-bot img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block; }
+    .imob-orn-bot.inv-show { opacity: 1; transform: rotate(180deg) scale(1); }
+
+    @media (max-width: 767px) {
+      #invDesktopRoot { display: none !important; }
+      #invMobileRoot  { display: block !important; }
+    }
+
+    /* Section 3 grows with its content — height set by JS, no overflow clip */
+    #invitationSection {
+      height: auto;
+      overflow: visible;
+    }
+
+    #functionSection {
+      height: auto;
+      overflow: visible;
+    }
+
+    /* ════════════════════════════════════════════
+       FUNCTION DETAILS (section 3) — 1440×1550 canvas
+    ════════════════════════════════════════════ */
+
+    /* Background lives OUTSIDE the scale-root, fills viewport natively */
+    .func-bg-wrap {
+      position: absolute; inset: 0; overflow: hidden;
+    }
+    .func-bg-wrap img {
+      position: absolute;
+      width: 139.68%; height: 100.34%;
+      left: -19.84%; top: 0;
+      max-width: none; display: block;
+    }
+
+    #funcDesktopRoot {
+      width: 1440px; height: 1550px;
+      transform-origin: top left;
+    }
+
+    /* Event cards */
+    .func-card-pos {
+      position: absolute;
+      width: 492px; height: 665px;
+      opacity: 0;
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .func-card-pos--from-left  { transform: translateX(-60px); }
+    .func-card-pos--from-right { transform: translateX(60px); }
+    .func-card-pos.func-show   { opacity: 1; transform: none; }
+
+    .func-card {
+      width: 100%; height: 100%;
+      /* no CSS border — replaced by SVG brush stroke overlay */
+      border-radius: 0 200px 0 200px; /* keep for overflow clipping */
+      overflow: hidden; position: relative;
+    }
+    .func-card--alt { border-radius: 200px 0 200px 0; }
+
+    /* Brush stroke border overlay — sits on top of card, pointer-events off */
+    .func-card-border {
+      position: absolute; inset: 0;
+      width: 492px; height: 665px;
+      pointer-events: none; z-index: 2;
+      overflow: visible;
+    }
+    .func-border-path {
+      fill: none;
+      stroke: #ae1919;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Card inner: 35px inset on all sides */
+    .func-card-inner {
+      position: absolute;
+      left: 37.5px; top: 37.5px; width: 412px; height: 585px;
+      display: flex; flex-direction: column; gap: 128px;
+    }
+
+    /* Title block */
+    .func-title { flex-shrink: 0; }
+    .func-event-name {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 48px; color: #ae1919; line-height: normal;
+    }
+    .func-event-meta {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 20px; color: #ae1919;
+      line-height: 1.5; letter-spacing: 2px;
+    }
+
+    /* Body text */
+    .func-body {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 20px; color: #ae1919;
+      line-height: 1.5; flex-shrink: 0;
+    }
+
+    /* Venue block: flex-1, content centered, right-aligned by default */
+    .func-venue {
+      flex: 1 0 0; display: flex;
+      flex-direction: column; align-items: flex-end; justify-content: center;
+    }
+    .func-venue-name {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 24px; color: #ae1919; line-height: 2;
+    }
+    .func-venue-addr {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 12px; color: #ae1919; line-height: 2;
+    }
+    /* Reception venue is left-aligned */
+    .func-venue--left { align-items: flex-start; }
+    .func-venue--left .func-venue-addr { letter-spacing: 1.2px; }
+    /* Reception card: right-align title + body */
+    .func-card-inner--right .func-title,
+    .func-card-inner--right .func-body { text-align: right; }
+    /* Reception gap */
+    .func-card-inner--right { gap: 131px; }
+
+    /* Decorative ornament — top-right of canvas */
+    .func-orn {
+      position: absolute; left: 1004px; top: 0;
+      display: flex; align-items: flex-start;
+      opacity: 0; transform: translateY(-40px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .func-orn.func-show { opacity: 1; transform: none; }
+    .func-orn-a { width: 137.144px; height: 218.199px; position: relative; flex-shrink: 0; }
+    .func-orn-b { width: 137.144px; height: 354.199px; position: relative; flex-shrink: 0; }
+    .func-orn-a img, .func-orn-b img {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
+    }
+
+    /* Script quote text */
+    .func-script {
+      position: absolute; left: 767px; top: 354px; width: 295px;
+      font-family: 'Brittany Signature', cursive;
+      font-size: 36px; color: #ae1919; line-height: 1.5;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .func-script.func-show { opacity: 1; transform: none; }
+
+    /* ════════════════════════════════════════════
+       FUNCTION DETAILS — mobile (402 wide, height auto)
+    ════════════════════════════════════════════ */
+    #funcMobileRoot {
+      display: none;
+      width: 402px;
+      position: absolute; top: 0; left: 0;
+      transform-origin: top left;
+      z-index: 1;
+    }
+    @media (max-width: 767px) {
+      #funcDesktopRoot { display: none !important; }
+      #funcMobileRoot  { display: block !important; position: relative !important; }
+      #functionSection { overflow-x: hidden !important; overflow-y: hidden !important; height: auto !important; }
+    }
+
+    /* Background */
+    .fmob-bg {
+      position: absolute; left: -265.28%; top: 0;
+      width: 630.56%; height: 114.62%;
+      pointer-events: none;
+    }
+    .fmob-bg img { display: block; width: 100%; height: 100%; max-width: none; }
+
+    /* Main flex-wrap container: quote + ornaments in row 1, cards in row 2 */
+    .fmob-main {
+      position: relative; z-index: 1;
+      margin-left: 40px;
+      width: 351px;
+      padding-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 36px 44px;
+      align-items: flex-start;
+    }
+
+    /* Script quote wrapper — sits next to ornaments */
+    .fmob-script-wrap {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 36px;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fmob-script-wrap.func-show { opacity: 1; transform: none; }
+    .fmob-script {
+      width: 195px;
+      font-family: 'Brittany Signature', cursive;
+      font-size: 32px; color: #ae1919; line-height: 1.2;
+    }
+
+    /* Ornaments — sits next to quote */
+    .fmob-orn {
+      flex-shrink: 0;
+      display: flex; align-items: flex-start;
+      opacity: 0; transform: translateY(-30px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fmob-orn.func-show { opacity: 1; transform: none; }
+    .fmob-orn-a { width: 56px; height: 89.097px; position: relative; flex-shrink: 0; }
+    .fmob-orn-b { width: 56px; height: 144.629px; position: relative; flex-shrink: 0; }
+    .fmob-orn-a img, .fmob-orn-b img {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
+    }
+
+    /* Cards column — full row below quote + ornaments */
+    .fmob-cards {
+      flex-shrink: 0;
+      width: 320px;
+      display: flex; flex-direction: column;
+      gap: 36px;
+    }
+
+    /* Card wrapper (animation target) */
+    .fmob-card-wrap {
+      flex-shrink: 0;
+      opacity: 0; transform: translateX(-40px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fmob-card-wrap.func-show { opacity: 1; transform: none; }
+
+    /* Card: TR + BL rounded */
+    .fmob-card {
+      width: 100%; height: 432.52px;
+      border: 1px solid #ae1919;
+      border-radius: 0 100px 0 100px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 6.504px 13.008px rgba(0,0,0,0.25);
+    }
+
+    /* Card inner content */
+    .fmob-inner {
+      position: absolute;
+      left: 25.52px; top: 25.52px;
+      width: 267.967px; height: 380.488px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Event name */
+    .fmob-name {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 32px; color: #ae1919; line-height: normal;
+    }
+    /* Date / time */
+    .fmob-meta {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 14px; color: #ae1919;
+      line-height: 1.5; letter-spacing: 1.4px;
+    }
+    /* Description */
+    .fmob-body {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 14px; color: #ae1919; line-height: 1.5;
+    }
+    /* Venue — right-aligned */
+    .fmob-venue { text-align: right; }
+    .fmob-venue-name {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 16px; color: #ae1919; line-height: 2;
+    }
+    .fmob-venue-addr {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 8px; color: #ae1919; line-height: 2;
+    }
+    .fmob-venue-addr--spaced { letter-spacing: 0.8px; }
+
+    /* ════════════════════════════════════════════
+       GALLERY SECTION
+    ════════════════════════════════════════════ */
+    /* Override page-section constraints for gallery */
+    #gallerySection {
+      height: auto !important;
+      overflow: visible !important;
+      scroll-snap-align: start;
+      background: #faf7f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+    }
+
+.gallery-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+      cursor: pointer;
+      aspect-ratio: 1 / 1;
+      outline: none;
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      transform: scale(1);
+      transition:
+        filter 0.5s ease,
+        transform 0.5s ease;
+      will-change: filter, transform;
+    }
+
+    /* Hover / focus reveal */
+    .gallery-item:hover img,
+    .gallery-item:focus-visible img {
+      filter: grayscale(0%);
+      transform: scale(1.03);
+    }
+
+    /* Mobile: 2 columns × 3 rows, square cells */
+    @media (max-width: 767px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: calc(100vw / 2);
+      }
+      .gallery-item {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    /* ════════════════════════════════════════════
+       FAQ & RSVP SECTION
+    ════════════════════════════════════════════ */
+    #faqSection { height: auto; }
+
+    #faqRoot {
+      display: none;
+      width: 1440px; height: 720px;
+      position: absolute; top: 0; left: 0;
+      transform-origin: top left;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Background */
+    .faq-bg {
+      position: absolute; inset: 0;
+    }
+    .faq-bg img { display: block; width: 100%; height: 100%; object-fit: cover; max-width: none; }
+
+    /* Centre photo composition — CSS grid so all 3 children overlap in cell 1,1 */
+    .faq-photo-grid {
+      display: inline-grid;
+      grid-template-columns: max-content;
+      grid-template-rows: max-content;
+      line-height: 0;
+      place-items: start;
+      flex-shrink: 0;
+    }
+    .faq-arc-tl {
+      grid-column: 1; grid-row: 1;
+      width: 206px; height: 229.5px;
+      margin-left: 0; margin-top: 0;
+      overflow: hidden; position: relative;
+    }
+    .faq-arc-tl img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; }
+    .faq-arc-br {
+      grid-column: 1; grid-row: 1;
+      width: 206px; height: 238px;
+      margin-left: 212px; margin-top: 356px;
+      transform: rotate(180deg);
+      overflow: hidden; position: relative;
+    }
+    .faq-arc-br img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; }
+    .faq-photo-oval {
+      grid-column: 1; grid-row: 1;
+      width: 364px; height: 533px;
+      margin-left: 27px; margin-top: 30px;
+      border-radius: 999px;
+      overflow: hidden; position: relative;
+    }
+    .faq-photo-oval img {
+      position: absolute;
+      left: 0.06%; top: 0;
+      width: 109.82%; height: 100%;
+      max-width: none; display: block;
+      object-fit: cover;
+      filter: grayscale(100%);
+    }
+
+    /* Main content row */
+    .faq-content {
+      position: absolute;
+      left: 64px; top: 80px;
+      width: 1312px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    /* ── FAQ column ── */
+    .faq-col {
+      width: 427px;
+      display: flex; flex-direction: column;
+      gap: 53px;
+    }
+    .faq-header { display: flex; flex-direction: column; gap: 8px; }
+    .faq-title {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 48px; color: #ae1919; line-height: normal;
+    }
+    .faq-subtitle {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 16px; color: #ae1919;
+      line-height: 1.5; letter-spacing: 1.6px;
+      width: 427px;
+    }
+    .faq-list {
+      width: 409px;
+      display: flex; flex-direction: column;
+      gap: 24px;
+    }
+    .faq-item {
+      display: flex; flex-direction: column;
+      gap: 16px;
+    }
+    .faq-question {
+      display: flex; align-items: center;
+      gap: 8px; cursor: pointer;
+    }
+    .faq-plus {
+      width: 12px; height: 12px;
+      flex-shrink: 0; position: relative;
+    }
+    .faq-plus img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: block; max-width: none;
+      transition: transform 0.2s ease;
+    }
+    .faq-q-text {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 14px; color: #ae1919;
+      line-height: 1.5; letter-spacing: 1.4px;
+      text-transform: uppercase; white-space: nowrap;
+      font-weight: bold;
+    }
+    /* Answer panel (hidden by default, shown on click) */
+    .faq-answer {
+      display: none;
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 13px; color: #ae1919;
+      line-height: 1.6; letter-spacing: 0.6px;
+      padding-bottom: 4px;
+    }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-plus img { transform: rotate(45deg); }
+
+    /* ── RSVP column ── */
+    .rsvp-col {
+      width: 427px;
+      display: flex; flex-direction: column;
+      gap: 90px;
+    }
+    .rsvp-header { display: flex; flex-direction: column; gap: 8px; }
+    .rsvp-title {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 48px; color: #fff; line-height: normal;
+    }
+    .rsvp-subtitle {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 16px; color: #fff;
+      line-height: 1.5; letter-spacing: 1.6px;
+      width: 427px;
+    }
+    .rsvp-form {
+      display: flex; flex-direction: column;
+      gap: 48px; align-items: flex-end;
+    }
+    .rsvp-fields {
+      width: 100%;
+      display: flex; flex-direction: column;
+      gap: 16px;
+    }
+    .rsvp-input {
+      width: 100%;
+      border: 2px solid #fff;
+      border-radius: 0 24px 0 24px;
+      padding: 12px 16px;
+      background: transparent;
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 14px; color: #fff;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .rsvp-input::placeholder { color: rgba(255,255,255,0.7); }
+    .rsvp-btn {
+      width: 202px;
+      border: 2px solid #fff;
+      border-radius: 24px 0 24px 0;
+      padding: 12px 16px;
+      background: #fff;
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 14px; color: #ae1919;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      font-weight: bold; text-align: center;
+      cursor: pointer;
+    }
+    .rsvp-btn:hover { background: #f5e8e8; }
+
+    /* ════════════════════════════════════════════
+       FAQ & RSVP — MOBILE (402×1273 canvas)
+    ════════════════════════════════════════════ */
+    #faqMobileRoot {
+      display: none;
+      width: 402px;
+      transform-origin: top left;
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 767px) {
+      #faqRoot       { display: none !important; }
+      #faqMobileRoot { display: block !important; position: relative !important; }
+      #faqSection    { overflow-x: hidden !important; overflow-y: visible !important; height: auto !important; }
+    }
+
+    .fmfaq-bg { position: absolute; inset: 0; overflow: hidden; }
+    .fmfaq-bg img { display: block; width: 100%; height: 100%; object-fit: cover; max-width: none; }
+
+    .fmfaq-content {
+      position: relative; z-index: 1;
+      width: 320px; margin: 0 auto;
+      padding-top: 36px; padding-bottom: 48px;
+      display: flex; flex-direction: column;
+      align-items: flex-start; gap: 48px;
+    }
+
+    /* FAQ block */
+    .fmfaq-col { width: 100%; display: flex; flex-direction: column; gap: 24px; }
+    .fmfaq-header { display: flex; flex-direction: column; gap: 8px; }
+    .fmfaq-title { font-family: 'TAN Mon Cheri', serif; font-size: 32px; color: #ae1919; line-height: normal; }
+    .fmfaq-subtitle { font-family: 'TAN Mon Cheri', serif; font-size: 14px; color: #ae1919; line-height: 1.5; letter-spacing: 1.4px; }
+    .fmfaq-list { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    .fmfaq-item { display: flex; flex-direction: column; }
+    .fmfaq-question { display: flex; align-items: center; gap: 8px; cursor: pointer; padding-bottom: 4px; }
+    .fmfaq-plus { width: 12px; height: 12px; flex-shrink: 0; display: block; transition: transform 0.25s ease; }
+    .fmfaq-item.open .fmfaq-plus { transform: rotate(45deg); }
+    .fmfaq-q-text {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px; color: #ae1919; font-weight: 700;
+      letter-spacing: 1.2px; text-transform: uppercase; line-height: 1.5;
+    }
+    .fmfaq-answer {
+      font-family: 'TAN Mon Cheri', serif;
+      font-size: 12px; color: #ae1919; line-height: 1.5;
+      padding-left: 20px; max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding-top 0.35s ease;
+    }
+    .fmfaq-item.open .fmfaq-answer { max-height: 160px; padding-top: 6px; }
+
+    /* Photo composition grid */
+    .fmfaq-photo {
+      display: inline-grid;
+      grid-template-columns: max-content; grid-template-rows: max-content;
+      line-height: 0; place-items: start; flex-shrink: 0; align-self: center;
+    }
+    .fmfaq-arc-tl {
+      grid-column: 1; grid-row: 1;
+      width: 177.416px; height: 197.656px;
+      margin-left: 0; margin-top: 0;
+      overflow: hidden; position: relative;
+    }
+    .fmfaq-arc-br {
+      grid-column: 1; grid-row: 1;
+      width: 177.416px; height: 204.976px;
+      margin-left: 182.58px; margin-top: 306.6px;
+      transform: rotate(180deg);
+      overflow: hidden; position: relative;
+    }
+    .fmfaq-oval {
+      grid-column: 1; grid-row: 1;
+      width: 313.493px; height: 459.043px;
+      margin-left: 23.25px; margin-top: 25.84px;
+      border-radius: 860px; overflow: hidden; position: relative;
+    }
+    .fmfaq-arc-tl img, .fmfaq-arc-br img {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
+    }
+    .fmfaq-oval img {
+      position: absolute; left: 0.06%; top: 0;
+      width: 109.82%; height: 100%; max-width: none; display: block;
+      object-fit: cover; filter: grayscale(100%);
+    }
+
+    /* RSVP block */
+    .fmrsvp-col { width: 100%; display: flex; flex-direction: column; gap: 24px; }
+    .fmrsvp-header { display: flex; flex-direction: column; gap: 8px; }
+    .fmrsvp-title { font-family: 'TAN Mon Cheri', serif; font-size: 32px; color: #fff; line-height: normal; }
+    .fmrsvp-subtitle { font-family: 'TAN Mon Cheri', serif; font-size: 14px; color: #fff; line-height: 1.5; letter-spacing: 1.4px; }
+    .fmrsvp-form { width: 100%; display: flex; flex-direction: column; align-items: flex-end; gap: 24px; }
+    .fmrsvp-fields { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+    .fmrsvp-input {
+      width: 100%; border: 2px solid #fff; border-radius: 0 24px 0 24px;
+      padding: 12px 16px; background: transparent;
+      font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 12px; color: #fff;
+      letter-spacing: 1.2px; text-transform: uppercase; outline: none; box-sizing: border-box;
+    }
+    .fmrsvp-input::placeholder { color: rgba(255,255,255,0.7); }
+    .fmrsvp-btn {
+      width: 202px; border: 2px solid #fff; border-radius: 24px 0 24px 0;
+      padding: 12px 16px; background: #fff;
+      font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 12px; color: #ae1919;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      text-align: center; cursor: pointer;
+    }
+    .fmrsvp-btn:hover { background: #f5e8e8; }
+
+    /* ════════════════════════════════════════════
+       SPARKLES
+    ════════════════════════════════════════════ */
+    .sparkle-layer { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+    .sparkle { position: absolute; width: 40px; height: 90px; opacity: 0; transform: scale(0.5) rotate(0deg); will-change: opacity, transform; }
+    .sparkle.active   { opacity: 1; transform: scale(1) rotate(15deg); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .sparkle.fade-out { opacity: 0; transform: scale(0.5) rotate(-10deg); transition: opacity 0.6s ease, transform 0.6s ease; }
+
+    /* ════════════════════════════════════════════
+       KEYFRAMES
+    ════════════════════════════════════════════ */
+    @keyframes fadeSlideDown  { to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideFromLeft  { to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideFromRight { to { opacity: 1; transform: translateX(0); } }
+    @keyframes arcFadeIn      { to { opacity: 1; } }
+    @keyframes paintWipe      { to { clip-path: inset(0 0% 0 0); } }
+    @keyframes photoReveal    { to { opacity: 1; transform: scale(1); } }
+    @keyframes gentleFadeIn   { to { opacity: 1; } }
+    @keyframes pulse          { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+    @keyframes arrowBounce    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+  </style>
+</head>
+<body>
+<div id="pageContainer">
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 — HERO
+  ══════════════════════════════════════════ -->
+  <section class="page-section" id="heroSection">
+
+    <!-- Background per-section (not fixed) -->
+    <div class="section-bg" id="heroBgWrap">
+      <img id="heroBgImg" src="images/figma/49a27045-2763-4bf9-b72e-e154ee913c0c.jpg" alt="" />
+    </div>
+
+    <!-- Sparkle layer — section-level, % positioned -->
+    <div class="sparkle-layer" id="heroSparkleLayer"></div>
+
+    <!-- Mobile hero (≤767px) -->
+    <div id="heroMobileContent">
+      <p class="hero-mob-headline">We are getting married!!!</p>
+      <div class="hero-mob-body">
+        <div class="hero-mob-photo">
+          <div class="hero-mob-arc-tl">
+            <img src="images/figma/b06be998-hero-mob-arc-tl.svg" alt="" />
+          </div>
+          <div class="hero-mob-arc-br">
+            <img src="images/figma/8e15acdb-hero-mob-arc-br.svg" alt="" />
+          </div>
+          <div class="hero-mob-oval">
+            <img src="images/figma/dfaefd78-hero-mob-photo.jpg" alt="Rahul and Kashish" />
+          </div>
+        </div>
+        <div class="hero-mob-cta">
+          <p class="hero-mob-date">21.06.2026 ❤️</p>
+          <img class="hero-mob-arrow" src="images/figma/4b789b66-hero-mob-arrow.svg" alt="Scroll down" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop hero: [Rahul] [photo] [Kashish] -->
+    <div class="hero-container">
+      <p class="hero-headline">We are getting married!!!</p>
+      <div class="hero-composition">
+        <span class="hero-name hero-name--left">Rahul</span>
+        <div class="hero-photo-grid">
+          <div class="hero-arc-top">
+            <div class="arc-wipe"><img src="images/figma/f7a90727-85f1-4e7a-bcd1-e8ea31a72a81.svg" alt="" /></div>
+          </div>
+          <div class="hero-arc-bot">
+            <div class="arc-wipe"><img src="images/figma/08c721d8-8ae5-4ffc-97d4-685a9ef61e3e.svg" alt="" /></div>
+          </div>
+          <div class="hero-photo">
+            <img class="photo-img" src="images/figma/a89c2883-b694-407f-9691-7da7eff29120.jpg" alt="Rahul and Kashish" />
+            <div class="hero-date-cta">
+              <span class="hero-date">21.06.2026</span>
+              <div class="hero-envelope">
+                <img src="images/figma/5f231ee9-26fe-4856-825a-abc23cacac6d.svg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="hero-name hero-name--right">Kashish</span>
+      </div>
+    </div>
+
+  </section><!-- /heroSection -->
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 — INVITATION
+  ══════════════════════════════════════════ -->
+  <section class="page-section" id="invitationSection">
+
+    <!-- Full-screen textured background -->
+    <div class="section-bg" style="background:#6b1010;">
+      <img class="inv-bg-img"
+           src="images/figma/93b0b72b-b52b-42d9-8f30-1f9ebd796f1b.jpg"
+           alt="" />
+    </div>
+
+    <!-- Desktop canvas: 1440×1024 -->
+    <div id="invDesktopRoot" class="scale-root">
+      <div class="inv-layout">
+
+        <!-- Top kolam border -->
+        <div class="inv-border">
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+          <div class="inv-b-curl"><img src="images/figma/45303e81-9ab3-47ef-8fc2-17695ce24614.svg" alt=""/></div>
+          <div class="inv-b-diamond"><div class="inv-b-diamond-inner"><img src="images/figma/4d02d2af-8cca-4bfb-a6b2-5ada77648046.svg" alt=""/></div></div>
+          <div class="inv-b-mirror"><div class="inv-b-mirror-inner"><img src="images/figma/750f401e-0c6d-4444-8650-5a524218d859.svg" alt=""/></div></div>
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+          <div class="inv-b-curl"><img src="images/figma/45303e81-9ab3-47ef-8fc2-17695ce24614.svg" alt=""/></div>
+          <div class="inv-b-diamond"><div class="inv-b-diamond-inner"><img src="images/figma/4d02d2af-8cca-4bfb-a6b2-5ada77648046.svg" alt=""/></div></div>
+          <div class="inv-b-mirror"><div class="inv-b-mirror-inner"><img src="images/figma/750f401e-0c6d-4444-8650-5a524218d859.svg" alt=""/></div></div>
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+          <div class="inv-b-curl"><img src="images/figma/45303e81-9ab3-47ef-8fc2-17695ce24614.svg" alt=""/></div>
+          <div class="inv-b-diamond"><div class="inv-b-diamond-inner"><img src="images/figma/4d02d2af-8cca-4bfb-a6b2-5ada77648046.svg" alt=""/></div></div>
+          <div class="inv-b-mirror"><div class="inv-b-mirror-inner"><img src="images/figma/750f401e-0c6d-4444-8650-5a524218d859.svg" alt=""/></div></div>
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+        </div>
+
+        <!-- Three invitation cards -->
+        <div class="inv-cards-row">
+
+          <!-- Card 1: Rahul — slides in from left -->
+          <div class="inv-card-wrap">
+            <div class="inv-card inv-card--thick inv-card-left">
+              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
+              <div class="rahul-inner">
+                <div class="inv-orn" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/fc40016f-b8f8-4773-801a-42749c518e46.svg" alt=""/>
+                </div>
+                <div class="rahul-name-block">
+                  <p class="person-name" style="font-size:82px;">Rahul</p>
+                  <p class="person-parentage">(S/O Mrs. Raji Pisharody &amp; Mr. K. P. Sreehari)</p>
+                </div>
+                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Wedding Details — scales up from center -->
+          <div class="inv-card-wrap">
+            <div class="inv-card inv-card-center">
+              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
+              <div class="wedding-inner">
+                <div class="inv-orn-mandala" style="width:58.015px;height:71.176px;">
+                  <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
+                </div>
+                <div class="wedding-details">
+                  <p class="wedding-invited">You are Cordially Invited to join the wedding ceremony</p>
+                  <div class="wedding-date-block">
+                    <p class="wedding-date-on">On</p>
+                    <p class="wedding-date">June 21, 2026</p>
+                  </div>
+                  <div class="wedding-venue">
+                    <span class="wedding-venue-name">The River Retreat</span>
+                    <span class="wedding-venue-loc">Cheruthuruthi, Thrissur, Kerala</span>
+                  </div>
+                </div>
+                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Kashish — slides in from right -->
+          <div class="inv-card-wrap">
+            <div class="inv-card inv-card--soft inv-card-right">
+              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
+              <div class="kashish-inner">
+                <div class="inv-orn" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/c3e53c1d-60bd-46e4-9449-06321290f394.svg" alt=""/>
+                </div>
+                <div class="kashish-name-block">
+                  <p class="person-name" style="font-size:72px;">Kashish</p>
+                  <p class="person-parentage">(D/O. Mrs. Jaya &amp; Mr. Mahesh Chandra)</p>
+                </div>
+                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /inv-cards-row -->
+
+        <!-- Bottom kolam border (flipped) -->
+        <div class="inv-border inv-border-flip">
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+          <div class="inv-b-curl"><img src="images/figma/45303e81-9ab3-47ef-8fc2-17695ce24614.svg" alt=""/></div>
+          <div class="inv-b-diamond"><div class="inv-b-diamond-inner"><img src="images/figma/4d02d2af-8cca-4bfb-a6b2-5ada77648046.svg" alt=""/></div></div>
+          <div class="inv-b-mirror"><div class="inv-b-mirror-inner"><img src="images/figma/750f401e-0c6d-4444-8650-5a524218d859.svg" alt=""/></div></div>
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+          <div class="inv-b-curl"><img src="images/figma/45303e81-9ab3-47ef-8fc2-17695ce24614.svg" alt=""/></div>
+          <div class="inv-b-diamond"><div class="inv-b-diamond-inner"><img src="images/figma/4d02d2af-8cca-4bfb-a6b2-5ada77648046.svg" alt=""/></div></div>
+          <div class="inv-b-mirror"><div class="inv-b-mirror-inner"><img src="images/figma/750f401e-0c6d-4444-8650-5a524218d859.svg" alt=""/></div></div>
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+          <div class="inv-b-curl"><img src="images/figma/45303e81-9ab3-47ef-8fc2-17695ce24614.svg" alt=""/></div>
+          <div class="inv-b-diamond"><div class="inv-b-diamond-inner"><img src="images/figma/4d02d2af-8cca-4bfb-a6b2-5ada77648046.svg" alt=""/></div></div>
+          <div class="inv-b-mirror"><div class="inv-b-mirror-inner"><img src="images/figma/750f401e-0c6d-4444-8650-5a524218d859.svg" alt=""/></div></div>
+          <div class="inv-b-big"><img src="images/figma/a58159e4-aed1-497a-a9c8-d68b9858a5fc.svg" alt=""/></div>
+        </div>
+
+      </div><!-- /inv-layout -->
+    </div><!-- /invDesktopRoot -->
+
+    <!-- Mobile: single tall card (Figma node 328:1046) -->
+    <div id="invMobileRoot">
+
+      <!-- Background: dark red texture, h=107.39%, left=-111.04%, top=-3.67% -->
+      <div class="imob-bg">
+        <img src="images/figma/8bca5813-cf0a-44e9-bfca-3f58db4f3149.jpg" alt=""/>
+      </div>
+
+      <!-- Main layout column: vertically centered -->
+      <div class="imob-layout">
+
+        <!-- Top kolam border strip (mb:-40px overlaps card) -->
+        <div class="imob-border-top" id="invMobBorderTop">
+          <div class="imob-b-big"><img src="images/figma/83fd5c13-4bcc-4b56-b71c-b0f292225ca2.svg" alt=""/></div>
+          <div class="imob-b-curl"><img src="images/figma/5829d039-9a0f-4d6e-8961-617c3cc3464c.svg" alt=""/></div>
+          <div class="imob-b-diamond"><div class="imob-b-diamond-i"><img src="images/figma/942fbf66-271a-4b7c-af77-60e4990b9cc0.svg" alt=""/></div></div>
+          <div class="imob-b-mirror"><div class="imob-b-mirror-i"><img src="images/figma/8c054884-da29-4d39-b92b-dbac7711624f.svg" alt=""/></div></div>
+          <div class="imob-b-big"><img src="images/figma/83fd5c13-4bcc-4b56-b71c-b0f292225ca2.svg" alt=""/></div>
+        </div>
+
+        <!-- Single tall oval card: 354×674px, border-radius 170px -->
+        <div class="imob-card" id="invMobCard">
+          <div class="imob-card-bg">
+            <img src="images/figma/614702f6-0aab-40f4-b6ca-840a9b25211e.jpg" alt=""/>
+          </div>
+
+          <!-- Card inner: centered, slight upward offset per Figma (top: calc(50%-9.14px)) -->
+          <div class="imob-inner">
+
+            <!-- Mandala ornament -->
+            <div class="imob-mandala" id="invMobMandala">
+              <img src="images/figma/12c7a63c-2a08-4b5c-bcc7-b30b34ecfa4f.svg" alt=""/>
+            </div>
+
+            <!-- Content block: invited text, names, date, venue -->
+            <div class="imob-content">
+
+              <!-- Invited text -->
+              <p class="imob-invited" id="invMobInvited">Your are Cordially Invited to join the wedding ceremony of</p>
+
+              <!-- Names group: tighter 24px gap (Figma) vs outer 36px sections -->
+              <div class="imob-names-group">
+
+                <!-- Rahul: parentage above name -->
+                <div class="imob-names">
+                  <p class="imob-parentage" id="invMobParentR">(S/O Mrs. Raji Pisharody &amp; Mr. K. P. Sreehari)</p>
+                  <p class="imob-name" id="invMobNameR">Rahul</p>
+                </div>
+
+                <!-- Script "and" connector -->
+                <p class="imob-and" id="invMobAnd">and</p>
+
+                <!-- Kashish: name above parentage -->
+                <div class="imob-names">
+                  <p class="imob-name" id="invMobNameK">Kashish</p>
+                  <p class="imob-parentage" id="invMobParentK">(D/O. Mrs. Jaya &amp; Mr. Mahesh Chandra)</p>
+                </div>
+
+              </div><!-- /imob-names-group -->
+
+              <!-- Date block -->
+              <div class="imob-date-block">
+                <span class="imob-date-on" id="invMobDateOn">On</span>
+                <span class="imob-date" id="invMobDate">June 21, 2026</span>
+              </div>
+
+              <!-- Venue -->
+              <div class="imob-venue" id="invMobVenue">
+                <span class="imob-venue-name">The River Retreat</span>
+                <span class="imob-venue-loc">Cheruthuruthi, Thrissur, Kerala</span>
+              </div>
+
+            </div><!-- /imob-content -->
+
+            <!-- Bottom ornament (rotate-180 per Figma) -->
+            <div class="imob-orn-bot" id="invMobOrnBot">
+              <img src="images/figma/5f0c9e49-369f-4508-86db-1e659fd48e93.svg" alt=""/>
+            </div>
+
+          </div><!-- /imob-inner -->
+        </div><!-- /imob-card -->
+
+        <!-- Bottom kolam border strip (scaleY:-1 flipped) -->
+        <div class="imob-border-bot-wrap">
+          <div class="imob-border-bot" id="invMobBorderBot">
+            <div class="imob-b-big"><img src="images/figma/83fd5c13-4bcc-4b56-b71c-b0f292225ca2.svg" alt=""/></div>
+            <div class="imob-b-curl"><img src="images/figma/5829d039-9a0f-4d6e-8961-617c3cc3464c.svg" alt=""/></div>
+            <div class="imob-b-diamond"><div class="imob-b-diamond-i"><img src="images/figma/942fbf66-271a-4b7c-af77-60e4990b9cc0.svg" alt=""/></div></div>
+            <div class="imob-b-mirror"><div class="imob-b-mirror-i"><img src="images/figma/8c054884-da29-4d39-b92b-dbac7711624f.svg" alt=""/></div></div>
+            <div class="imob-b-big"><img src="images/figma/83fd5c13-4bcc-4b56-b71c-b0f292225ca2.svg" alt=""/></div>
+          </div>
+        </div>
+
+      </div><!-- /imob-layout -->
+    </div><!-- /invMobileRoot -->
+
+  </section><!-- /invitationSection -->
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3: FUNCTION DETAILS
+  ══════════════════════════════════════════ -->
+  <section class="page-section" id="functionSection">
+
+    <!-- Background: paper texture — outside scale-root, fills viewport natively -->
+    <div class="section-bg" style="background:#f0ebe0;">
+      <div class="func-bg-wrap">
+        <img src="images/figma/5d7ff280-c0ca-4dd3-8fa4-b0a1435b25bf.jpg" alt=""/>
+      </div>
+    </div>
+
+    <!-- Scale-root: cards, ornament, quote only -->
+    <div id="funcDesktopRoot" class="scale-root">
+
+      <!-- SVG filter defs for brush stroke effect (hidden, 0×0) -->
+      <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <defs>
+          <filter id="func-brush" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="linearRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045 0.03" numOctaves="4" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+      </svg>
+
+      <!-- Decorative kolam ornament (top-right, left:1004 top:0) -->
+      <div class="func-orn" id="funcOrn">
+        <div class="func-orn-a"><img src="images/figma/37e6c26a-4590-49a9-887e-f63498c4ad67.svg" alt=""/></div>
+        <div class="func-orn-b"><img src="images/figma/37c37c41-3592-48be-b111-b3f62ba5795b.svg" alt=""/></div>
+      </div>
+
+      <!-- Script quote (left:767 top:354) -->
+      <p class="func-script" id="funcScript">Come celebrate with us as we begin our forever.</p>
+
+      <!-- ── Haldi: top-left(220,85) ── -->
+      <div class="func-card-pos func-card-pos--from-left" style="left:196px;top:85px;" id="funcCardHaldi">
+        <div class="func-card">
+          <div class="func-card-inner">
+            <div class="func-title">
+              <p class="func-event-name">Haldi</p>
+              <p class="func-event-meta">June 20, 2026</p>
+              <p class="func-event-meta">9 AM onwards</p>
+            </div>
+            <p class="func-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
+            <div class="func-venue">
+              <p class="func-venue-name">The River Retreat</p>
+              <p class="func-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+            </div>
+          </div>
+        </div>
+        <!-- Brush stroke border: radius 0 200px 0 200px -->
+        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
+          <path class="func-border-path"
+            d="M 0,0 L 292,0 A 200,200 0 0,1 492,200 L 492,665 L 200,665 A 200,200 0 0,1 0,465 Z"
+            filter="url(#func-brush)"/>
+        </svg>
+      </div>
+
+      <!-- ── Sangeet: top-left(761,521) ── -->
+      <div class="func-card-pos func-card-pos--from-right" style="left:752px;top:521px;" id="funcCardSangeet">
+        <div class="func-card">
+          <div class="func-card-inner">
+            <div class="func-title">
+              <p class="func-event-name">Sangeet</p>
+              <p class="func-event-meta">June 20, 2026</p>
+              <p class="func-event-meta">4 PM onwards</p>
+            </div>
+            <p class="func-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
+            <div class="func-venue">
+              <p class="func-venue-name">The River Retreat</p>
+              <p class="func-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+            </div>
+          </div>
+        </div>
+        <!-- Brush stroke border: radius 0 200px 0 200px -->
+        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
+          <path class="func-border-path"
+            d="M 0,0 L 292,0 A 200,200 0 0,1 492,200 L 492,665 L 200,665 A 200,200 0 0,1 0,465 Z"
+            filter="url(#func-brush)"/>
+        </svg>
+      </div>
+
+      <!-- ── Reception: top-left(220,799); mirrored shape ── -->
+      <div class="func-card-pos func-card-pos--from-left" style="left:196px;top:814px;" id="funcCardReception">
+        <div class="func-card func-card--alt">
+          <div class="func-card-inner func-card-inner--right">
+            <div class="func-title">
+              <p class="func-event-name">Reception</p>
+              <p class="func-event-meta">June 27, 2026</p>
+              <p class="func-event-meta">7 PM onwards</p>
+            </div>
+            <p class="func-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
+            <div class="func-venue func-venue--left">
+              <p class="func-venue-name">The Date Banquets</p>
+              <p class="func-venue-addr">Metro Pillar No. 52-55, Jhilmil Industrial Area</p>
+            </div>
+          </div>
+        </div>
+        <!-- Brush stroke border: radius 200px 0 200px 0 -->
+        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
+          <path class="func-border-path"
+            d="M 0,200 A 200,200 0 0,1 200,0 L 492,0 L 492,465 A 200,200 0 0,1 292,665 L 0,665 Z"
+            filter="url(#func-brush)"/>
+        </svg>
+      </div>
+
+    </div><!-- /funcDesktopRoot -->
+
+    <!-- ── Mobile canvas (402px wide, height auto) ── -->
+    <div id="funcMobileRoot">
+
+      <!-- Background image -->
+      <div class="fmob-bg"><img src="images/figma/3e264533-3301-446e-92e4-aedb09046cc4.jpg" alt=""/></div>
+
+      <!-- Main flex container: quote + ornaments row, then cards -->
+      <div class="fmob-main">
+
+        <!-- Quote (row 1, left) -->
+        <div class="fmob-script-wrap" id="funcMobScript">
+          <p class="fmob-script">Come celebrate with us as we begin our forever.</p>
+        </div>
+
+        <!-- Ornaments (row 1, right) -->
+        <div class="fmob-orn" id="funcMobOrn">
+          <div class="fmob-orn-a"><img src="images/figma/51f601f9-8221-4cfc-9eb5-466bd33efe1d.svg" alt=""/></div>
+          <div class="fmob-orn-b"><img src="images/figma/90d35d20-e06b-43d3-867c-77a331b912ce.svg" alt=""/></div>
+        </div>
+
+        <!-- Cards (row 2, full width) -->
+        <div class="fmob-cards">
+
+          <!-- Haldi -->
+          <div class="fmob-card-wrap" id="funcMobHaldi">
+            <div class="fmob-card">
+              <div class="fmob-inner">
+                <div>
+                  <p class="fmob-name">Haldi</p>
+                  <p class="fmob-meta">June 20, 2026</p>
+                  <p class="fmob-meta">9 AM onwards</p>
+                </div>
+                <p class="fmob-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
+                <div class="fmob-venue">
+                  <p class="fmob-venue-name">The River Retreat</p>
+                  <p class="fmob-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sangeet -->
+          <div class="fmob-card-wrap" id="funcMobSangeet">
+            <div class="fmob-card">
+              <div class="fmob-inner">
+                <div>
+                  <p class="fmob-name">Sangeet</p>
+                  <p class="fmob-meta">June 20, 2026</p>
+                  <p class="fmob-meta">4 PM onwards</p>
+                </div>
+                <p class="fmob-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
+                <div class="fmob-venue">
+                  <p class="fmob-venue-name">The River Retreat</p>
+                  <p class="fmob-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reception -->
+          <div class="fmob-card-wrap" id="funcMobReception">
+            <div class="fmob-card">
+              <div class="fmob-inner">
+                <div>
+                  <p class="fmob-name">Reception</p>
+                  <p class="fmob-meta">June 27, 2026</p>
+                  <p class="fmob-meta">7 PM onwards</p>
+                </div>
+                <p class="fmob-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
+                <div class="fmob-venue">
+                  <p class="fmob-venue-name">The Date Banquets</p>
+                  <p class="fmob-venue-addr fmob-venue-addr--spaced">Metro Pillar No. 52-55, Jhilmil Industrial Area</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /fmob-cards -->
+
+      </div><!-- /fmob-main -->
+    </div><!-- /funcMobileRoot -->
+
+  </section><!-- /functionSection -->
+
+  <!-- ══════════════════════════════════════════
+       SECTION 4 — PHOTO GALLERY
+  ══════════════════════════════════════════ -->
+  <section class="page-section" id="gallerySection">
+
+    <div class="gallery-grid" id="galleryGrid" role="list">
+
+      <div class="gallery-item" tabindex="0" role="listitem">
+        <img id="galleryPhoto1" src="images/gallery-1.jpeg" alt="Rahul and Kashish celebrating together" />
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="listitem">
+        <img id="galleryPhoto2" src="images/gallery-2.jpeg" alt="Kashish twirling in her red lehenga at the sangeet" />
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="listitem">
+        <img id="galleryPhoto3" src="images/gallery-3.jpeg" alt="Rahul and Kashish smiling together in the car" />
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="listitem">
+        <img id="galleryPhoto4" src="images/gallery-4.jpg" alt="Rahul and Kashish dressed up for the sangeet night" />
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="listitem">
+        <img id="galleryPhoto5" src="images/gallery-5.jpg" alt="Rahul and Kashish holding their wedding rings" />
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="listitem">
+        <img id="galleryPhoto6" src="images/gallery-6.jpeg" alt="Rahul and Kashish laughing at a celebration" />
+      </div>
+
+    </div>
+
+  </section><!-- /gallerySection -->
+
+  <!-- ══════════════════════════════════════════
+       SECTION 5 — FAQs & RSVP
+  ══════════════════════════════════════════ -->
+  <section class="page-section" id="faqSection">
+
+    <div id="faqRoot" class="scale-root">
+
+      <!-- Background -->
+      <div class="faq-bg">
+        <img src="images/figma/a1e9a140-83f2-49fb-84cb-fb5cd3d1fbfd.jpg" alt="" />
+      </div>
+
+      <!-- Content row: FAQ | Photo grid | RSVP -->
+      <div class="faq-content">
+
+        <!-- FAQs column -->
+        <div class="faq-col" id="faqCol">
+          <div class="faq-header">
+            <p class="faq-title">FAQs</p>
+            <p class="faq-subtitle">We know you might have a lot of questions! Here are some answered</p>
+          </div>
+          <div class="faq-list">
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <div class="faq-plus"><img src="images/figma/2a17b78f-8d52-493f-a51f-1f34426bc226.svg" alt="" /></div>
+                <p class="faq-q-text">What's the dress code?</p>
+              </div>
+              <p class="faq-answer">Smart traditional or ethnic wear is encouraged. Think kurtas, sarees, lehengas, or sherwanis. Please avoid wearing white or black.</p>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <div class="faq-plus"><img src="images/figma/2a17b78f-8d52-493f-a51f-1f34426bc226.svg" alt="" /></div>
+                <p class="faq-q-text">Is there an airport nearby?</p>
+              </div>
+              <p class="faq-answer">The nearest airport to Cheruthuruthi is Calicut International Airport (~80 km). Cochin International Airport (~100 km) is another option with more frequent flights.</p>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <div class="faq-plus"><img src="images/figma/2a17b78f-8d52-493f-a51f-1f34426bc226.svg" alt="" /></div>
+                <p class="faq-q-text">How do I get to the venue?</p>
+              </div>
+              <p class="faq-answer">The River Retreat is in Cheruthuruthi, Thrissur. Cabs are available from Thrissur town (~30 km). We'll share a detailed route map closer to the date.</p>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <div class="faq-plus"><img src="images/figma/2a17b78f-8d52-493f-a51f-1f34426bc226.svg" alt="" /></div>
+                <p class="faq-q-text">Is there parking at the venue?</p>
+              </div>
+              <p class="faq-answer">Yes, ample parking is available at the venue. For the reception at The Date Banquets, parking is available near Metro Pillar No. 52-55.</p>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <div class="faq-plus"><img src="images/figma/2a17b78f-8d52-493f-a51f-1f34426bc226.svg" alt="" /></div>
+                <p class="faq-q-text">Can I take photos?</p>
+              </div>
+              <p class="faq-answer">Absolutely! We'd love you to capture the memories. Please be mindful of the professional photographers and avoid blocking their shots during key moments.</p>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                <div class="faq-plus"><img src="images/figma/2a17b78f-8d52-493f-a51f-1f34426bc226.svg" alt="" /></div>
+                <p class="faq-q-text">What do I gift the couple?</p>
+              </div>
+              <p class="faq-answer">Your presence is the best gift! If you'd like to give something, a heartfelt note or a contribution to our honeymoon fund would be deeply appreciated.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Centre: CSS-grid photo composition (arcs overlap oval in same cell) -->
+        <div class="faq-photo-grid">
+          <div class="faq-arc-tl">
+            <img src="images/figma/ba389bf4-9be2-435a-9341-d32e3166ccb7.svg" alt="" />
+          </div>
+          <div class="faq-arc-br">
+            <img src="images/figma/696f87ff-9e9e-485b-98b0-838915ccd70d.svg" alt="" />
+          </div>
+          <div class="faq-photo-oval">
+            <img src="images/figma/175fe0cb-7bf7-4b5e-9743-14bc3cadb53b.jpg" alt="Rahul and Kashish" />
+          </div>
+        </div>
+
+        <!-- RSVP column -->
+        <div class="rsvp-col" id="rsvpCol">
+          <div class="rsvp-header">
+            <p class="rsvp-title">RSVP</p>
+            <p class="rsvp-subtitle">Let us know you're coming so we can save you a seat and a plate</p>
+          </div>
+          <form class="rsvp-form" id="rsvpForm">
+            <div class="rsvp-fields">
+              <input class="rsvp-input" type="text" name="name" placeholder="Name" autocomplete="name" />
+              <input class="rsvp-input" type="number" name="guests" placeholder="Number of Guests" min="1" max="10" />
+            </div>
+            <button class="rsvp-btn" type="submit">Send</button>
+          </form>
+        </div>
+
+      </div><!-- /faq-content -->
+    </div><!-- /faqRoot -->
+
+    <!-- ── Mobile canvas (402px wide, height auto) ── -->
+    <div id="faqMobileRoot">
+
+      <!-- Full-bleed background -->
+      <div class="fmfaq-bg">
+        <img src="images/figma/e4b1a214-faq-mob-bg.jpg" alt="" />
+      </div>
+
+      <!-- Centred 320px content column -->
+      <div class="fmfaq-content">
+
+        <!-- FAQ block -->
+        <div class="fmfaq-col">
+          <div class="fmfaq-header">
+            <p class="fmfaq-title">FAQs</p>
+            <p class="fmfaq-subtitle">We know you might have lot of questions! Here are some answered</p>
+          </div>
+          <div class="fmfaq-list">
+
+            <div class="fmfaq-item">
+              <div class="fmfaq-question">
+                <img class="fmfaq-plus" src="images/figma/ee8f6488-faq-mob-plus.svg" alt="" />
+                <p class="fmfaq-q-text">What's the dress code?</p>
+              </div>
+              <p class="fmfaq-answer">Smart traditional or ethnic wear is encouraged. Think kurtas, sarees, lehengas, or sherwanis. Please avoid wearing white or black.</p>
+            </div>
+
+            <div class="fmfaq-item">
+              <div class="fmfaq-question">
+                <img class="fmfaq-plus" src="images/figma/ee8f6488-faq-mob-plus.svg" alt="" />
+                <p class="fmfaq-q-text">Is there an airport nearby?</p>
+              </div>
+              <p class="fmfaq-answer">The nearest airport to Cheruthuruthi is Calicut International Airport (~80 km). Cochin International Airport (~100 km) is another option with more frequent flights.</p>
+            </div>
+
+            <div class="fmfaq-item">
+              <div class="fmfaq-question">
+                <img class="fmfaq-plus" src="images/figma/ee8f6488-faq-mob-plus.svg" alt="" />
+                <p class="fmfaq-q-text">How do I get to the venue?</p>
+              </div>
+              <p class="fmfaq-answer">The River Retreat is in Cheruthuruthi, Thrissur. Cabs are available from Thrissur town (~30 km). We'll share a detailed route map closer to the date.</p>
+            </div>
+
+            <div class="fmfaq-item">
+              <div class="fmfaq-question">
+                <img class="fmfaq-plus" src="images/figma/ee8f6488-faq-mob-plus.svg" alt="" />
+                <p class="fmfaq-q-text">Is there parking at the venue?</p>
+              </div>
+              <p class="fmfaq-answer">Yes, ample parking is available at the venue. For the reception at The Date Banquets, parking is available near Metro Pillar No. 52-55.</p>
+            </div>
+
+            <div class="fmfaq-item">
+              <div class="fmfaq-question">
+                <img class="fmfaq-plus" src="images/figma/ee8f6488-faq-mob-plus.svg" alt="" />
+                <p class="fmfaq-q-text">Can I take photos?</p>
+              </div>
+              <p class="fmfaq-answer">Absolutely! We'd love you to capture the memories. Please be mindful of the professional photographers and avoid blocking their shots during key moments.</p>
+            </div>
+
+            <div class="fmfaq-item">
+              <div class="fmfaq-question">
+                <img class="fmfaq-plus" src="images/figma/ee8f6488-faq-mob-plus.svg" alt="" />
+                <p class="fmfaq-q-text">What do I gift the couple?</p>
+              </div>
+              <p class="fmfaq-answer">Your presence is the best gift! If you'd like to give something, a heartfelt note or a contribution to our honeymoon fund would be deeply appreciated.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Photo composition (CSS grid overlap) -->
+        <div class="fmfaq-photo">
+          <div class="fmfaq-arc-tl">
+            <img src="images/figma/8f66ee53-faq-mob-arc-tl.svg" alt="" />
+          </div>
+          <div class="fmfaq-arc-br">
+            <img src="images/figma/aa1ec703-faq-mob-arc-br.svg" alt="" />
+          </div>
+          <div class="fmfaq-oval">
+            <img src="images/figma/6c3c616e-faq-mob-photo.jpg" alt="Rahul and Kashish" />
+          </div>
+        </div>
+
+        <!-- RSVP block -->
+        <div class="fmrsvp-col">
+          <div class="fmrsvp-header">
+            <p class="fmrsvp-title">RSVP</p>
+            <p class="fmrsvp-subtitle">Let us know you're coming so we can save you a seat and a plate</p>
+          </div>
+          <form class="fmrsvp-form" id="rsvpMobileForm">
+            <div class="fmrsvp-fields">
+              <input class="fmrsvp-input" type="text" name="name" placeholder="Name" autocomplete="name" />
+              <input class="fmrsvp-input" type="number" name="guests" placeholder="Number of Guests" min="1" max="10" />
+            </div>
+            <button class="fmrsvp-btn" type="submit">Send</button>
+          </form>
+        </div>
+
+      </div><!-- /fmfaq-content -->
+    </div><!-- /faqMobileRoot -->
+
+  </section><!-- /faqSection -->
+
+</div><!-- /pageContainer -->
+
+<script>
+  const invDesktopRoot  = document.getElementById('invDesktopRoot');
+  const invMobileRoot   = document.getElementById('invMobileRoot');
+  const funcDesktopRoot = document.getElementById('funcDesktopRoot');
+  const funcMobileRoot  = document.getElementById('funcMobileRoot');
+  const faqRoot         = document.getElementById('faqRoot');
+  const faqMobileRoot   = document.getElementById('faqMobileRoot');
+
+  // ── Scale invitation + function canvases to fit viewport ───────────────
+  function applyScale() {
+    const W = window.innerWidth;
+    const isMobile = W < 768;
+
+    // Function details: mobile 402×1582, desktop 1440×1550 — width-only scaling
+    if (isMobile) {
+      funcDesktopRoot.style.display  = 'none';
+      funcMobileRoot.style.display   = 'block';
+      funcMobileRoot.style.position  = 'relative';
+      funcMobileRoot.style.marginBottom = '';          // clear first so offsetHeight is clean
+      const sf = W / 402;
+      funcMobileRoot.style.transform = `scale(${sf})`;
+      const fmobH = funcMobileRoot.offsetHeight;       // natural height in flow (accurate, font-independent for fixed-height cards)
+      // scale shrinks visual height to fmobH*sf but layout footprint stays fmobH;
+      // pull up by the difference so the section is exactly fmobH*sf tall
+      funcMobileRoot.style.marginBottom = -Math.round(fmobH * (1 - sf)) + 'px';
+      document.getElementById('functionSection').style.height = '';  // let CSS height:auto take over
+    } else {
+      funcMobileRoot.style.display      = 'none';
+      funcMobileRoot.style.position     = '';          // restore CSS default (absolute)
+      funcMobileRoot.style.marginBottom = '';
+      funcDesktopRoot.style.display = 'block';
+      const sf = W / 1440;
+      funcDesktopRoot.style.transform = `scale(${sf})`;
+      document.getElementById('functionSection').style.height = Math.round(1550 * sf) + 'px';
+    }
+
+    // FAQ & RSVP section: mobile 402×auto, desktop 1440×720
+    if (isMobile) {
+      faqRoot.style.display         = 'none';
+      faqMobileRoot.style.display   = 'block';
+      faqMobileRoot.style.position  = 'relative';
+      faqMobileRoot.style.marginBottom = '';
+      const sfq = W / 402;
+      faqMobileRoot.style.transform = `scale(${sfq})`;
+      const fmH = faqMobileRoot.offsetHeight;
+      faqMobileRoot.style.marginBottom = -Math.round(fmH * (1 - sfq)) + 'px';
+      document.getElementById('faqSection').style.height = '';
+    } else {
+      faqMobileRoot.style.display      = 'none';
+      faqMobileRoot.style.position     = '';
+      faqMobileRoot.style.marginBottom = '';
+      faqRoot.style.display = 'block';
+      const sfq = W / 1440;
+      faqRoot.style.transform = `scale(${sfq})`;
+      document.getElementById('faqSection').style.height = Math.round(720 * sfq) + 'px';
+    }
+
+    // Invitation section: desktop 1440×1024, mobile 402×940 — width-only scaling
+    if (isMobile) {
+      invDesktopRoot.style.display = 'none';
+      invMobileRoot.style.display  = 'block';
+      const si = W / 402;
+      invMobileRoot.style.transform = `scale(${si})`;
+      document.getElementById('invitationSection').style.height = Math.round(940 * si) + 'px';
+    } else {
+      invMobileRoot.style.display  = 'none';
+      invDesktopRoot.style.display = 'block';
+      const si = W / 1440;
+      invDesktopRoot.style.transform = `scale(${si})`;
+      document.getElementById('invitationSection').style.height = Math.round(1024 * si) + 'px';
+    }
+  }
+
+  applyScale();
+  window.addEventListener('resize', applyScale);
+  document.fonts.ready.then(applyScale);
+  window.addEventListener('load', applyScale);
+
+  // ── Invitation section: staged animation chain ──
+  const invSect     = document.getElementById('invitationSection');
+  const invBorders  = invSect.querySelectorAll('.inv-border');
+  const invCardC    = invSect.querySelector('.inv-card-center');
+  const invCardL    = invSect.querySelector('.inv-card-left');
+  const invCardR    = invSect.querySelector('.inv-card-right');
+  const invMandala  = invSect.querySelector('.inv-orn-mandala');
+  const invInvited  = invSect.querySelector('.wedding-invited');
+  const invDateOn   = invSect.querySelector('.wedding-date-on');
+  const invDate     = invSect.querySelector('.wedding-date');
+  const invVenue    = invSect.querySelector('.wedding-venue');
+  const invOrns     = invSect.querySelectorAll('.inv-orn, .inv-orn-flipped');
+  // Mobile single-card elements
+  const invMobCard    = document.getElementById('invMobCard');
+  const invMobMandala = document.getElementById('invMobMandala');
+  const invMobInvited = document.getElementById('invMobInvited');
+  const invMobNameR   = document.getElementById('invMobNameR');
+  const invMobParentR = document.getElementById('invMobParentR');
+  const invMobNameK   = document.getElementById('invMobNameK');
+  const invMobParentK = document.getElementById('invMobParentK');
+  const invMobDateOn  = document.getElementById('invMobDateOn');
+  const invMobDate    = document.getElementById('invMobDate');
+  const invMobVenue   = document.getElementById('invMobVenue');
+  const invMobOrnBot  = document.getElementById('invMobOrnBot');
+  const invMobAnd     = document.getElementById('invMobAnd');
+
+  let invFired = false;
+  const invObserver = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || invFired) return;
+    invFired = true;
+    invObserver.disconnect();
+
+    const show = (el) => el && el.classList.add('inv-show');
+
+    // 1. Borders fade in (0 ms — feel like henna drawn)
+    invBorders.forEach(b => show(b));
+
+    // 2. Center card scales up (1 s)
+    setTimeout(() => show(invCardC), 1000);
+
+    // 3. Mandala icon with golden glow (1.5 s)
+    setTimeout(() => show(invMandala), 1500);
+
+    // 4. Invited text line by line (2 s)
+    setTimeout(() => show(invInvited), 2000);
+
+    // 5. "On" label + date elegant scale-up (2.5 s)
+    setTimeout(() => { show(invDateOn); show(invDate); }, 2500);
+
+    // 6. Venue details (3 s)
+    setTimeout(() => show(invVenue), 3000);
+
+    // 7. Left + right cards arrive together (3.5 s — couple coming together)
+    setTimeout(() => { show(invCardL); show(invCardR); }, 3500);
+
+    // 9. All ornament flourishes (4 s)
+    setTimeout(() => invOrns.forEach(o => show(o)), 4000);
+
+    // Mobile: borders → card → content stagger
+    const invMobBT = document.getElementById('invMobBorderTop');
+    const invMobBB = document.getElementById('invMobBorderBot');
+    show(invMobBT);
+    setTimeout(() => show(invMobCard),    300);   // card scales up
+    setTimeout(() => show(invMobMandala), 900);   // mandala glow
+    setTimeout(() => show(invMobInvited), 1200);  // invited text
+    setTimeout(() => { show(invMobNameR); show(invMobParentR); }, 1500); // Rahul
+    setTimeout(() => show(invMobAnd), 1700);                             // "and"
+    setTimeout(() => { show(invMobNameK); show(invMobParentK); }, 1900); // Kashish
+    setTimeout(() => { show(invMobDateOn); show(invMobDate); }, 2300);   // date
+    setTimeout(() => show(invMobVenue),   2700);  // venue
+    setTimeout(() => { show(invMobOrnBot); show(invMobBB); }, 3000);     // ornament + bottom border
+  }, { threshold: 0.15 });
+  invObserver.observe(invSect);
+
+  // ── Function details section: entrance animation ──
+  const funcSect = document.getElementById('functionSection');
+  let funcFired = false;
+  const funcObserver = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || funcFired) return;
+    funcFired = true;
+    funcObserver.disconnect();
+
+    const fshow = el => el && el.classList.add('func-show');
+
+    // Desktop
+    fshow(document.getElementById('funcOrn'));
+    setTimeout(() => fshow(document.getElementById('funcScript')),       300);
+    setTimeout(() => fshow(document.getElementById('funcCardHaldi')),    500);
+    setTimeout(() => fshow(document.getElementById('funcCardSangeet')),  900);
+    setTimeout(() => fshow(document.getElementById('funcCardReception')),1300);
+
+    // Mobile
+    fshow(document.getElementById('funcMobOrn'));
+    setTimeout(() => fshow(document.getElementById('funcMobScript')),    300);
+    setTimeout(() => fshow(document.getElementById('funcMobHaldi')),     500);
+    setTimeout(() => fshow(document.getElementById('funcMobSangeet')),   900);
+    setTimeout(() => fshow(document.getElementById('funcMobReception')), 1300);
+  }, { threshold: 0.1 });
+  funcObserver.observe(funcSect);
+
+  // ── Sparkle burst ─────────────────────────────────────
+  // Positions as % of viewport (converted from 1440×1024 Figma canvas)
+  const SPARKLE_POS = [
+    { x:  5.6, y:  7.3 }, { x: 13.9, y: 12.7 }, { x: 25.0, y:  5.4 },
+    { x:  9.0, y: 30.3 }, { x:  4.5, y: 47.9 }, { x: 14.6, y: 56.6 },
+    { x:  6.3, y: 71.3 }, { x: 11.8, y: 85.0 }, { x: 26.4, y: 88.9 },
+    { x: 38.9, y: 91.8 }, { x: 54.2, y: 93.8 }, { x: 66.7, y: 88.9 },
+    { x: 79.9, y: 85.0 }, { x: 90.3, y: 74.2 }, { x: 95.8, y: 54.7 },
+    { x: 93.1, y: 37.1 }, { x: 86.8, y: 18.6 }, { x: 74.3, y:  6.3 },
+    { x: 60.4, y:  4.9 }, { x: 44.4, y:  7.8 },
+  ];
+
+  const HOLD_MIN = 1200, HOLD_MAX = 2200;
+  const REST_MIN = 1800, REST_MAX = 3200;
+  const FADE_MS  = 600;
+
+  const starSVG = `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 2 L23 17 L38 20 L23 23 L20 38 L17 23 L2 20 L17 17 Z" fill="#ae1919"/>
+  </svg>`;
+
+  function makeStars(positions, layerId) {
+    const layer = document.getElementById(layerId);
+    return positions.map(pos => {
+      const el = document.createElement('div');
+      el.className = 'sparkle';
+      el.style.left = `calc(${pos.x}% - 20px)`;
+      el.style.top  = `calc(${pos.y}% - 20px)`;
+      el.innerHTML  = starSVG;
+      layer.appendChild(el);
+      return { el, pos };
+    });
+  }
+
+  const heroStars = makeStars(SPARKLE_POS, 'heroSparkleLayer');
+
+  function dist(a, b) { return Math.hypot(a.pos.x - b.pos.x, a.pos.y - b.pos.y); }
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function pickBurst(stars, minDist) {
+    const count = Math.random() < 0.5 ? 3 : 4;
+    const chosen = [];
+    for (const c of shuffle(stars)) {
+      if (chosen.every(s => dist(s, c) >= minDist)) {
+        chosen.push(c);
+        if (chosen.length === count) break;
+      }
+    }
+    return chosen;
+  }
+  function runBurst(stars, minDist) {
+    const burst = pickBurst(stars, minDist);
+    burst.forEach(s => {
+      s.el.classList.remove('fade-out', 'active');
+      requestAnimationFrame(() => requestAnimationFrame(() => s.el.classList.add('active')));
+    });
+    const hold = HOLD_MIN + Math.random() * (HOLD_MAX - HOLD_MIN);
+    setTimeout(() => {
+      burst.forEach(s => { s.el.classList.remove('active'); s.el.classList.add('fade-out'); });
+      setTimeout(() => runBurst(stars, minDist),
+        FADE_MS + REST_MIN + Math.random() * (REST_MAX - REST_MIN));
+    }, hold);
+  }
+
+  setTimeout(() => runBurst(heroStars, 20), 4500);
+
+  // ══════════════════════════════════════════════════════════════════════
+  // SMOOTH SCROLL ENGINE (desktop only — mobile keeps native scroll)
+  // ══════════════════════════════════════════════════════════════════════
+  (function () {
+    const container  = document.getElementById('pageContainer');
+    const sections   = [...document.querySelectorAll('.page-section')];
+    const prefersRM  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── easeOutExpo: fast then gradually decelerates ──────────────────
+    function easeOutExpo(t) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
+    let scrolling  = false;
+    let currentIdx = 0;
+    const DURATION = 880; // ms — fast enough to feel premium, slow enough to feel weighted
+
+    // Animate container.scrollTop to a section
+    function scrollToIdx(idx) {
+      idx = Math.max(0, Math.min(sections.length - 1, idx));
+      if (scrolling || idx === currentIdx) return;
+      scrolling  = true;
+      currentIdx = idx;
+
+      if (prefersRM) {
+        container.scrollTop = sections[idx].offsetTop;
+        scrolling = false;
+        return;
+      }
+
+      const startY  = container.scrollTop;
+      const targetY = sections[idx].offsetTop;
+      const diff    = targetY - startY;
+      const t0      = performance.now();
+
+      function tick(now) {
+        const p = Math.min((now - t0) / DURATION, 1);
+        container.scrollTop = startY + diff * easeOutExpo(p);
+        if (p < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          container.scrollTop = targetY;
+          scrolling = false;
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // ── Wheel interception (desktop) ──────────────────────────────────
+    let wheelAcc = 0;
+    let wheelTimer;
+    container.addEventListener('wheel', function (e) {
+      if (window.innerWidth < 768) return; // leave mobile native
+      e.preventDefault();
+      if (scrolling) return;
+
+      wheelAcc += e.deltaY;
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(function () { wheelAcc = 0; }, 200);
+
+      if (Math.abs(wheelAcc) > 40) {
+        const dir = wheelAcc > 0 ? 1 : -1;
+        wheelAcc = 0;
+        scrollToIdx(currentIdx + dir);
+      }
+    }, { passive: false });
+
+    // ── Keyboard navigation ───────────────────────────────────────────
+    document.addEventListener('keydown', function (e) {
+      if (window.innerWidth < 768) return;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); scrollToIdx(currentIdx + 1); }
+      if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); scrollToIdx(currentIdx - 1); }
+    });
+
+    // ── Sync currentIdx from scroll position (handles resize, load) ───
+    container.addEventListener('scroll', function () {
+      if (scrolling || window.innerWidth < 768) return;
+      const mid = container.scrollTop + window.innerHeight / 2;
+      let best = 0, bestDist = Infinity;
+      sections.forEach(function (s, i) {
+        const d = Math.abs(s.offsetTop + s.offsetHeight / 2 - mid);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      currentIdx = best;
+    }, { passive: true });
+
+    // ── Subtle parallax on section background images ──────────────────
+    if (!prefersRM) {
+      const bgImgs = document.querySelectorAll('.section-bg > img');
+      container.addEventListener('scroll', function () {
+        const scrollY = container.scrollTop;
+        bgImgs.forEach(function (img) {
+          const sectionTop = img.closest('.page-section').offsetTop;
+          const relY = scrollY - sectionTop;
+          img.style.transform = 'translateY(' + (relY * 0.13).toFixed(2) + 'px)';
+        });
+      }, { passive: true });
+    }
+  })();
+
+  // ── FAQ accordion (desktop) ────────────────────────────────────────────
+  document.querySelectorAll('#faqRoot .faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('#faqRoot .faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── FAQ accordion (mobile) ─────────────────────────────────────────────
+  document.querySelectorAll('#faqMobileRoot .fmfaq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.fmfaq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('#faqMobileRoot .fmfaq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── RSVP form (desktop) ────────────────────────────────────────────────
+  document.getElementById('rsvpForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name   = e.target.name.value.trim();
+    const guests = e.target.guests.value.trim();
+    if (!name || !guests) return;
+    const btn = e.target.querySelector('.rsvp-btn');
+    btn.textContent = '✓ Received!';
+    btn.style.background = '#e8f5e9';
+    btn.style.color = '#2e7d32';
+    btn.disabled = true;
+    e.target.name.value = '';
+    e.target.guests.value = '';
+  });
+
+  // ── RSVP form (mobile) ────────────────────────────────────────────────
+  document.getElementById('rsvpMobileForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name   = e.target.name.value.trim();
+    const guests = e.target.guests.value.trim();
+    if (!name || !guests) return;
+    const btn = e.target.querySelector('.fmrsvp-btn');
+    btn.textContent = '✓ Received!';
+    btn.style.background = '#e8f5e9';
+    btn.style.color = '#2e7d32';
+    btn.disabled = true;
+    e.target.name.value = '';
+    e.target.guests.value = '';
+  });
+
+</script>
+
+</body>
+</html>
