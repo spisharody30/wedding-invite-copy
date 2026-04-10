@@ -1599,7 +1599,8 @@
       display: none;                /* desktop: hidden */
       position: absolute;
       left: 0; top: 0;
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100svh;              /* explicit height so svh children resolve */
       pointer-events: none;
       z-index: 1;
     }
@@ -1615,8 +1616,9 @@
         transparent 0, black 48px,
         black calc(100% - 48px), transparent 100%);
     }
-    .hmq-track--ml { top: 18%; } /* above photo centre */
-    .hmq-track--hi { top: 70%; } /* below photo centre */
+    /* svh units work even when parent height is auto */
+    .hmq-track--ml { top: 22svh; } /* above photo centre */
+    .hmq-track--hi { top: 72svh; } /* below photo centre */
 
     .hmq-inner {
       display: inline-block;
