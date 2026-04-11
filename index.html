@@ -1623,6 +1623,89 @@
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-6px); }
     }
+
+    /* ════════════════════════════════════════════
+       MUSIC TOGGLE BUTTON
+    ════════════════════════════════════════════ */
+    #musicToggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #F5F0E8;
+      border: 1px solid rgba(139, 26, 26, 0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 0;
+      outline-offset: 3px;
+    }
+    #musicToggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    #musicToggle:active {
+      transform: scale(0.95);
+    }
+    #musicToggle svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #8B1A1A;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: opacity 0.3s ease;
+    }
+    /* Equalizer bars (shown when playing) */
+    #musicToggle .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 22px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      position: absolute;
+    }
+    #musicToggle .eq-bars span {
+      display: block;
+      width: 4px;
+      border-radius: 2px;
+      background: #8B1A1A;
+      transform-origin: bottom;
+    }
+    #musicToggle .eq-bars span:nth-child(1) { height: 10px; }
+    #musicToggle .eq-bars span:nth-child(2) { height: 18px; }
+    #musicToggle .eq-bars span:nth-child(3) { height: 13px; }
+    @keyframes eqBounce1 { 0%,100%{height:6px}  50%{height:16px} }
+    @keyframes eqBounce2 { 0%,100%{height:18px} 50%{height:7px}  }
+    @keyframes eqBounce3 { 0%,100%{height:10px} 50%{height:20px} }
+    #musicToggle.playing .eq-bars { opacity: 1; }
+    #musicToggle.playing .eq-bars span:nth-child(1) {
+      animation: eqBounce1 0.9s ease-in-out infinite;
+    }
+    #musicToggle.playing .eq-bars span:nth-child(2) {
+      animation: eqBounce2 0.7s ease-in-out infinite;
+    }
+    #musicToggle.playing .eq-bars span:nth-child(3) {
+      animation: eqBounce3 1.1s ease-in-out infinite;
+    }
+    /* Music-off icon (note + slash) */
+    #musicToggle .icon-off { opacity: 1; transition: opacity 0.3s ease; }
+    #musicToggle.playing  .icon-off { opacity: 0; }
+    @media (max-width: 767px) {
+      #musicToggle { width: 44px; height: 44px; bottom: 20px; right: 20px; }
+      #musicToggle svg { width: 19px; height: 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #musicToggle .eq-bars span { animation: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -3509,7 +3592,141 @@
     document.fonts.ready.then(init);
   })();
 
+  // ── Background music ─────────────────────────────────────────────────────
+  (function () {
+    'use strict';
+
+    var audio  = document.getElementById('bg-music');
+    var btn    = document.getElementById('musicToggle');
+    if (!audio || !btn) return;
+
+    var TARGET_VOL = 0.35;
+    var isPlaying  = false;
+    var fadeTimer  = null;
+
+    // ── Volume fade helpers ───────────────────────────────────────────────
+    function clearFade() {
+      if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; }
+    }
+
+    function fadeIn() {
+      clearFade();
+      audio.volume = 0;
+      var step = TARGET_VOL / 40; // ~1 s at 25 ms intervals
+      fadeTimer = setInterval(function () {
+        audio.volume = Math.min(TARGET_VOL, audio.volume + step);
+        if (audio.volume >= TARGET_VOL) clearFade();
+      }, 25);
+    }
+
+    function fadeOut(onDone) {
+      clearFade();
+      var step = audio.volume / 20; // ~0.5 s at 25 ms intervals
+      fadeTimer = setInterval(function () {
+        audio.volume = Math.max(0, audio.volume - step);
+        if (audio.volume <= 0) {
+          clearFade();
+          audio.pause();
+          audio.volume = TARGET_VOL;
+          if (onDone) onDone();
+        }
+      }, 25);
+    }
+
+    // ── UI state ─────────────────────────────────────────────────────────
+    function setPlaying(on) {
+      isPlaying = on;
+      btn.classList.toggle('playing', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btn.title = on ? 'Pause music' : 'Play music';
+      try { localStorage.setItem('musicPreference', on ? 'on' : 'off'); }
+      catch (e) {}
+    }
+
+    // ── Start / stop ─────────────────────────────────────────────────────
+    function startMusic() {
+      audio.volume = 0;
+      var p = audio.play();
+      if (p && p.then) {
+        p.then(function () {
+          if (!audio.paused) { fadeIn(); setPlaying(true); }
+        }).catch(function () { setPlaying(false); });
+      } else {
+        // Old browsers: synchronous play
+        if (!audio.paused) { fadeIn(); setPlaying(true); }
+      }
+    }
+
+    function stopMusic() {
+      fadeOut(function () { setPlaying(false); });
+    }
+
+    // ── Toggle button ─────────────────────────────────────────────────────
+    btn.addEventListener('click', function () {
+      if (isPlaying) {
+        stopMusic();
+      } else {
+        // iOS Safari: play() MUST be called synchronously in a user event
+        audio.volume = 0;
+        var p = audio.play();
+        if (p && p.then) {
+          p.then(function () { fadeIn(); setPlaying(true); })
+           .catch(function () { setPlaying(false); });
+        } else {
+          fadeIn(); setPlaying(true);
+        }
+      }
+    });
+
+    // ── Error handling: hide button if file fails to load ────────────────
+    audio.addEventListener('error', function () {
+      btn.style.display = 'none';
+    });
+
+    // ── Autoplay on load ─────────────────────────────────────────────────
+    function attemptAutoplay() {
+      // Respect user's saved preference
+      var pref;
+      try { pref = localStorage.getItem('musicPreference'); } catch (e) {}
+      if (pref === 'off') { setPlaying(false); return; }
+
+      // Respect prefers-reduced-motion (some users also prefer no audio)
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setPlaying(false);
+        return;
+      }
+
+      startMusic();
+    }
+
+    // Attempt after a short delay to let the page settle
+    setTimeout(attemptAutoplay, 800);
+  })();
+
 </script>
+
+<!-- Background music -->
+<audio id="bg-music" loop preload="auto">
+  <source src="audio/bgm.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music toggle button (fixed bottom-right) -->
+<button id="musicToggle"
+        aria-label="Toggle background music"
+        aria-pressed="false"
+        title="Play music">
+  <!-- Music-off icon: note with slash -->
+  <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M9 18V5l12-2v13"/>
+    <circle cx="6" cy="18" r="3"/>
+    <circle cx="18" cy="16" r="3"/>
+    <line x1="3" y1="3" x2="21" y2="21"/>
+  </svg>
+  <!-- Equalizer bars (shown when playing) -->
+  <span class="eq-bars" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </span>
+</button>
 
 </body>
 </html>
