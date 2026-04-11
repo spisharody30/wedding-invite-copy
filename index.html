@@ -1596,7 +1596,7 @@
       left: 0;
       top: 138.81px;
       width: 100%;
-      height: 460px; /* slightly taller than original 454.722px to fit arch bottom */
+      height: 454.722px;
       pointer-events: none;
       z-index: 0; /* behind #heroMobileContent (z-index:1) so photo is always in front */
       display: none; /* hidden on desktop */
@@ -3319,36 +3319,35 @@
     var totLen = 0;
 
     function buildTable(cssW, cssH) {
-      // ∩ arch path: starts top-left (0,0), arches DOWN past the photo's bottom
-      // edge, returns to top-right (cssW,0).
-      //
-      // Photo layout in canvas coords (canvas top = 138.81px from hero top):
-      //   left  ≈ cssW * 0.154   right ≈ cssW * 0.846
-      //   top   ≈  0 px          bottom ≈ 414 px
-      //
-      // archDepth = 1.30 * cssH ≈ 591px  →  y_max = 0.75 * 591 ≈ 443px
-      // That sits 29px below the photo bottom (414px) and 11px above canvas
-      // bottom (454px), giving a readable bubble of text below the photo.
-      //
-      // Visible arc sections (where photo is NOT in front):
-      //   • Left  strip  (x < photoLeft): top-left → down to photo-left edge
-      //   • Bottom bubble (y > 414px)  : brief dip below photo (~150px arc)
-      //   • Right strip  (x > photoRight): photo-right edge → back up top-right
-      var archDepth = cssH * 1.30; // control-point y; y_max = archDepth * 0.75
+      // Figma Vector2 S-curve (node 488:1240, viewBox 399.627 × 455.722).
+      // Diagonal S from bottom-left (0,455) → top-right (400,4).
+      // Two visible tails outside the oval photo:
+      //   • Lower-left tail  : x 0→62,  y 445→455  (enters from bottom-left)
+      //   • Upper-right tail : x 340→400, y 2→4    (exits at top-right)
+      // Middle section passes behind the photo — intentional per Figma design.
+      var sx = cssW / SVG_W, sy = cssH / SVG_H;
+      function pt(x, y) { return [x * sx, y * sy]; }
 
-      // Simplified closed-form for symmetric arch:
-      //   x(t) = cssW · t²·(3−2t)           [= bz(0, 0, cssW, cssW, t)]
-      //   y(t) = archDepth · 3·t·(1−t)       [= bz(0, archDepth, archDepth, 0, t)]
+      var segs = [
+        { p0: pt(0.018, 455.193), c1: pt(0.018, 455.193),
+          c2: pt(201.518, 463.193), p1: pt(201.518, 210.693) },
+        { p0: pt(201.518, 210.693), c1: pt(201.518, -41.807),
+          c2: pt(399.518,   3.693), p1: pt(399.518,   3.693) }
+      ];
+
       table = [];
-      var len  = 0;
-      var prevX = 0, prevY = 0;
-      for (var i = 1; i <= STEPS; i++) {
-        var t = i / STEPS;
-        var x = cssW * t * t * (3 - 2 * t);
-        var y = archDepth * 3 * t * (1 - t);
-        len += Math.sqrt((x - prevX) * (x - prevX) + (y - prevY) * (y - prevY));
-        table.push({ x: x, y: y, len: len });
-        prevX = x; prevY = y;
+      var len = 0;
+      for (var si = 0; si < segs.length; si++) {
+        var s = segs[si];
+        var prevX = s.p0[0], prevY = s.p0[1];
+        for (var i = 1; i <= STEPS; i++) {
+          var t = i / STEPS;
+          var x = bz(s.p0[0], s.c1[0], s.c2[0], s.p1[0], t);
+          var y = bz(s.p0[1], s.c1[1], s.c2[1], s.p1[1], t);
+          len += Math.sqrt((x - prevX) * (x - prevX) + (y - prevY) * (y - prevY));
+          table.push({ x: x, y: y, len: len });
+          prevX = x; prevY = y;
+        }
       }
       totLen = len;
     }
@@ -3418,7 +3417,7 @@
     }
 
     // ── Animation ───────────────────────────────────────────────────────────
-    var SPEED   = 45;  // px per second along the path (longer arc, slightly faster)
+    var SPEED   = 38;  // px per second along the path
     var FADE_PX = 60;  // fade zone at each end of path (px)
     var BASE_ALPHA = 0.75;
     var offset  = 0;
