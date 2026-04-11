@@ -1249,7 +1249,7 @@
 
     #faqRoot {
       display: none;
-      width: 1440px; height: 720px;
+      width: 1440px; height: 820px;
       position: absolute; top: 0; left: 0;
       transform-origin: top left;
       z-index: 1;
@@ -1444,7 +1444,7 @@
     .fmfaq-content {
       position: relative; z-index: 1;
       width: 320px; margin: 0 auto;
-      padding-top: 36px; padding-bottom: 48px;
+      padding-top: 36px; padding-bottom: 80px;
       display: flex; flex-direction: column;
       align-items: flex-start; gap: 48px;
     }
@@ -2758,7 +2758,7 @@
       faqRoot.style.display = 'block';
       const sfq = W / 1440;
       faqRoot.style.transform = `scale(${sfq})`;
-      document.getElementById('faqSection').style.height = Math.round(720 * sfq) + 'px';
+      document.getElementById('faqSection').style.height = Math.round(820 * sfq) + 'px';
     }
 
     // Invitation section: desktop 1440×1024, mobile 402×940 — width-only scaling
