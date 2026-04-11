@@ -1632,12 +1632,12 @@
       bottom: 24px;
       right: 24px;
       z-index: 1000;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #F5F0E8;
-      border: 1px solid rgba(139, 26, 26, 0.3);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      background: #eaebe4;
+      border: 0.6px solid #ae1919;
+      box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1654,13 +1654,8 @@
       transform: scale(0.95);
     }
     #musicToggle svg {
-      width: 22px;
-      height: 22px;
-      fill: none;
-      stroke: #8B1A1A;
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 24px;
+      height: 24px;
       transition: opacity 0.3s ease;
     }
     /* Equalizer bars (shown when playing) */
@@ -1701,7 +1696,7 @@
     #musicToggle.playing  .icon-off { opacity: 0; }
     @media (max-width: 767px) {
       #musicToggle { width: 44px; height: 44px; bottom: 20px; right: 20px; }
-      #musicToggle svg { width: 19px; height: 19px; }
+      #musicToggle svg { width: 22px; height: 22px; }
     }
     @media (prefers-reduced-motion: reduce) {
       #musicToggle .eq-bars span { animation: none !important; }
@@ -3709,7 +3704,7 @@
 
 <!-- Background music -->
 <audio id="bg-music" loop preload="auto">
-  <source src="audio/bgm.mp3" type="audio/mpeg">
+  <source src="audio/jashn-e-bahaaraa.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Music toggle button (fixed bottom-right) -->
@@ -3717,12 +3712,14 @@
         aria-label="Toggle background music"
         aria-pressed="false"
         title="Play music">
-  <!-- Music-off icon: note with slash -->
-  <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M9 18V5l12-2v13"/>
-    <circle cx="6" cy="18" r="3"/>
-    <circle cx="18" cy="16" r="3"/>
-    <line x1="3" y1="3" x2="21" y2="21"/>
+  <!-- Music-off icon: volume_off from Figma -->
+  <svg class="icon-off" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <mask id="volMask" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+      <rect width="24" height="24" fill="#D9D9D9"/>
+    </mask>
+    <g mask="url(#volMask)">
+      <path d="M19.1462 21.677L16.1405 18.6712C15.8648 18.8481 15.577 19.0035 15.277 19.1375C14.977 19.2715 14.6667 19.3904 14.3462 19.4943V18.4443C14.5411 18.3738 14.7286 18.3 14.9087 18.223C15.0887 18.1462 15.2596 18.0558 15.4212 17.952L11.577 14.1077V17.577L8 14H4.577V10H7.46925L2.59225 5.123L3.3 4.41525L19.8538 20.9693L19.1462 21.677ZM18.3693 16.6655L17.6693 15.9655C18.0808 15.3975 18.399 14.7757 18.624 14.1C18.849 13.4243 18.9615 12.716 18.9615 11.975C18.9615 10.5108 18.5384 9.18775 17.6923 8.00575C16.8461 6.82375 15.7307 5.99042 14.3462 5.50575V4.45575C16.0154 4.98658 17.3686 5.9395 18.4057 7.3145C19.4429 8.6895 19.9615 10.243 19.9615 11.975C19.9615 12.8455 19.8214 13.6795 19.5413 14.477C19.2613 15.2743 18.8706 16.0038 18.3693 16.6655ZM15.5962 13.8922L14.3462 12.6422V8.64225C14.9116 9.00892 15.3413 9.49167 15.6355 10.0905C15.9298 10.6892 16.077 11.3257 16.077 12C16.077 12.3397 16.0369 12.6688 15.9568 12.9875C15.8766 13.3062 15.7564 13.6077 15.5962 13.8922ZM11.577 9.873L9.8615 8.1385L11.577 6.423V9.873ZM10.577 15.15V13.1077L8.46925 11H5.577V13H8.427L10.577 15.15Z" fill="#AE1919"/>
+    </g>
   </svg>
   <!-- Equalizer bars (shown when playing) -->
   <span class="eq-bars" aria-hidden="true">
