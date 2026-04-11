@@ -837,11 +837,13 @@
       position: absolute;
       width: 492px; height: 665px;
       opacity: 0;
-      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+      transform: translateY(40px) scale(0.95);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .func-card-pos--from-left  { transform: perspective(900px) rotateY(-75deg); }
-    .func-card-pos--from-right { transform: perspective(900px) rotateY(75deg); }
-    .func-card-pos.func-show   { opacity: 1; transform: perspective(900px) rotateY(0deg); }
+    .func-card-pos--from-left  { transform: translateY(40px) scale(0.95); }
+    .func-card-pos--from-right { transform: translateY(40px) scale(0.95); }
+    .func-card-pos.func-show   { opacity: 1; transform: translateY(0) scale(1); }
 
     .func-card {
       width: 100%; height: 100%;
@@ -1017,10 +1019,12 @@
     /* Card wrapper (animation target) */
     .fmob-card-wrap {
       flex-shrink: 0;
-      opacity: 0; transform: perspective(600px) rotateY(-90deg);
-      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .fmob-card-wrap.func-show { opacity: 1; transform: perspective(600px) rotateY(0deg); }
+    .fmob-card-wrap.func-show { opacity: 1; transform: translateY(0) scale(1); }
 
     /* Card: TR + BL rounded */
     .fmob-card {
@@ -2874,15 +2878,15 @@
     fshow(document.getElementById('funcOrn'));
     setTimeout(() => fshow(document.getElementById('funcScript')),       300);
     setTimeout(() => fshow(document.getElementById('funcCardHaldi')),    500);
-    setTimeout(() => fshow(document.getElementById('funcCardSangeet')),  900);
-    setTimeout(() => fshow(document.getElementById('funcCardReception')),1300);
+    setTimeout(() => fshow(document.getElementById('funcCardSangeet')),  700);
+    setTimeout(() => fshow(document.getElementById('funcCardReception')),900);
 
     // Mobile
     fshow(document.getElementById('funcMobOrn'));
     setTimeout(() => fshow(document.getElementById('funcMobScript')),    300);
     setTimeout(() => fshow(document.getElementById('funcMobHaldi')),     500);
-    setTimeout(() => fshow(document.getElementById('funcMobSangeet')),   900);
-    setTimeout(() => fshow(document.getElementById('funcMobReception')), 1300);
+    setTimeout(() => fshow(document.getElementById('funcMobSangeet')),   700);
+    setTimeout(() => fshow(document.getElementById('funcMobReception')), 900);
   }, { threshold: 0.1 });
   funcObserver.observe(funcSect);
 
