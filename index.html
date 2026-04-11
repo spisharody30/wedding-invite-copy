@@ -1635,9 +1635,9 @@
     #heroMobCurveCanvas {
       position: absolute;
       left: -120px;              /* 120px runway off-screen left  */
-      top: 138.81px;
+      top: 105.5px;
       width: calc(100% + 240px); /* 120px runway off-screen right */
-      height: 454.722px;
+      height: 527.983px;
       pointer-events: none;
       z-index: 0; /* behind #heroMobileContent (z-index:1) so photo is always in front */
       display: none; /* hidden on desktop */
@@ -3439,10 +3439,10 @@
     }
 
     // ── Path sampling ───────────────────────────────────────────────────────
-    // Vector2 from Figma (viewBox 399.627 × 455.722):
-    // M 0.018,455.193 C 0.018,455.193 201.518,463.193 201.518,210.693
-    //                 C 201.518,-41.807 399.518,3.693 399.518,3.693
-    var SVG_W = 399.627, SVG_H = 455.722;
+    // Vector2 from Figma (viewBox 398.648 × 527.983):
+    // M 0.121,527.499 C 0.121,527.499 201.621,476.499 201.621,243.999
+    //                 C 201.621,11.499  398.621,0.499  398.621,0.499
+    var SVG_W = 398.648, SVG_H = 527.983;
     var STEPS = 600; // samples per segment
 
     var table  = null; // [{x,y,len}]
@@ -3459,10 +3459,10 @@
       function pt(x, y) { return [x * sx, y * sy]; }
 
       var segs = [
-        { p0: pt(0.018, 455.193), c1: pt(0.018, 455.193),
-          c2: pt(201.518, 463.193), p1: pt(201.518, 210.693) },
-        { p0: pt(201.518, 210.693), c1: pt(201.518, -41.807),
-          c2: pt(399.518,   3.693), p1: pt(399.518,   3.693) }
+        { p0: pt(0.121, 527.499), c1: pt(0.121,   527.499),
+          c2: pt(201.621, 476.499), p1: pt(201.621, 243.999) },
+        { p0: pt(201.621, 243.999), c1: pt(201.621,  11.499),
+          c2: pt(398.621,   0.499), p1: pt(398.621,   0.499) }
       ];
 
       table = [];
@@ -3541,7 +3541,14 @@
 
       tokWidths = tokens.map(function(tok) {
         ctx.font = fontFor(tok.sc);
-        return ctx.measureText(tok.text).width;
+        var w = ctx.measureText(tok.text).width;
+        // Special characters like ✦ can measure as ~0 on some mobile browsers
+        // when the fallback font isn't loaded. Guarantee a minimum advance so
+        // they don't stack up and corrupt tokTotalW.
+        if (tok.text.trim().length > 0 && w < FONT_SIZE * 0.4) {
+          w = FONT_SIZE * 1.8;
+        }
+        return w;
       });
       tokTotalW = tokWidths.reduce(function(a, b_) { return a + b_; }, 0);
     }
