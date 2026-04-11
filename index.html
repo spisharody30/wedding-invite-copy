@@ -1628,22 +1628,44 @@
     }
 
     /* ════════════════════════════════════════════
-       HERO — MOBILE CURVED TEXT (Canvas)
-       Canvas renders Indic scripts with proper shaping
-       and animates text word-by-word along Vector2 path.
+       HERO — MOBILE CURVED TEXT (pre-rendered SVG paths)
+       Figma-flattened vector outlines animated with CSS translateX.
     ════════════════════════════════════════════ */
-    #heroMobCurveCanvas {
+    #heroMobCurveWrap {
       position: absolute;
-      left: -120px;              /* 120px runway off-screen left  */
       top: 105.5px;
-      width: calc(100% + 240px); /* 120px runway off-screen right */
-      height: 527.983px;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
       pointer-events: none;
-      z-index: 0; /* behind #heroMobileContent (z-index:1) so photo is always in front */
-      display: none; /* hidden on desktop */
+      z-index: 0; /* behind #heroMobileContent (z-index:1) */
+      display: none;
+      /* Fade edges to transparent (mirrors the old canvas edge-fade) */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
     }
     @media (max-width: 767px) {
-      #heroMobCurveCanvas { display: block; }
+      #heroMobCurveWrap { display: block; }
+    }
+    #heroMobCurveTrack {
+      display: flex;
+      width: 300%; /* 3 copies × viewport width */
+      will-change: transform;
+      animation: mobCurveFlow 35s linear infinite;
+    }
+    #heroMobCurveTrack img {
+      flex: 0 0 33.333%;
+      width: 33.333%;
+      height: auto;
+      display: block;
+      opacity: 0.85;
+    }
+    @keyframes mobCurveFlow {
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(-100% / 3)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #heroMobCurveTrack { animation-play-state: paused; }
     }
 
     /* Desktop SVG: enable ligatures for Indic scripts */
@@ -1868,9 +1890,14 @@
       </text>
     </svg>
 
-    <!-- Mobile curved text — canvas renders Indic scripts correctly,
-         word-by-word along the Vector2 bezier path from Figma. -->
-    <canvas id="heroMobCurveCanvas" aria-hidden="true"></canvas>
+    <!-- Mobile curved text — Figma-flattened SVG paths, animated translateX -->
+    <div id="heroMobCurveWrap" aria-hidden="true">
+      <div id="heroMobCurveTrack">
+        <img src="images/curved text.svg" alt="">
+        <img src="images/curved text.svg" alt="">
+        <img src="images/curved text.svg" alt="">
+      </div>
+    </div>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3421,227 +3448,7 @@
     mq.addEventListener('change', e => applyRM(e.matches));
   })();
 
-  // ── Mobile curved text — Canvas ──────────────────────────────────────────
-  // Renders Malayalam + Hindi word-by-word along the Vector2 bezier path.
-  // Canvas fillText() uses the browser's full text shaping engine, so Indic
-  // ligatures and diacritics render correctly (unlike SVG textPath on mobile).
-  (function() {
-    'use strict';
-    var canvas = document.getElementById('heroMobCurveCanvas');
-    if (!canvas) return;
-
-    var ctx = canvas.getContext('2d');
-
-    // ── Bezier helpers ──────────────────────────────────────────────────────
-    function bz(a, b, c, d, t) {
-      var u = 1 - t;
-      return u*u*u*a + 3*u*u*t*b + 3*u*t*t*c + t*t*t*d;
-    }
-
-    // ── Path sampling ───────────────────────────────────────────────────────
-    // Vector2 from Figma (viewBox 398.648 × 527.983):
-    // M 0.121,527.499 C 0.121,527.499 201.621,476.499 201.621,243.999
-    //                 C 201.621,11.499  398.621,0.499  398.621,0.499
-    var SVG_W = 398.648, SVG_H = 527.983;
-    var STEPS = 600; // samples per segment
-
-    var table  = null; // [{x,y,len}]
-    var totLen = 0;
-
-    function buildTable(cssW, cssH) {
-      // Figma Vector2 S-curve (node 488:1240, viewBox 399.627 × 455.722).
-      // Diagonal S from bottom-left (0,455) → top-right (400,4).
-      // Two visible tails outside the oval photo:
-      //   • Lower-left tail  : x 0→62,  y 445→455  (enters from bottom-left)
-      //   • Upper-right tail : x 340→400, y 2→4    (exits at top-right)
-      // Middle section passes behind the photo — intentional per Figma design.
-      var sx = cssW / SVG_W, sy = cssH / SVG_H;
-      function pt(x, y) { return [x * sx, y * sy]; }
-
-      var segs = [
-        { p0: pt(0.121, 527.499), c1: pt(0.121,   527.499),
-          c2: pt(201.621, 476.499), p1: pt(201.621, 243.999) },
-        { p0: pt(201.621, 243.999), c1: pt(201.621,  11.499),
-          c2: pt(398.621,   0.499), p1: pt(398.621,   0.499) }
-      ];
-
-      table = [];
-      var len = 0;
-      for (var si = 0; si < segs.length; si++) {
-        var s = segs[si];
-        var prevX = s.p0[0], prevY = s.p0[1];
-        for (var i = 1; i <= STEPS; i++) {
-          var t = i / STEPS;
-          var x = bz(s.p0[0], s.c1[0], s.c2[0], s.p1[0], t);
-          var y = bz(s.p0[1], s.c1[1], s.c2[1], s.p1[1], t);
-          len += Math.sqrt((x - prevX) * (x - prevX) + (y - prevY) * (y - prevY));
-          table.push({ x: x, y: y, len: len });
-          prevX = x; prevY = y;
-        }
-      }
-      totLen = len;
-    }
-
-    function ptAt(arc) {
-      // Clamp to path; caller handles out-of-bounds display
-      arc = Math.max(0, Math.min(arc, totLen - 0.001));
-      var lo = 0, hi = table.length - 1;
-      while (lo < hi - 1) {
-        var mid = (lo + hi) >> 1;
-        if (table[mid].len <= arc) lo = mid; else hi = mid;
-      }
-      var a = table[lo], b_ = table[hi];
-      var frac = (b_.len > a.len) ? (arc - a.len) / (b_.len - a.len) : 0;
-      return {
-        x: a.x + frac*(b_.x - a.x),
-        y: a.y + frac*(b_.y - a.y),
-        angle: Math.atan2(b_.y - a.y, b_.x - a.x)
-      };
-    }
-
-    // ── Text tokenisation ───────────────────────────────────────────────────
-    var FONT_SIZE = 15;
-    // Short phrase that repeats to fill the path
-    var phrase = 'രണ്ട് ഹൃദയങ്ങൾ, ഒരു പ്രണയം          ✦          दो दिल, एक प्यार          ✦          ';
-
-    function scriptOf(s) {
-      for (var i = 0; i < s.length; ) {
-        var c = s.codePointAt(i);
-        if (c >= 0x0D00 && c <= 0x0D7F) return 'ml';
-        if (c >= 0x0900 && c <= 0x097F) return 'hi';
-        i += (c > 0xFFFF) ? 2 : 1;
-      }
-      return 'other';
-    }
-
-    function fontFor(sc) {
-      if (sc === 'ml')  return FONT_SIZE + "px 'Noto Serif Malayalam',serif";
-      if (sc === 'hi')  return FONT_SIZE + "px 'Noto Serif Devanagari',serif";
-      return FONT_SIZE + "px 'Noto Serif',serif";
-    }
-
-    var tokens = null, tokWidths = null, tokTotalW = 0;
-
-    function buildTokens() {
-      // Split phrase into same-script runs, then split each run into words
-      tokens = [];
-      var i = 0;
-      while (i < phrase.length) {
-        var sc = scriptOf(phrase[i]);
-        var j = i + 1;
-        while (j < phrase.length && scriptOf(phrase[j]) === sc) j++;
-        // Split run into words (keep trailing spaces with the word)
-        var chunk = phrase.slice(i, j);
-        var words = chunk.match(/\S+\s*/g) || [chunk];
-        for (var w = 0; w < words.length; w++) {
-          if (words[w]) tokens.push({ text: words[w], sc: sc });
-        }
-        i = j;
-      }
-
-      tokWidths = tokens.map(function(tok) {
-        ctx.font = fontFor(tok.sc);
-        var w = ctx.measureText(tok.text).width;
-        // Special characters like ✦ can measure as ~0 on some mobile browsers
-        // when the fallback font isn't loaded. Guarantee a minimum advance so
-        // they don't stack up and corrupt tokTotalW.
-        if (tok.text.trim().length > 0 && w < FONT_SIZE * 0.4) {
-          w = FONT_SIZE * 5;
-        }
-        return w;
-      });
-      tokTotalW = tokWidths.reduce(function(a, b_) { return a + b_; }, 0);
-    }
-
-    // ── Animation ───────────────────────────────────────────────────────────
-    var SPEED      = 38;   // px per second along the path
-    var FADE_PX    = 60;   // fade zone at each arc endpoint (px)
-    var MARGIN     = 120;  // canvas overscan beyond each viewport edge (px)
-    var EDGE_FADE  = 60;   // fade zone near visible viewport edges (px)
-    var BASE_ALPHA = 0.75;
-    var offset  = 0;
-    var lastTS  = null;
-    var rafID   = null;
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    window.matchMedia('(prefers-reduced-motion: reduce)')
-      .addEventListener('change', function(e) { reduced = e.matches; });
-
-    function draw(ts) {
-      rafID = requestAnimationFrame(draw);
-      if (!reduced && lastTS !== null) {
-        var dt = Math.min((ts - lastTS) / 1000, 0.1);
-        // Subtract to scroll left→right along path (arc 0 → totLen)
-        offset = ((offset - SPEED * dt) % tokTotalW + tokTotalW) % tokTotalW;
-      }
-      lastTS = ts;
-
-      var dpr = window.devicePixelRatio || 1;
-      var cssW = canvas.width  / dpr;
-      var cssH = canvas.height / dpr;
-      ctx.clearRect(0, 0, cssW, cssH);
-
-      ctx.fillStyle    = '#8B1A1A';
-      ctx.textBaseline = 'middle';
-
-      var arcPos = -offset;
-      var rep = 0;
-      while (arcPos < totLen + tokTotalW && rep < 12) {
-        for (var ti = 0; ti < tokens.length; ti++) {
-          var w  = tokWidths[ti];
-          var cx = arcPos + w / 2; // arc position of token centre
-          if (cx >= 0 && cx <= totLen) {
-            var p = ptAt(cx);
-            // Arc-endpoint fade (path start/end which are off-screen)
-            var arcFade = 1;
-            if (cx < FADE_PX)               arcFade = cx / FADE_PX;
-            else if (cx > totLen - FADE_PX) arcFade = (totLen - cx) / FADE_PX;
-            // Viewport-edge fade: canvas has MARGIN px of off-screen runway on
-            // each side. Fade tokens within EDGE_FADE px of the visible edge.
-            var vpX  = p.x - MARGIN;              // x relative to viewport left
-            var vpW  = cssW - 2 * MARGIN;         // viewport width in canvas coords
-            var xFade = 1;
-            if (vpX < EDGE_FADE)           xFade = Math.max(0, vpX / EDGE_FADE);
-            else if (vpX > vpW - EDGE_FADE) xFade = Math.max(0, (vpW - vpX) / EDGE_FADE);
-            ctx.globalAlpha = BASE_ALPHA * Math.min(arcFade, xFade);
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.angle);
-            ctx.font = fontFor(tokens[ti].sc);
-            ctx.fillText(tokens[ti].text, -w / 2, 0);
-            ctx.restore();
-          }
-          arcPos += w;
-        }
-        rep++;
-        if (rep > 1 && arcPos >= totLen) break;
-      }
-
-      ctx.globalAlpha = 1;
-    }
-
-    function init() {
-      if (window.innerWidth > 767) return; // desktop: bail out
-
-      // HiDPI canvas sizing
-      var dpr  = window.devicePixelRatio || 1;
-      var cssW = canvas.offsetWidth;
-      var cssH = canvas.offsetHeight;
-      if (!cssW || !cssH) return;
-
-      canvas.width  = cssW * dpr;
-      canvas.height = cssH * dpr;
-      ctx.scale(dpr, dpr);
-
-      buildTable(cssW, cssH);
-      buildTokens();
-
-      rafID = requestAnimationFrame(draw);
-    }
-
-    // Wait for fonts to be ready so measureText() returns accurate widths
-    document.fonts.ready.then(init);
-  })();
+  // ── Mobile curved text — replaced by CSS-animated SVG image ─────────────
 
   // ── Background music ─────────────────────────────────────────────────────
   // Wrapped in DOMContentLoaded because <audio> and <button> are parsed
