@@ -35,7 +35,7 @@
       background: #1a0a0a;
     }
 
-    /* ── Page container: smooth scroll (JS handles snap on desktop) ── */
+    /* ── Page container: smooth scroll (JS handles snap on mobile/tablet) ── */
     #pageContainer {
       width: 100vw; height: 100vh;
       overflow-y: scroll;
@@ -49,6 +49,24 @@
       width: 100vw; height: 100vh;
       position: relative;
       overflow: hidden;
+    }
+
+    /* ── Desktop: free scrolling — remove snap architecture ── */
+    @media (min-width: 1024px) {
+      html, body {
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      #pageContainer {
+        height: auto;
+        overflow-y: visible;
+        overflow-x: hidden;
+      }
+      .page-section {
+        height: auto;
+        min-height: 80vh;
+      }
     }
 
     /* ── Section backgrounds ── */
@@ -2917,11 +2935,12 @@
       requestAnimationFrame(tick);
     }
 
-    // ── Wheel interception (desktop) ──────────────────────────────────
+    // ── Wheel interception (tablet only — desktop uses free scroll) ───
     let wheelAcc = 0;
     let wheelTimer;
     container.addEventListener('wheel', function (e) {
-      if (window.innerWidth < 768) return; // leave mobile native
+      if (window.innerWidth >= 1024) return; // free scroll on desktop
+      if (window.innerWidth < 768) return;   // native scroll on mobile
       e.preventDefault();
       if (scrolling) return;
 
@@ -2936,16 +2955,17 @@
       }
     }, { passive: false });
 
-    // ── Keyboard navigation ───────────────────────────────────────────
+    // ── Keyboard navigation (tablet only — desktop uses native keys) ──
     document.addEventListener('keydown', function (e) {
-      if (window.innerWidth < 768) return;
+      if (window.innerWidth >= 1024) return; // free scroll on desktop
+      if (window.innerWidth < 768) return;   // native scroll on mobile
       if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); scrollToIdx(currentIdx + 1); }
       if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); scrollToIdx(currentIdx - 1); }
     });
 
-    // ── Sync currentIdx from scroll position (handles resize, load) ───
+    // ── Sync currentIdx from scroll position (tablet only) ───────────
     container.addEventListener('scroll', function () {
-      if (scrolling || window.innerWidth < 768) return;
+      if (scrolling || window.innerWidth < 768 || window.innerWidth >= 1024) return;
       const mid = container.scrollTop + window.innerHeight / 2;
       let best = 0, bestDist = Infinity;
       sections.forEach(function (s, i) {
@@ -2958,13 +2978,22 @@
     // ── Subtle parallax on section background images ──────────────────
     if (!prefersRM) {
       const bgImgs = document.querySelectorAll('.section-bg > img');
-      container.addEventListener('scroll', function () {
-        const scrollY = container.scrollTop;
+      function applyParallax(scrollY) {
         bgImgs.forEach(function (img) {
           const sectionTop = img.closest('.page-section').offsetTop;
           const relY = scrollY - sectionTop;
           img.style.transform = 'translateY(' + (relY * 0.13).toFixed(2) + 'px)';
         });
+      }
+      // Mobile/tablet: scroll happens inside #pageContainer
+      container.addEventListener('scroll', function () {
+        if (window.innerWidth >= 1024) return;
+        applyParallax(container.scrollTop);
+      }, { passive: true });
+      // Desktop: scroll happens on window
+      window.addEventListener('scroll', function () {
+        if (window.innerWidth < 1024) return;
+        applyParallax(window.scrollY);
       }, { passive: true });
     }
   })();
