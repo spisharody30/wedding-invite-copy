@@ -1582,59 +1582,34 @@
 
     @media (max-width: 767px) {
       #heroTextSvg    { display: none; }
-      #heroTextSvgMob { display: none; } /* replaced by in-flow HTML marquee strips */
+      #heroTextSvgMob { display: none; } /* replaced by canvas curved text */
+      .hmq-track      { display: none; } /* replaced by canvas curved text */
     }
 
     /* ════════════════════════════════════════════
-       HERO — MOBILE MARQUEE
-       Plain HTML text + CSS translateX sidesteps
-       SVG textPath's broken Indic shaping on mobile.
-       Two horizontal strips: Malayalam above photo,
-       Hindi below. Seamless loop via doubled content
-       and translateX(-50%) / reverse.
+       HERO — MOBILE CURVED TEXT (Canvas)
+       Canvas renders Indic scripts with proper shaping
+       and animates text word-by-word along Vector2 path.
     ════════════════════════════════════════════ */
-    /* ── Mobile marquee strips (in-flow inside #heroMobileContent flex column)
-       Strips are flex children — always visible, never behind the photo.
-       Strip 1: between headline and photo (Malayalam)
-       Strip 2: between photo and bottom CTA (Hindi)
-    ── */
-    .hmq-track {
+    #heroMobCurveCanvas {
+      position: absolute;
+      left: 0;
+      top: 138.81px;
       width: 100%;
-      overflow: hidden;
-      flex-shrink: 0;
-      /* edge fade at left/right */
-      -webkit-mask-image: linear-gradient(to right,
-        transparent 0, black 40px,
-        black calc(100% - 40px), transparent 100%);
-      mask-image: linear-gradient(to right,
-        transparent 0, black 40px,
-        black calc(100% - 40px), transparent 100%);
+      height: 454.722px;
+      pointer-events: none;
+      z-index: 2;
+      display: none; /* hidden on desktop */
+      /* edge fade */
+      -webkit-mask-image: linear-gradient(to bottom,
+        transparent 0, black 32px,
+        black calc(100% - 32px), transparent 100%);
+      mask-image: linear-gradient(to bottom,
+        transparent 0, black 32px,
+        black calc(100% - 32px), transparent 100%);
     }
-    .hmq-inner {
-      display: inline-block;
-      white-space: nowrap;
-      font-size: 17px;
-      color: #8B1A1A;
-      opacity: 0.75;
-      letter-spacing: 0.5px;
-      font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-    }
-    .hmq-inner--ml {
-      font-family: 'Noto Serif Malayalam', serif;
-      animation: hmqScroll 28s linear infinite;
-    }
-    .hmq-inner--hi {
-      font-family: 'Noto Serif Devanagari', serif;
-      animation: hmqScroll 35s linear infinite reverse;
-    }
-    @keyframes hmqScroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hmq-inner { animation-play-state: paused; }
+    @media (max-width: 767px) {
+      #heroMobCurveCanvas { display: block; }
     }
 
     /* Desktop SVG: enable ligatures for Indic scripts */
@@ -1781,10 +1756,11 @@
       </text>
     </svg>
 
-    <!-- Mobile hero (≤767px).
-         Marquee strips are flex children — always in-flow, never behind photo.
-         Strip 1 (Malayalam): between headline and photo.
-         Strip 2 (Hindi): between photo and bottom CTA. -->
+    <!-- Mobile curved text — canvas renders Indic scripts correctly,
+         word-by-word along the Vector2 bezier path from Figma. -->
+    <canvas id="heroMobCurveCanvas" aria-hidden="true"></canvas>
+
+    <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
       <p class="hero-mob-headline">We are getting married!!!</p>
 
@@ -3320,6 +3296,200 @@
     // Run once after DOM is ready (SVGs already in DOM at this point)
     applyRM(mq.matches);
     mq.addEventListener('change', e => applyRM(e.matches));
+  })();
+
+  // ── Mobile curved text — Canvas ──────────────────────────────────────────
+  // Renders Malayalam + Hindi word-by-word along the Vector2 bezier path.
+  // Canvas fillText() uses the browser's full text shaping engine, so Indic
+  // ligatures and diacritics render correctly (unlike SVG textPath on mobile).
+  (function() {
+    'use strict';
+    var canvas = document.getElementById('heroMobCurveCanvas');
+    if (!canvas) return;
+
+    var ctx = canvas.getContext('2d');
+
+    // ── Bezier helpers ──────────────────────────────────────────────────────
+    function bz(a, b, c, d, t) {
+      var u = 1 - t;
+      return u*u*u*a + 3*u*u*t*b + 3*u*t*t*c + t*t*t*d;
+    }
+
+    // ── Path sampling ───────────────────────────────────────────────────────
+    // Vector2 from Figma (viewBox 399.627 × 455.722):
+    // M 0.018,455.193 C 0.018,455.193 201.518,463.193 201.518,210.693
+    //                 C 201.518,-41.807 399.518,3.693 399.518,3.693
+    var SVG_W = 399.627, SVG_H = 455.722;
+    var STEPS = 600; // samples per segment
+
+    var table  = null; // [{x,y,len}]
+    var totLen = 0;
+
+    function buildTable(cssW, cssH) {
+      var sx = cssW / SVG_W, sy = cssH / SVG_H;
+      function pt(x, y) { return [x*sx, y*sy]; }
+
+      var segs = [
+        { p0: pt(0.018,455.193), c1: pt(0.018,455.193),
+          c2: pt(201.518,463.193), p1: pt(201.518,210.693) },
+        { p0: pt(201.518,210.693), c1: pt(201.518,-41.807),
+          c2: pt(399.518,3.693),   p1: pt(399.518,3.693)  }
+      ];
+
+      table = [];
+      var len = 0;
+      for (var si = 0; si < segs.length; si++) {
+        var s = segs[si];
+        var prevX = s.p0[0], prevY = s.p0[1];
+        for (var i = 1; i <= STEPS; i++) {
+          var t = i / STEPS;
+          var x = bz(s.p0[0], s.c1[0], s.c2[0], s.p1[0], t);
+          var y = bz(s.p0[1], s.c1[1], s.c2[1], s.p1[1], t);
+          len += Math.sqrt((x-prevX)*(x-prevX) + (y-prevY)*(y-prevY));
+          table.push({ x: x, y: y, len: len });
+          prevX = x; prevY = y;
+        }
+      }
+      totLen = len;
+    }
+
+    function ptAt(arc) {
+      // Clamp to path; caller handles out-of-bounds display
+      arc = Math.max(0, Math.min(arc, totLen - 0.001));
+      var lo = 0, hi = table.length - 1;
+      while (lo < hi - 1) {
+        var mid = (lo + hi) >> 1;
+        if (table[mid].len <= arc) lo = mid; else hi = mid;
+      }
+      var a = table[lo], b_ = table[hi];
+      var frac = (b_.len > a.len) ? (arc - a.len) / (b_.len - a.len) : 0;
+      return {
+        x: a.x + frac*(b_.x - a.x),
+        y: a.y + frac*(b_.y - a.y),
+        angle: Math.atan2(b_.y - a.y, b_.x - a.x)
+      };
+    }
+
+    // ── Text tokenisation ───────────────────────────────────────────────────
+    var FONT_SIZE = 14;
+    // Short phrase that repeats to fill the path
+    var phrase = 'രണ്ട് ഹൃദയങ്ങൾ, ഒരു പ്രണയം  ✦  दो दिल, एक प्यार  ✦  ';
+
+    function scriptOf(s) {
+      for (var i = 0; i < s.length; ) {
+        var c = s.codePointAt(i);
+        if (c >= 0x0D00 && c <= 0x0D7F) return 'ml';
+        if (c >= 0x0900 && c <= 0x097F) return 'hi';
+        i += (c > 0xFFFF) ? 2 : 1;
+      }
+      return 'other';
+    }
+
+    function fontFor(sc) {
+      if (sc === 'ml')  return FONT_SIZE + "px 'Noto Serif Malayalam',serif";
+      if (sc === 'hi')  return FONT_SIZE + "px 'Noto Serif Devanagari',serif";
+      return FONT_SIZE + "px 'Noto Serif',serif";
+    }
+
+    var tokens = null, tokWidths = null, tokTotalW = 0;
+
+    function buildTokens() {
+      // Split phrase into same-script runs, then split each run into words
+      tokens = [];
+      var i = 0;
+      while (i < phrase.length) {
+        var sc = scriptOf(phrase[i]);
+        var j = i + 1;
+        while (j < phrase.length && scriptOf(phrase[j]) === sc) j++;
+        // Split run into words (keep trailing spaces with the word)
+        var chunk = phrase.slice(i, j);
+        var words = chunk.match(/\S+\s*/g) || [chunk];
+        for (var w = 0; w < words.length; w++) {
+          if (words[w]) tokens.push({ text: words[w], sc: sc });
+        }
+        i = j;
+      }
+
+      tokWidths = tokens.map(function(tok) {
+        ctx.font = fontFor(tok.sc);
+        return ctx.measureText(tok.text).width;
+      });
+      tokTotalW = tokWidths.reduce(function(a, b_) { return a + b_; }, 0);
+    }
+
+    // ── Animation ───────────────────────────────────────────────────────────
+    var SPEED   = 38;  // px per second along the path
+    var offset  = 0;
+    var lastTS  = null;
+    var rafID   = null;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    window.matchMedia('(prefers-reduced-motion: reduce)')
+      .addEventListener('change', function(e) { reduced = e.matches; });
+
+    function draw(ts) {
+      rafID = requestAnimationFrame(draw);
+      if (!reduced && lastTS !== null) {
+        var dt = Math.min((ts - lastTS) / 1000, 0.1);
+        offset = (offset + SPEED * dt) % tokTotalW;
+      }
+      lastTS = ts;
+
+      var dpr = window.devicePixelRatio || 1;
+      var cssW = canvas.width  / dpr;
+      var cssH = canvas.height / dpr;
+      ctx.clearRect(0, 0, cssW, cssH);
+
+      ctx.fillStyle  = '#8B1A1A';
+      ctx.globalAlpha = 0.72;
+      ctx.textBaseline = 'middle';
+
+      // Start rendering tokens at arc = -offset so text scrolls forward
+      var arcPos = -offset;
+      var rep = 0;
+      while (arcPos < totLen + tokTotalW && rep < 12) {
+        for (var ti = 0; ti < tokens.length; ti++) {
+          var w  = tokWidths[ti];
+          var cx = arcPos + w / 2; // arc position of token centre
+          if (cx >= 0 && cx <= totLen) {
+            var p = ptAt(cx);
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.font = fontFor(tokens[ti].sc);
+            ctx.fillText(tokens[ti].text, -w / 2, 0);
+            ctx.restore();
+          }
+          arcPos += w;
+        }
+        rep++;
+        if (rep > 1 && arcPos >= totLen) break; // safety: stop once path is filled
+      }
+
+      ctx.globalAlpha = 1;
+    }
+
+    function init() {
+      if (window.innerWidth > 767) return; // desktop: bail out
+
+      // HiDPI canvas sizing
+      var dpr  = window.devicePixelRatio || 1;
+      var cssW = canvas.offsetWidth;
+      var cssH = canvas.offsetHeight;
+      if (!cssW || !cssH) return;
+
+      canvas.width  = cssW * dpr;
+      canvas.height = cssH * dpr;
+      ctx.scale(dpr, dpr);
+
+      buildTable(cssW, cssH);
+      buildTokens();
+
+      rafID = requestAnimationFrame(draw);
+    }
+
+    // Wait for fonts to be ready so measureText() returns accurate widths
+    document.fonts.ready.then(init);
   })();
 
 </script>
