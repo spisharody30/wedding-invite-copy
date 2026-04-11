@@ -298,7 +298,6 @@
       display: inline-grid;
       grid-template-columns: max-content; grid-template-rows: max-content;
       line-height: 0; place-items: start; flex-shrink: 0;
-      position: relative; z-index: 3; /* above canvas curved text */
     }
     .hero-mob-arc-tl {
       grid-column: 1; grid-row: 1;
@@ -1599,15 +1598,8 @@
       width: 100%;
       height: 454.722px;
       pointer-events: none;
-      z-index: 2;
+      z-index: 0; /* behind #heroMobileContent (z-index:1) so photo is always in front */
       display: none; /* hidden on desktop */
-      /* edge fade */
-      -webkit-mask-image: linear-gradient(to bottom,
-        transparent 0, black 32px,
-        black calc(100% - 32px), transparent 100%);
-      mask-image: linear-gradient(to bottom,
-        transparent 0, black 32px,
-        black calc(100% - 32px), transparent 100%);
     }
     @media (max-width: 767px) {
       #heroMobCurveCanvas { display: block; }
@@ -1676,8 +1668,8 @@
         <linearGradient id="edgeFadeG" gradientUnits="userSpaceOnUse"
                         x1="0" y1="0" x2="1436" y2="0">
           <stop offset="0%"   stop-color="white" stop-opacity="0"/>
-          <stop offset="8%"   stop-color="white" stop-opacity="1"/>
-          <stop offset="92%"  stop-color="white" stop-opacity="1"/>
+          <stop offset="3%"   stop-color="white" stop-opacity="1"/>
+          <stop offset="97%"  stop-color="white" stop-opacity="1"/>
           <stop offset="100%" stop-color="white" stop-opacity="0"/>
         </linearGradient>
 
@@ -1697,7 +1689,7 @@
             mask="url(#edgeMask)">
         <textPath href="#flowCurve" startOffset="0%">
           <animate attributeName="startOffset"
-                   from="0%" to="-50%"
+                   from="-50%" to="0%"
                    dur="40s" repeatCount="indefinite" calcMode="linear"/>
           രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
           രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
@@ -3372,7 +3364,7 @@
     }
 
     // ── Text tokenisation ───────────────────────────────────────────────────
-    var FONT_SIZE = 14;
+    var FONT_SIZE = 21;
     // Short phrase that repeats to fill the path
     var phrase = 'രണ്ട് ഹൃദയങ്ങൾ, ഒരു പ്രണയം  ✦  दो दिल, एक प्यार  ✦  ';
 
@@ -3420,6 +3412,8 @@
 
     // ── Animation ───────────────────────────────────────────────────────────
     var SPEED   = 38;  // px per second along the path
+    var FADE_PX = 50;  // fade zone at each end of path (px)
+    var BASE_ALPHA = 0.75;
     var offset  = 0;
     var lastTS  = null;
     var rafID   = null;
@@ -3432,7 +3426,8 @@
       rafID = requestAnimationFrame(draw);
       if (!reduced && lastTS !== null) {
         var dt = Math.min((ts - lastTS) / 1000, 0.1);
-        offset = (offset + SPEED * dt) % tokTotalW;
+        // Subtract to scroll left→right along path (arc 0 → totLen)
+        offset = ((offset - SPEED * dt) % tokTotalW + tokTotalW) % tokTotalW;
       }
       lastTS = ts;
 
@@ -3441,11 +3436,9 @@
       var cssH = canvas.height / dpr;
       ctx.clearRect(0, 0, cssW, cssH);
 
-      ctx.fillStyle  = '#8B1A1A';
-      ctx.globalAlpha = 0.72;
+      ctx.fillStyle    = '#8B1A1A';
       ctx.textBaseline = 'middle';
 
-      // Start rendering tokens at arc = -offset so text scrolls forward
       var arcPos = -offset;
       var rep = 0;
       while (arcPos < totLen + tokTotalW && rep < 12) {
@@ -3453,6 +3446,11 @@
           var w  = tokWidths[ti];
           var cx = arcPos + w / 2; // arc position of token centre
           if (cx >= 0 && cx <= totLen) {
+            // Fade only within FADE_PX of each path end; full opacity elsewhere
+            var alpha = BASE_ALPHA;
+            if (cx < FADE_PX)            alpha = BASE_ALPHA * (cx / FADE_PX);
+            else if (cx > totLen - FADE_PX) alpha = BASE_ALPHA * ((totLen - cx) / FADE_PX);
+            ctx.globalAlpha = alpha;
             var p = ptAt(cx);
             ctx.save();
             ctx.translate(p.x, p.y);
@@ -3464,7 +3462,7 @@
           arcPos += w;
         }
         rep++;
-        if (rep > 1 && arcPos >= totLen) break; // safety: stop once path is filled
+        if (rep > 1 && arcPos >= totLen) break;
       }
 
       ctx.globalAlpha = 1;
