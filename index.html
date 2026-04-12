@@ -1608,25 +1608,24 @@
 
     /* Styling is on SVG presentation attributes; no override needed here */
 
-    /* Mobile curved text — Figma-flattened vector outlines, static */
-    #heroTextSvgMob {
+    /* Mobile curved text — video */
+    .curved-text-mobile-video {
       position: absolute;
-      left: 0;
-      top: 105.5px;
-      width: 100%;
+      left: -1px;
+      top: 102px;
+      width: calc(100% + 1px);
       height: auto;
       pointer-events: none;
       z-index: 1;
       display: none; /* hidden on desktop */
-      opacity: 0.85;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      mix-blend-mode: multiply; /* removes white background */
+      object-fit: cover;
     }
 
     @media (max-width: 767px) {
-      #heroTextSvg    { display: none; }
-      #heroTextSvgMob { display: block; }
-      .hmq-track      { display: none; }
+      #heroTextSvg               { display: none; }
+      .curved-text-mobile-video  { display: block; }
+      .hmq-track                 { display: none; }
     }
 
     /* Desktop SVG: enable ligatures for Indic scripts */
@@ -1846,8 +1845,13 @@
       </text>
     </svg>
 
-    <!-- Mobile: Vector2 path, Figma node 349:19. Short phrase × 8. -->
-    <img id="heroTextSvgMob" src="images/curved text.svg" aria-hidden="true" alt="">
+    <!-- Mobile: curved text video -->
+    <video class="curved-text-mobile-video"
+           autoplay loop muted playsinline
+           preload="auto"
+           aria-hidden="true">
+      <source src="images/Wedding Invite.mp4" type="video/mp4">
+    </video>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3562,6 +3566,15 @@
       hideTimer = setTimeout(hideTip, 8000);
     }, 3000);
     btn.addEventListener('click', hideTip, { once: true });
+  })();
+
+  // Slow down the mobile curved text video to 30% speed
+  (function() {
+    var vid = document.querySelector('.curved-text-mobile-video');
+    if (!vid) return;
+    vid.addEventListener('loadedmetadata', function() {
+      vid.playbackRate = 0.1;
+    });
   })();
   </script>
 </body>
