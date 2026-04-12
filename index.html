@@ -1608,8 +1608,8 @@
 
     /* Styling is on SVG presentation attributes; no override needed here */
 
-    /* Mobile curved text — video */
-    .curved-text-mobile-video {
+    /* Mobile curved text — SVG textPath (mirrors desktop) */
+    #heroTextSvgMob {
       position: absolute;
       left: -1px;
       top: 102px;
@@ -1618,18 +1618,18 @@
       pointer-events: none;
       z-index: 1;
       display: none; /* hidden on desktop */
-      mix-blend-mode: multiply; /* removes white background */
-      object-fit: cover;
+      overflow: visible;
     }
 
     @media (max-width: 767px) {
-      #heroTextSvg               { display: none; }
-      .curved-text-mobile-video  { display: block; }
-      .hmq-track                 { display: none; }
+      #heroTextSvg    { display: none; }
+      #heroTextSvgMob { display: block; }
+      .hmq-track      { display: none; }
     }
 
-    /* Desktop SVG: enable ligatures for Indic scripts */
-    #heroTextSvg text {
+    /* Enable ligatures for Indic scripts — desktop and mobile */
+    #heroTextSvg text,
+    #heroTextSvgMob text {
       font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
     }
 
@@ -1845,13 +1845,60 @@
       </text>
     </svg>
 
-    <!-- Mobile: curved text video -->
-    <video class="curved-text-mobile-video"
-           autoplay loop muted playsinline
-           preload="auto"
-           aria-hidden="true">
-      <source src="images/Wedding Invite.mp4" type="video/mp4">
-    </video>
+    <!-- Mobile: curved text SVG textPath (same logic as desktop, mobile curve path) -->
+    <svg id="heroTextSvgMob"
+         viewBox="0 0 402.042 518.999"
+         preserveAspectRatio="none"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true">
+      <defs>
+
+        <!-- Mobile curve from Figma node 587:15. Extended 200px tangents on each end. -->
+        <path id="flowCurveMob" fill="none" stroke="none"
+          d="M-200,529.5
+             L0.026,518.5
+             C0.026,518.5 200.026,507.5 200.026,257.5
+             C200.026,7.5 402.026,0.5 402.026,0.5
+             L602,-6.5"/>
+
+        <!-- Edge-fade gradient: opaque in centre, transparent at edges -->
+        <linearGradient id="edgeFadeGMob" gradientUnits="userSpaceOnUse"
+                        x1="0" y1="0" x2="402.042" y2="0">
+          <stop offset="0%"   stop-color="white" stop-opacity="0"/>
+          <stop offset="5%"   stop-color="white" stop-opacity="1"/>
+          <stop offset="95%"  stop-color="white" stop-opacity="1"/>
+          <stop offset="100%" stop-color="white" stop-opacity="0"/>
+        </linearGradient>
+
+        <!-- Mask: hides off-screen overflow; gradient fades edges -->
+        <mask id="edgeMaskMob" maskUnits="userSpaceOnUse"
+              x="-1000" y="-1000" width="3000" height="3000">
+          <rect x="-1000" y="-1000" width="3000" height="3000" fill="black"/>
+          <rect x="0"     y="-1000" width="402.042" height="3000"
+                fill="url(#edgeFadeGMob)"/>
+        </mask>
+
+      </defs>
+
+      <!-- 8 repetitions → from="-50%" to="0%" seamless loop -->
+      <text font-family="'Noto Serif Malayalam','Noto Serif Devanagari','Noto Serif',serif"
+            font-size="16" fill="#8B1A1A" letter-spacing="1" opacity="0.75"
+            mask="url(#edgeMaskMob)">
+        <textPath href="#flowCurveMob" startOffset="0%">
+          <animate attributeName="startOffset"
+                   from="-50%" to="0%"
+                   dur="40s" repeatCount="indefinite" calcMode="linear"/>
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം  ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार  ✦
+        </textPath>
+      </text>
+    </svg>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3393,7 +3440,7 @@
   (function() {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     function applyRM(reduced) {
-      document.querySelectorAll('#heroTextSvg animate').forEach(el => {
+      document.querySelectorAll('#heroTextSvg animate, #heroTextSvgMob animate').forEach(el => {
         reduced ? el.pauseAnimations() : el.beginElement();
       });
     }
@@ -3566,14 +3613,6 @@
     btn.addEventListener('click', hideTip, { once: true });
   })();
 
-  // Slow down the mobile curved text video to 30% speed
-  (function() {
-    var vid = document.querySelector('.curved-text-mobile-video');
-    if (!vid) return;
-    vid.addEventListener('loadedmetadata', function() {
-      vid.playbackRate = 0.15;
-    });
-  })();
   </script>
 </body>
 </html>
