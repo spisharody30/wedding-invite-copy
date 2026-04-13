@@ -1621,7 +1621,7 @@
       display: none; /* hidden on desktop */
       overflow: visible;
     }
-    /* iOS mobile fallback: outlined curved text artwork (no live textPath shaping). */
+    /* iOS mobile fallback: animated curved text media (no live textPath shaping). */
     #heroTextSvgMobIos {
       position: absolute;
       left: -1px;
@@ -1633,12 +1633,20 @@
       display: none;
       overflow: visible;
     }
+    #heroTextSvgMobIos img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.78;
+    }
 
     @media (max-width: 767px) {
       #heroTextSvg    { display: none; }
-      #heroTextSvgMob { display: none; }
-      #heroTextSvgMobIos { display: block; }
+      #heroTextSvgMob { display: block; }
+      #heroTextSvgMobIos { display: none; }
       .hmq-track      { display: none; }
+      .ios-hero-curve-fix #heroTextSvgMob { display: none !important; }
+      .ios-hero-curve-fix #heroTextSvgMobIos { display: block !important; }
     }
 
     /* Enable ligatures for Indic scripts — desktop and mobile */
@@ -1911,7 +1919,9 @@
         </textPath>
       </text>
     </svg>
-    <img id="heroTextSvgMobIos" src="Curved%20text.svg" alt="" aria-hidden="true" />
+    <div id="heroTextSvgMobIos" aria-hidden="true">
+      <img src="images/curved-text-mobile.gif" alt="" />
+    </div>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3447,12 +3457,8 @@
   // Pause SMIL <animate> elements when user prefers reduced motion
   // (CSS media query handles CSS animations; SMIL needs JS)
   (function() {
-    function debugLog(hypothesisId, location, message, data, runId) {
-      fetch('http://127.0.0.1:7504/ingest/7e53a05d-55b8-448b-81db-803880c1461d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'a14020'},body:JSON.stringify({sessionId:'a14020',runId:runId || 'initial',hypothesisId:hypothesisId,location:location,message:message,data:data,timestamp:Date.now()})}).catch(function(){});
-    }
-
-    // iOS Safari compatibility: textPath rendering is more stable
-    // when edge mask is removed for the curved hero text.
+    // iOS Safari compatibility: swap live mobile textPath with
+    // animated media fallback to prevent Indic text distortion.
     var ua = navigator.userAgent || '';
     var isIOS = /iP(hone|od|ad)/.test(ua) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -3460,23 +3466,6 @@
     if (isIOS && isWebKit) {
       document.documentElement.classList.add('ios-hero-curve-fix');
     }
-    // #region agent log
-    debugLog('H1', 'index.html:3438', 'UA and iOS fix class state', {
-      isIOS: isIOS,
-      isWebKit: isWebKit,
-      hasFixClass: document.documentElement.classList.contains('ios-hero-curve-fix'),
-      innerWidth: window.innerWidth,
-      innerHeight: window.innerHeight
-    });
-    // #endregion
-    // #region agent log
-    var iosFallbackNode = document.getElementById('heroTextSvgMobIos');
-    debugLog('H6', 'index.html:3470', 'iOS outlined curved text fallback state', {
-      hasFallbackNode: !!iosFallbackNode,
-      fallbackSrc: iosFallbackNode ? iosFallbackNode.getAttribute('src') : null,
-      useFallbackClass: document.documentElement.classList.contains('ios-hero-curve-fix')
-    }, 'post-fix');
-    // #endregion
 
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     function applyRM(reduced) {
@@ -3484,57 +3473,9 @@
         reduced ? el.pauseAnimations() : el.beginElement();
       });
     }
-    // #region agent log
-    debugLog('H2', 'index.html:3453', 'Reduced motion and animate node count', {
-      prefersReduced: mq.matches,
-      animateNodeCount: document.querySelectorAll('#heroTextSvg animate, #heroTextSvgMob animate').length
-    });
-    // #endregion
     // Run once after DOM is ready (SVGs already in DOM at this point)
     applyRM(mq.matches);
     mq.addEventListener('change', e => applyRM(e.matches));
-
-    var desktopSvg = document.getElementById('heroTextSvg');
-    var mobileSvg = document.getElementById('heroTextSvgMob');
-    var desktopTextPath = desktopSvg ? desktopSvg.querySelector('textPath') : null;
-    var mobileTextPath = mobileSvg ? mobileSvg.querySelector('textPath') : null;
-    var desktopPath = document.getElementById('flowCurve');
-    var mobilePath = document.getElementById('flowCurveMob');
-    var desktopText = desktopSvg ? desktopSvg.querySelector('text') : null;
-    var mobileText = mobileSvg ? mobileSvg.querySelector('text') : null;
-    var desktopRect = desktopSvg ? desktopSvg.getBoundingClientRect() : null;
-    var mobileRect = mobileSvg ? mobileSvg.getBoundingClientRect() : null;
-    // #region agent log
-    debugLog('H3', 'index.html:3473', 'Hero SVG geometry snapshot', {
-      desktopRect: desktopRect ? { width: desktopRect.width, height: desktopRect.height, top: desktopRect.top } : null,
-      mobileRect: mobileRect ? { width: mobileRect.width, height: mobileRect.height, top: mobileRect.top } : null,
-      desktopPathLength: desktopPath && desktopPath.getTotalLength ? desktopPath.getTotalLength() : null,
-      mobilePathLength: mobilePath && mobilePath.getTotalLength ? mobilePath.getTotalLength() : null,
-      desktopTextLength: desktopText && desktopText.getComputedTextLength ? desktopText.getComputedTextLength() : null,
-      mobileTextLength: mobileText && mobileText.getComputedTextLength ? mobileText.getComputedTextLength() : null
-    });
-    // #endregion
-    // #region agent log
-    debugLog('H4', 'index.html:3484', 'textPath linkage and mask attributes', {
-      desktopHref: desktopTextPath ? desktopTextPath.getAttribute('href') : null,
-      desktopXlinkHref: desktopTextPath ? desktopTextPath.getAttribute('xlink:href') : null,
-      mobileHref: mobileTextPath ? mobileTextPath.getAttribute('href') : null,
-      mobileXlinkHref: mobileTextPath ? mobileTextPath.getAttribute('xlink:href') : null,
-      desktopMask: desktopText ? desktopText.getAttribute('mask') : null,
-      mobileMask: mobileText ? mobileText.getAttribute('mask') : null
-    });
-    // #endregion
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function() {
-        // #region agent log
-        debugLog('H5', 'index.html:3497', 'Fonts ready and post-font text lengths', {
-          ready: true,
-          desktopTextLengthAfterFonts: desktopText && desktopText.getComputedTextLength ? desktopText.getComputedTextLength() : null,
-          mobileTextLengthAfterFonts: mobileText && mobileText.getComputedTextLength ? mobileText.getComputedTextLength() : null
-        });
-        // #endregion
-      });
-    }
   })();
 
   // ── Background music ─────────────────────────────────────────────────────
