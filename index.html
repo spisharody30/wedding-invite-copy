@@ -1636,10 +1636,9 @@
 
     @media (max-width: 767px) {
       #heroTextSvg    { display: none; }
-      #heroTextSvgMob { display: block; }
+      #heroTextSvgMob { display: none; }
+      #heroTextSvgMobIos { display: block; }
       .hmq-track      { display: none; }
-      .ios-hero-curve-fix #heroTextSvgMob    { display: none !important; }
-      .ios-hero-curve-fix #heroTextSvgMobIos { display: block !important; }
     }
 
     /* Enable ligatures for Indic scripts — desktop and mobile */
@@ -1912,7 +1911,7 @@
         </textPath>
       </text>
     </svg>
-    <img id="heroTextSvgMobIos" src="Curved text.svg" alt="" aria-hidden="true" />
+    <img id="heroTextSvgMobIos" src="Curved%20text.svg" alt="" aria-hidden="true" />
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
