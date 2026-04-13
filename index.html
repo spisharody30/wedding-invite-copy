@@ -3480,13 +3480,14 @@
         if (!window.lottie) return;
         var lottieRoot = document.getElementById('heroTextLottie');
         if (!lottieRoot) return;
-        window.lottie.loadAnimation({
+        var anim = window.lottie.loadAnimation({
           container: lottieRoot,
           renderer: 'svg',
           loop: true,
           autoplay: true,
           path: 'images/flow-text-mobile.json'
         });
+        anim.setSpeed(0.2);
       });
     }
 
