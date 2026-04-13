@@ -1621,11 +1621,25 @@
       display: none; /* hidden on desktop */
       overflow: visible;
     }
+    /* iOS mobile fallback: outlined curved text artwork (no live textPath shaping). */
+    #heroTextSvgMobIos {
+      position: absolute;
+      left: -1px;
+      top: 102px;
+      width: calc(100% + 1px);
+      height: auto;
+      pointer-events: none;
+      z-index: 1;
+      display: none;
+      overflow: visible;
+    }
 
     @media (max-width: 767px) {
       #heroTextSvg    { display: none; }
       #heroTextSvgMob { display: block; }
       .hmq-track      { display: none; }
+      .ios-hero-curve-fix #heroTextSvgMob    { display: none !important; }
+      .ios-hero-curve-fix #heroTextSvgMobIos { display: block !important; }
     }
 
     /* Enable ligatures for Indic scripts — desktop and mobile */
@@ -1898,6 +1912,7 @@
         </textPath>
       </text>
     </svg>
+    <img id="heroTextSvgMobIos" src="Curved text.svg" alt="" aria-hidden="true" />
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3454,6 +3469,14 @@
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight
     });
+    // #endregion
+    // #region agent log
+    var iosFallbackNode = document.getElementById('heroTextSvgMobIos');
+    debugLog('H6', 'index.html:3470', 'iOS outlined curved text fallback state', {
+      hasFallbackNode: !!iosFallbackNode,
+      fallbackSrc: iosFallbackNode ? iosFallbackNode.getAttribute('src') : null,
+      useFallbackClass: document.documentElement.classList.contains('ios-hero-curve-fix')
+    }, 'post-fix');
     // #endregion
 
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
