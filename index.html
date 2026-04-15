@@ -281,8 +281,8 @@
       #pageContainer { overflow-x: hidden; }
       /* Section grows to natural content height */
       #heroSection {
-        height: auto !important;
-        min-height: 0;
+        height: clamp(700px, 100svh, 800px) !important;
+        min-height: clamp(700px, 100svh, 800px);
         /* overflow-x intentionally removed — #pageContainer clips instead */
         align-items: flex-start;
         justify-content: flex-start;
@@ -360,6 +360,7 @@
     .hero-mob-cta {
       display: flex; flex-direction: column;
       align-items: center; gap: 8px;
+      margin-top: clamp(24px, 6svh, 48px);
       opacity: 0; animation: gentleFadeIn 0.9s ease-out 1.6s forwards;
     }
     .hero-mob-date {
