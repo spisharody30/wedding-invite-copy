@@ -1875,7 +1875,7 @@
 
       </defs>
 
-      <!-- 8 repetitions → from="-50%" to="0%" seamless loop -->
+      <!-- 2 repetitions (temporary preview) -->
       <text xml:space="preserve"
             font-family="'Noto Serif Malayalam','Noto Serif Devanagari','Noto Serif',serif"
             font-size="22" fill="#8B1A1A" opacity="0.75"
@@ -1884,7 +1884,7 @@
           <animate attributeName="startOffset"
                    from="-50%" to="0%"
                    dur="40s" repeatCount="indefinite" calcMode="linear"/>
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
         </textPath>
       </text>
     </svg>
@@ -3530,10 +3530,10 @@
     var isIOS = /iP(hone|od|ad)/.test(ua) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     var isWebKit = /WebKit/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
-    if (isIOS && isWebKit) {
+    if (false && isIOS && isWebKit) {
       document.documentElement.classList.add('ios-hero-curve-fix');
     }
-    if (isIOS && isWebKit) {
+    if (false && isIOS && isWebKit) {
       // Lottie script is defer'd — wait for full page load before init
       window.addEventListener('load', function() {
         if (!window.lottie) return;
