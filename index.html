@@ -3105,8 +3105,8 @@
   // ── RSVP form submission to Google Sheets ──────────────────────────────
   // 1) Copy google-apps-script/rsvp.gs into your Sheet’s Apps Script project and deploy as Web app.
   // 2) Paste the Web App URL below. Optional: set RSVP_SECRET (same as Script property RSVP_SECRET).
-  const RSVP_WEB_APP_URL = '';
-  const RSVP_SECRET = '';
+  const RSVP_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzDwuzq08E81FQL3wHtDDI9n5jShNhSRfmHcSQMNHdSgXPlhe6Hk2tV-Se9g5gPFPSJmw/exec';
+  const RSVP_SECRET = 'RK2026';
 
   async function postRsvpToSheet(payload) {
     if (!RSVP_WEB_APP_URL) {
