@@ -6,16 +6,13 @@
  * 2. Replace the default Code.gs contents with this file (or rename to Code.gs).
  * 3. In the sheet, row 1 headers (exact order recommended):
  *    Timestamp | Name | Guests | Source | SubmittedAt
- * 4. (Optional) Add a shared secret: Project Settings → Script properties:
- *    Key: RSVP_SECRET   Value: <long random string>
- *    Then set the same value in your site as RSVP_SECRET in index.html (see comment there).
- * 5. Deploy → New deployment → Type: Web app
+ * 4. Deploy → New deployment → Type: Web app
  *    Execute as: Me
  *    Who has access: Anyone
- * 6. Copy the Web App URL into index.html → RSVP_WEB_APP_URL
+ * 5. Copy the Web App URL into index.html → RSVP_WEB_APP_URL
  *
  * The site sends POST body as JSON:
- * { name, guests, source, submittedAt, secret? }
+ * { name, guests, source, submittedAt }
  */
 
 function doPost(e) {
@@ -32,11 +29,6 @@ function doPost(e) {
     }
 
     var data = JSON.parse(e.postData.contents);
-    var secret = PropertiesService.getScriptProperties().getProperty('RSVP_SECRET');
-    if (secret && data.secret !== secret) {
-      return jsonResponse({ ok: false, error: 'Unauthorized' }, 403);
-    }
-
     var name = String(data.name || '').trim();
     var guests = data.guests;
     var source = String(data.source || '').trim();
