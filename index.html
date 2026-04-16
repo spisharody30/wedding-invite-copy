@@ -1764,7 +1764,7 @@
 
     /* ── Music tooltip (speech bubble) ── */
     #musicTooltip {
-      position: fixed; z-index: 999;
+      position: fixed; z-index: 1002;
       background: #ae1919; color: #F5F0E8;
       font-family: 'Raleway', sans-serif; font-size: 13px;
       font-weight: 500; letter-spacing: 0.3px;
@@ -1772,7 +1772,7 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.2);
       pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
       /* Desktop default: left of button */
-      bottom: 32px; right: 82px;
+      bottom: 32px; right: 98px;
     }
     #musicTooltip.visible {
       opacity: 1;
@@ -1782,22 +1782,9 @@
       0%,100% { transform: scale(1); }
       50%     { transform: scale(1.06) translateY(-1px); }
     }
-    /* Desktop: tail points RIGHT toward button */
-    #musicTooltip::after {
-      content: ''; position: absolute;
-      top: 50%; transform: translateY(-50%);
-      right: -8px; border-style: solid;
-      border-width: 7px 0 7px 8px;
-      border-color: transparent transparent transparent #ae1919;
-    }
-    /* Mobile: above button, tail points DOWN toward button */
+    /* Mobile: above button */
     @media (max-width: 767px) {
       #musicTooltip { bottom: 72px; right: 8px; }
-      #musicTooltip::after {
-        top: auto; transform: none; right: 22px;
-        bottom: -8px; border-width: 8px 7px 0 7px;
-        border-color: #ae1919 transparent transparent transparent;
-      }
     }
     @media (prefers-reduced-motion: reduce) {
       #musicTooltip.visible { animation: none; }
@@ -1965,13 +1952,6 @@
         </div>
         <div class="hero-mob-cta">
           <p class="hero-mob-date">21.06.2026 ❤️</p>
-          <a class="hero-mob-arrow" href="#invitationSection" aria-label="Scroll to invitation section">
-            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="24" r="23" stroke="#AE1919" stroke-opacity="0.38" stroke-width="1.5"/>
-              <path d="M24 15V31" stroke="#AE1919" stroke-width="2.25" stroke-linecap="round"/>
-              <path d="M17.5 24.5L24 31L30.5 24.5" stroke="#AE1919" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
         </div>
       </div>
 
