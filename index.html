@@ -556,6 +556,17 @@
       transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
     }
     .wedding-date.inv-show { opacity: 1; transform: scale(1); }
+    .wedding-time {
+      grid-column: 1; grid-row: 1;
+      margin-top: 84.63px;
+      justify-self: center;
+      font-family: 'Raleway', sans-serif; font-weight: 600;
+      font-size: 13px; letter-spacing: 1.5389px;
+      text-transform: uppercase; line-height: 1.5; color: #ae1919;
+      text-align: center;
+      opacity: 0; transition: opacity 0.6s ease;
+    }
+    .wedding-time.inv-show { opacity: 1; }
 
     .wedding-venue {
       font-family: 'Raleway', sans-serif; font-weight: 600;
@@ -692,21 +703,21 @@
       left: 50%; top: calc(50% - 0.14px);
       transform: translate(-50%, -50%);
       display: flex; flex-direction: column;
-      gap: 48px; align-items: center;
+      gap: 40px; align-items: center;
       width: 300px;
     }
 
     /* Inner content block: invited text, names-group, date, venue */
     .imob-content {
       display: flex; flex-direction: column;
-      gap: 36px; align-items: center;
+      gap: 33px; align-items: center;
       width: 100%;
     }
 
     /* Names group: Rahul block + "and" + Kashish block (Figma gap-24px) */
     .imob-names-group {
       display: flex; flex-direction: column;
-      gap: 24px; align-items: center;
+      gap: 22px; align-items: center;
       width: 100%;
     }
 
@@ -794,6 +805,17 @@
       transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
     }
     .imob-date.inv-show { opacity: 1; transform: scale(1); }
+    .imob-time {
+      grid-column: 1; grid-row: 1;
+      margin-top: 58px;
+      justify-self: center;
+      font-family: 'Raleway', sans-serif; font-weight: 600;
+      font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; line-height: 1.5; color: #ae1919;
+      text-align: center;
+      opacity: 0; transition: opacity 0.6s ease;
+    }
+    .imob-time.inv-show { opacity: 1; }
 
     /* Venue */
     .imob-venue {
@@ -2065,6 +2087,7 @@
                   <div class="wedding-date-block">
                     <p class="wedding-date-on">On</p>
                     <p class="wedding-date">June 21, 2026</p>
+                    <p class="wedding-time">10 AM ONWARDS</p>
                   </div>
                   <div class="wedding-venue">
                     <span class="wedding-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
@@ -2183,6 +2206,7 @@
               <div class="imob-date-block">
                 <span class="imob-date-on" id="invMobDateOn">On</span>
                 <span class="imob-date" id="invMobDate">June 21, 2026</span>
+                <span class="imob-time" id="invMobTime">10 AM ONWARDS</span>
               </div>
 
               <!-- Venue -->
@@ -2860,6 +2884,7 @@
   const invInvited  = invSect.querySelector('.wedding-invited');
   const invDateOn   = invSect.querySelector('.wedding-date-on');
   const invDate     = invSect.querySelector('.wedding-date');
+  const invTime     = invSect.querySelector('.wedding-time');
   const invVenue    = invSect.querySelector('.wedding-venue');
   const invOrns     = invSect.querySelectorAll('.inv-orn, .inv-orn-flipped');
   // Mobile single-card elements
@@ -2872,6 +2897,7 @@
   const invMobParentK = document.getElementById('invMobParentK');
   const invMobDateOn  = document.getElementById('invMobDateOn');
   const invMobDate    = document.getElementById('invMobDate');
+  const invMobTime    = document.getElementById('invMobTime');
   const invMobVenue   = document.getElementById('invMobVenue');
   const invMobOrnBot  = document.getElementById('invMobOrnBot');
   const invMobAnd     = document.getElementById('invMobAnd');
@@ -2897,7 +2923,7 @@
     setTimeout(() => show(invInvited), 2000);
 
     // 5. "On" label + date elegant scale-up (2.5 s)
-    setTimeout(() => { show(invDateOn); show(invDate); }, 2500);
+    setTimeout(() => { show(invDateOn); show(invDate); show(invTime); }, 2500);
 
     // 6. Venue details (3 s)
     setTimeout(() => show(invVenue), 3000);
@@ -2918,7 +2944,7 @@
     setTimeout(() => { show(invMobNameR); show(invMobParentR); }, 1500); // Rahul
     setTimeout(() => show(invMobAnd), 1700);                             // "and"
     setTimeout(() => { show(invMobNameK); show(invMobParentK); }, 1900); // Kashish
-    setTimeout(() => { show(invMobDateOn); show(invMobDate); }, 2300);   // date
+    setTimeout(() => { show(invMobDateOn); show(invMobDate); show(invMobTime); }, 2300);   // date
     setTimeout(() => show(invMobVenue),   2700);  // venue
     setTimeout(() => { show(invMobOrnBot); show(invMobBB); }, 3000);     // ornament + bottom border
   }, { threshold: 0.15 });
