@@ -523,11 +523,11 @@
       position: absolute;
       left: 26.93px; top: 29.82px; width: 342.413px;
       display: flex; flex-direction: column;
-      align-items: center; gap: 47.13px;
+      align-items: center; gap: 36px;
     }
     .wedding-details {
       display: flex; flex-direction: column;
-      align-items: center; gap: 61.557px;
+      align-items: center; gap: 44px;
       color: #ae1919; text-align: center; width: 100%;
     }
 
@@ -536,19 +536,22 @@
       font-family: 'Raleway', sans-serif; font-weight: 600;
       font-size: 15.389px; letter-spacing: 1.5389px;
       text-transform: uppercase; line-height: 1.5;
-      color: #ae1919; width: 260.657px;
+      color: #ae1919; width: 300px;
       opacity: 0; transition: opacity 0.8s ease;
     }
     .wedding-invited.inv-show { opacity: 1; }
 
     .wedding-date-block {
-      display: inline-grid;
-      grid-template-columns: max-content; grid-template-rows: max-content;
-      place-items: start; white-space: nowrap; line-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      white-space: nowrap;
+      line-height: 1;
     }
     .wedding-date-on {
-      grid-column: 1; grid-row: 1;
-      margin-left: 155.82px;
+      margin-left: 0;
       font-family: 'Raleway', sans-serif; font-weight: 600;
       font-size: 11.542px; letter-spacing: 1.1542px;
       text-transform: uppercase; line-height: 1.5; color: #ae1919;
@@ -557,8 +560,7 @@
     .wedding-date-on.inv-show { opacity: 1; }
 
     .wedding-date {
-      grid-column: 1; grid-row: 1;
-      margin-top: 34.63px;
+      margin-top: 0;
       font-family: 'TAN Mon Cheri', serif;
       font-size: 34.626px; letter-spacing: 3.4626px;
       line-height: 1.5; color: #ae1919;
@@ -567,15 +569,17 @@
     }
     .wedding-date.inv-show { opacity: 1; transform: scale(1); }
     .wedding-time {
-      grid-column: 1; grid-row: 1;
-      margin-top: 84.63px;
+      margin-top: 0;
       justify-self: center;
       font-family: 'Raleway', sans-serif; font-weight: 600;
       font-size: 13px; letter-spacing: 1.5389px;
       text-transform: uppercase; line-height: 1.5; color: #ae1919;
       text-align: center;
+      white-space: normal;
+      max-width: 290px;
       opacity: 0; transition: opacity 0.6s ease;
     }
+    .wedding-time--second { margin-top: 2px; }
     .wedding-time.inv-show { opacity: 1; }
 
     .wedding-venue {
@@ -693,7 +697,7 @@
 
     /* Single main card: 354×674px */
     .imob-card {
-      width: 354px; height: 674px;
+      width: 354px; height: 706px;
       border-radius: 170px;
       border: 3px solid #873f3a;
       overflow: hidden; position: relative; flex-shrink: 0;
@@ -749,6 +753,8 @@
       font-size: 12px; letter-spacing: 1.2px;
       text-transform: uppercase; line-height: 1.5;
       color: #ae1919; text-align: center; width: 100%;
+      max-width: 264px;
+      margin: 0 auto;
       flex-shrink: 0;
       opacity: 0; transition: opacity 0.7s ease;
     }
@@ -823,8 +829,11 @@
       font-size: 10px; letter-spacing: 1px;
       text-transform: uppercase; line-height: 1.5; color: #ae1919;
       text-align: center;
+      white-space: normal;
+      max-width: 240px;
       opacity: 0; transition: opacity 0.6s ease;
     }
+    .imob-time--second { margin-top: 98px; }
     .imob-time.inv-show { opacity: 1; }
 
     /* Venue */
@@ -2093,11 +2102,12 @@
                   <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
                 </div>
                 <div class="wedding-details">
-                  <p class="wedding-invited">You are Cordially Invited to join the wedding ceremony</p>
+                  <p class="wedding-invited">You are Cordially Invited<br>to join the wedding ceremony</p>
                   <div class="wedding-date-block">
                     <p class="wedding-date-on">On</p>
                     <p class="wedding-date">June 21, 2026</p>
-                    <p class="wedding-time">10 AM ONWARDS</p>
+                    <p class="wedding-time">9:15 AM Thalikeetu @ Uthralikkavu Bhagavathi Temple</p>
+                    <p class="wedding-time wedding-time--second">10 AM ONWARDS @ The River Retreat</p>
                   </div>
                   <div class="wedding-venue">
                     <span class="wedding-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
@@ -2216,7 +2226,8 @@
               <div class="imob-date-block">
                 <span class="imob-date-on" id="invMobDateOn">On</span>
                 <span class="imob-date" id="invMobDate">June 21, 2026</span>
-                <span class="imob-time" id="invMobTime">10 AM ONWARDS</span>
+                <span class="imob-time">9:15 AM Thalikeetu @ Uthralikkavu Bhagavathi Temple</span>
+                <span class="imob-time imob-time--second">10 AM ONWARDS @ The River Retreat</span>
               </div>
 
               <!-- Venue -->
@@ -2638,7 +2649,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">Is there parking at the venue?</p>
               </div>
-              <p class="faq-answer">Yes, parking is available at both venues. At The River Retreat, there is on-site parking. For the reception at The Date Banquets, parking is available in and around Jhilmil Industrial Area, Delhi.</p>
+              <p class="faq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events (Haldi and Sangeet). For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
             </div>
 
             <div class="faq-item">
@@ -2739,7 +2750,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">Is there parking at the venue?</p>
               </div>
-              <p class="fmfaq-answer">Yes, parking is available at both venues. At The River Retreat, there is on-site parking. For the reception at The Date Banquets, parking is available in and around Jhilmil Industrial Area, Delhi.</p>
+              <p class="fmfaq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events (Haldi and Sangeet). For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2894,7 +2905,7 @@
   const invInvited  = invSect.querySelector('.wedding-invited');
   const invDateOn   = invSect.querySelector('.wedding-date-on');
   const invDate     = invSect.querySelector('.wedding-date');
-  const invTime     = invSect.querySelector('.wedding-time');
+  const invTimes    = invSect.querySelectorAll('.wedding-time');
   const invVenue    = invSect.querySelector('.wedding-venue');
   const invOrns     = invSect.querySelectorAll('.inv-orn, .inv-orn-flipped');
   // Mobile single-card elements
@@ -2907,7 +2918,7 @@
   const invMobParentK = document.getElementById('invMobParentK');
   const invMobDateOn  = document.getElementById('invMobDateOn');
   const invMobDate    = document.getElementById('invMobDate');
-  const invMobTime    = document.getElementById('invMobTime');
+  const invMobTimes   = invSect.querySelectorAll('.imob-time');
   const invMobVenue   = document.getElementById('invMobVenue');
   const invMobOrnBot  = document.getElementById('invMobOrnBot');
   const invMobAnd     = document.getElementById('invMobAnd');
@@ -2933,7 +2944,11 @@
     setTimeout(() => show(invInvited), 2000);
 
     // 5. "On" label + date elegant scale-up (2.5 s)
-    setTimeout(() => { show(invDateOn); show(invDate); show(invTime); }, 2500);
+    setTimeout(() => {
+      show(invDateOn);
+      show(invDate);
+      invTimes.forEach(t => show(t));
+    }, 2500);
 
     // 6. Venue details (3 s)
     setTimeout(() => show(invVenue), 3000);
@@ -2954,7 +2969,11 @@
     setTimeout(() => { show(invMobNameR); show(invMobParentR); }, 1500); // Rahul
     setTimeout(() => show(invMobAnd), 1700);                             // "and"
     setTimeout(() => { show(invMobNameK); show(invMobParentK); }, 1900); // Kashish
-    setTimeout(() => { show(invMobDateOn); show(invMobDate); show(invMobTime); }, 2300);   // date
+    setTimeout(() => {
+      show(invMobDateOn);
+      show(invMobDate);
+      invMobTimes.forEach(t => show(t));
+    }, 2300);   // date
     setTimeout(() => show(invMobVenue),   2700);  // venue
     setTimeout(() => { show(invMobOrnBot); show(invMobBB); }, 3000);     // ornament + bottom border
   }, { threshold: 0.15 });
