@@ -1682,7 +1682,8 @@
       height: 100%;
       display: block;
       opacity: 0.82;
-      animation: heroCurveFallbackDrift 14s linear infinite;
+      /* Static on iPhone: Lottie is paused on one frame (see JS); no drift */
+      animation: none;
       transform-origin: center center;
     }
 
@@ -1715,11 +1716,6 @@
     @keyframes writeReveal  { to { opacity: 1; clip-path: inset(0 0% 0 0); } }
     @keyframes arcRevealTL  { to { opacity: 1; clip-path: inset(0 0% 0% 0); } }
     @keyframes arcRevealBR  { to { opacity: 1; clip-path: inset(0% 0 0 0%); } }
-    @keyframes heroCurveFallbackDrift {
-      0%   { transform: translateX(-2.5%) translateY(0); }
-      50%  { transform: translateX(2.5%) translateY(-0.8%); }
-      100% { transform: translateX(-2.5%) translateY(0); }
-    }
     @keyframes photoFloat {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-6px); }
@@ -3523,11 +3519,16 @@
         var anim = window.lottie.loadAnimation({
           container: lottieRoot,
           renderer: 'svg',
-          loop: true,
-          autoplay: true,
+          loop: false,
+          autoplay: false,
           path: 'images/flow-text-mobile.json'
         });
-        anim.setSpeed(0.2);
+        // Static curved text: show a single frame (no looping motion)
+        anim.addEventListener('DOMLoaded', function () {
+          var last = anim.totalFrames > 0 ? anim.totalFrames - 1 : 0;
+          var frame = Math.min(30, last);
+          anim.goToAndStop(frame, true);
+        });
       });
     }
 
