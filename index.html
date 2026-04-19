@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rahul &amp; Kashish — 21.06.2026</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" defer></script>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;500&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet">
@@ -299,14 +298,14 @@
       }
     }
 
-    /* Mobile hero shell */
+    /* Mobile hero shell — above curved text (z-index 0) so photo + copy sit in front */
     #heroMobileContent {
       flex-direction: column;
       align-items: center;
       gap: 24px;
       padding: 36px 12px 24px;
       width: 100%;
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
     }
 
     /* Title */
@@ -1653,7 +1652,7 @@
 
     /* Styling is on SVG presentation attributes; no override needed here */
 
-    /* Mobile curved text — SVG textPath (mirrors desktop) */
+    /* Mobile curved text — SVG textPath; sits under #heroMobileContent (photo + headline) */
     #heroTextSvgMob {
       position: absolute;
       left: -1px;
@@ -1661,39 +1660,15 @@
       width: calc(100% + 1px);
       height: auto;
       pointer-events: none;
-      z-index: 1;
+      z-index: 0;
       display: none; /* hidden on desktop */
       overflow: visible;
-    }
-    /* iOS mobile fallback: animated curved text media (no live textPath shaping). */
-    #heroTextSvgMobIos {
-      position: absolute;
-      left: -1px;
-      top: 102px;
-      width: calc(100% + 1px);
-      aspect-ratio: 402.042 / 518.999;
-      pointer-events: none;
-      z-index: 1;
-      display: none;
-      overflow: visible;
-    }
-    #heroTextSvgMobIos .hero-lottie {
-      width: 100%;
-      height: 100%;
-      display: block;
-      opacity: 0.82;
-      /* Static on iPhone: Lottie is paused on one frame (see JS); no drift */
-      animation: none;
-      transform-origin: center center;
     }
 
     @media (max-width: 767px) {
       #heroTextSvg    { display: none; }
       #heroTextSvgMob { display: block; }
-      #heroTextSvgMobIos { display: none; }
       .hmq-track      { display: none; }
-      .ios-hero-curve-fix #heroTextSvgMob { display: none !important; }
-      .ios-hero-curve-fix #heroTextSvgMobIos { display: block !important; }
     }
 
     /* Enable ligatures for Indic scripts — desktop and mobile */
@@ -1940,22 +1915,16 @@
 
       </defs>
 
-      <!-- 8 repetitions → from="-50%" to="0%" seamless loop -->
+      <!-- Static text on curve (mobile + iPhone): no SMIL animate -->
       <text xml:space="preserve"
             font-family="'Noto Sans Malayalam Local','Noto Sans Devanagari Local','Noto Sans',sans-serif"
             font-size="16" fill="#8B1A1A" opacity="0.75"
             mask="url(#edgeMaskMob)">
-        <textPath href="#flowCurveMob" xlink:href="#flowCurveMob" startOffset="0%">
-          <animate attributeName="startOffset"
-                   from="-50%" to="0%"
-                   dur="40s" repeatCount="indefinite" calcMode="linear"/>
+        <textPath href="#flowCurveMob" xlink:href="#flowCurveMob" startOffset="-28%">
           രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
         </textPath>
       </text>
     </svg>
-    <div id="heroTextSvgMobIos" aria-hidden="true">
-      <div id="heroTextLottie" class="hero-lottie"></div>
-    </div>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3510,38 +3479,12 @@
     if (isIOS && isWebKit) {
       document.documentElement.classList.add('ios-hero-curve-fix');
     }
-    if (isIOS && isWebKit) {
-      // Lottie script is defer'd — wait for full page load before init
-      window.addEventListener('load', function() {
-        if (!window.lottie) return;
-        var lottieRoot = document.getElementById('heroTextLottie');
-        if (!lottieRoot) return;
-        var anim = window.lottie.loadAnimation({
-          container: lottieRoot,
-          renderer: 'svg',
-          loop: false,
-          autoplay: false,
-          path: 'images/flow-text-mobile.json'
-        });
-        // Static curved text: show a single frame (no looping motion)
-        anim.addEventListener('DOMLoaded', function () {
-          var last = anim.totalFrames > 0 ? anim.totalFrames - 1 : 0;
-          var frame = Math.min(30, last);
-          anim.goToAndStop(frame, true);
-        });
-      });
-    }
 
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     function applyRM(reduced) {
-      document.querySelectorAll('#heroTextSvg animate, #heroTextSvgMob animate').forEach(el => {
+      document.querySelectorAll('#heroTextSvg animate').forEach(el => {
         reduced ? el.pauseAnimations() : el.beginElement();
       });
-      if (window.lottie) {
-        window.lottie.getRegisteredAnimations().forEach(function(anim) {
-          reduced ? anim.pause() : anim.play();
-        });
-      }
     }
     // Run once after DOM is ready (SVGs already in DOM at this point)
     applyRM(mq.matches);
