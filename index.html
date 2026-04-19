@@ -1652,7 +1652,7 @@
 
     /* Styling is on SVG presentation attributes; no override needed here */
 
-    /* Mobile curved text — SVG textPath; sits under #heroMobileContent (photo + headline) */
+    /* Mobile curved text — PNG artwork; sits under #heroMobileContent (photo + headline) */
     #heroTextSvgMob {
       position: absolute;
       left: -1px;
@@ -1663,6 +1663,15 @@
       z-index: 0;
       display: none; /* hidden on desktop */
       overflow: visible;
+      line-height: 0;
+    }
+    #heroTextSvgMob img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.88;
+      /* PNG may use black behind text; screen lets the hero photo show through black pixels */
+      mix-blend-mode: screen;
     }
 
     @media (max-width: 767px) {
@@ -1671,15 +1680,12 @@
       .hmq-track      { display: none; }
     }
 
-    /* Enable ligatures for Indic scripts — desktop and mobile */
-    #heroTextSvg text,
-    #heroTextSvgMob text {
+    /* Enable ligatures for Indic scripts — desktop SVG only */
+    #heroTextSvg text {
       font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
     }
-    /* iOS Safari can mis-render textPath + mask with Indic scripts.
-       Fallback: keep moving text visible without SVG mask fade. */
-    .ios-hero-curve-fix #heroTextSvg text,
-    .ios-hero-curve-fix #heroTextSvgMob text {
+    /* iOS Safari: relax mask on desktop curved SVG text */
+    .ios-hero-curve-fix #heroTextSvg text {
       mask: none !important;
       -webkit-mask: none !important;
       opacity: 0.72;
@@ -1879,52 +1885,10 @@
       </text>
     </svg>
 
-    <!-- If real-device rendering of Indic SVG textPath remains unstable, replace this live text with outlined SVG artwork for production. -->
-    <svg id="heroTextSvgMob"
-         viewBox="0 0 402.042 518.999"
-         preserveAspectRatio="xMidYMid meet"
-         xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
-         aria-hidden="true">
-      <defs>
-
-        <!-- Mobile curve: Figma node 587:15 with tangent extensions -->
-        <path id="flowCurveMob" fill="none" stroke="none"
-          d="M-200,529.5
-             L0.026,518.5
-             C0.026,518.5 200.026,507.5 200.026,257.5
-             C200.026,7.5 402.026,0.5 402.026,0.5
-             L602,-6.5"/>
-
-        <!-- Edge-fade gradient: opaque in centre, transparent at edges -->
-        <linearGradient id="edgeFadeGMob" gradientUnits="userSpaceOnUse"
-                        x1="0" y1="0" x2="402.042" y2="0">
-          <stop offset="0%"   stop-color="white" stop-opacity="0"/>
-          <stop offset="5%"   stop-color="white" stop-opacity="1"/>
-          <stop offset="95%"  stop-color="white" stop-opacity="1"/>
-          <stop offset="100%" stop-color="white" stop-opacity="0"/>
-        </linearGradient>
-
-        <!-- Mask: hides off-screen overflow; gradient fades edges -->
-        <mask id="edgeMaskMob" maskUnits="userSpaceOnUse"
-              x="-1000" y="-1000" width="3000" height="3000">
-          <rect x="-1000" y="-1000" width="3000" height="3000" fill="black"/>
-          <rect x="0"     y="-1000" width="402.042" height="3000"
-                fill="url(#edgeFadeGMob)"/>
-        </mask>
-
-      </defs>
-
-      <!-- Static text on curve (mobile + iPhone): no SMIL animate -->
-      <text xml:space="preserve"
-            font-family="'Noto Sans Malayalam Local','Noto Sans Devanagari Local','Noto Sans',sans-serif"
-            font-size="16" fill="#8B1A1A" opacity="0.75"
-            mask="url(#edgeMaskMob)">
-        <textPath href="#flowCurveMob" xlink:href="#flowCurveMob" startOffset="-28%">
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
-        </textPath>
-      </text>
-    </svg>
+    <!-- Mobile curved text: bilingual artwork (PNG); same slot as former SVG textPath -->
+    <div id="heroTextSvgMob" aria-hidden="true">
+      <img src="images/hero-curve-text-mobile.png?cb=1" alt="" width="402" height="519" decoding="async" />
+    </div>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
@@ -3470,8 +3434,7 @@
   // Pause SMIL <animate> elements when user prefers reduced motion
   // (CSS media query handles CSS animations; SMIL needs JS)
   (function() {
-    // iOS Safari compatibility: swap live mobile textPath with
-    // animated media fallback to prevent Indic text distortion.
+    // iOS Safari: optional class for desktop hero SVG text mask tweak.
     var ua = navigator.userAgent || '';
     var isIOS = /iP(hone|od|ad)/.test(ua) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
