@@ -1574,59 +1574,8 @@
     #lbNext { right: 12px; }
 
 
-    /* ════════════════════════════════════════════
-       HERO VECTOR CURVE — Figma design element
-       In Figma (1440×757 frame):
-         left:0, top:225.98px, w:1435px, h:506px
-         → top ≈ 29.9%, height ≈ 66.9% of frame.
-       Placed BEFORE hero-container in DOM; same
-       z-index:1, so hero-container (later in DOM)
-       renders on top — photo naturally overlays curve.
-    ════════════════════════════════════════════ */
-    /* Shared positioning for curve image + text SVG overlay.
-       Both sit at the same coordinates so text rides the curve exactly.
-       Placed before hero-container in DOM → photo renders on top naturally. */
-    /* FIX 1: guide line hidden — only text shows, not the red stroke */
-    #heroVectorCurve { display: none; }
-
-    #heroTextSvg {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      top: 50%;
-      height: 67vh;
-      transform: translateY(-50%);
-      pointer-events: none;
-      z-index: 1;
-      overflow: visible;
-    }
-
-    /* Styling is on SVG presentation attributes; no override needed here */
-
-    /* Mobile curved text — Figma-flattened vector outlines, static */
-    #heroTextSvgMob {
-      position: absolute;
-      left: 0;
-      top: 105.5px;
-      width: 100%;
-      height: auto;
-      pointer-events: none;
-      z-index: 1;
-      display: none; /* hidden on desktop */
-      opacity: 0.85;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    }
-
     @media (max-width: 767px) {
-      #heroTextSvg    { display: none; }
-      #heroTextSvgMob { display: block; }
-      .hmq-track      { display: none; }
-    }
-
-    /* Desktop SVG: enable ligatures for Indic scripts */
-    #heroTextSvg text {
-      font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
+      .hmq-track { display: none; }
     }
 
     /* ════════════════════════════════════════════

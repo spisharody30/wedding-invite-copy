@@ -1623,70 +1623,8 @@
     #lbNext { right: 12px; }
 
 
-    /* ════════════════════════════════════════════
-       HERO VECTOR CURVE — Figma design element
-       In Figma (1440×757 frame):
-         left:0, top:225.98px, w:1435px, h:506px
-         → top ≈ 29.9%, height ≈ 66.9% of frame.
-       Placed BEFORE hero-container in DOM; same
-       z-index:1, so hero-container (later in DOM)
-       renders on top — photo naturally overlays curve.
-    ════════════════════════════════════════════ */
-    /* Shared positioning for curve image + text SVG overlay.
-       Both sit at the same coordinates so text rides the curve exactly.
-       Placed before hero-container in DOM → photo renders on top naturally. */
-    /* FIX 1: guide line hidden — only text shows, not the red stroke */
-    #heroVectorCurve { display: none; }
-
-    #heroTextSvg {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      top: 50%;
-      height: 67vh;
-      transform: translateY(-50%);
-      pointer-events: none;
-      z-index: 1;
-      overflow: visible;
-    }
-
-    /* Styling is on SVG presentation attributes; no override needed here */
-
-    /* Mobile curved text — PNG artwork; sits under #heroMobileContent (photo + headline) */
-    #heroTextSvgMob {
-      position: absolute;
-      left: -1px;
-      top: 102px;
-      width: calc(100% + 1px);
-      height: auto;
-      pointer-events: none;
-      z-index: 0;
-      display: none; /* hidden on desktop */
-      overflow: visible;
-      line-height: 0;
-    }
-    #heroTextSvgMob img {
-      width: 100%;
-      height: auto;
-      display: block;
-      opacity: 0.92;
-    }
-
     @media (max-width: 767px) {
-      #heroTextSvg    { display: none; }
-      #heroTextSvgMob { display: block; }
-      .hmq-track      { display: none; }
-    }
-
-    /* Enable ligatures for Indic scripts — desktop SVG only */
-    #heroTextSvg text {
-      font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
-    }
-    /* iOS Safari: relax mask on desktop curved SVG text */
-    .ios-hero-curve-fix #heroTextSvg text {
-      mask: none !important;
-      -webkit-mask: none !important;
-      opacity: 0.72;
+      .hmq-track { display: none; }
     }
 
     /* ════════════════════════════════════════════
@@ -1821,72 +1759,6 @@
       <img id="heroBgImg" src="images/figma/49a27045-2763-4bf9-b72e-e154ee913c0c.jpg" alt="" />
     </div>
 
-    <!-- Figma Vector1: flowing red curve -->
-    <img id="heroVectorCurve"
-         src="images/figma/vector1-hero-curve.svg"
-         alt=""
-         aria-hidden="true" />
-
-    <!-- Continuous bilingual text flowing along the hero curve.
-         Single <text>/<textPath> with 8 repetitions for seamless loop.
-         SVG mask fades text at viewport edges; path extends off-screen.
-         DOM order: before hero-container → photo renders on top naturally. -->
-    <svg id="heroTextSvg"
-         viewBox="0 0 1436 507.101"
-         preserveAspectRatio="xMidYMid meet"
-         xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
-         aria-hidden="true">
-      <defs>
-
-        <!-- Vector1 extended 200px tangent lines on each side.
-             stroke/fill=none — guide line invisible, only text shows. -->
-        <path id="flowCurve" fill="none" stroke="none"
-          d="M-200,186.523
-             L0.498557,186.523
-             C0.498557,186.523 18.4985,444.523 240.499,497.023
-             C462.499,549.523 641.499,374.523 686.499,256.023
-             C731.499,137.523 884.999,-66.9769 1147.5,22.5231
-             C1410,112.023 1435.5,405.523 1435.5,405.523
-             L1636,405.523"/>
-
-        <!-- Edge-fade gradient: opaque in centre, transparent at viewport edges -->
-        <linearGradient id="edgeFadeG" gradientUnits="userSpaceOnUse"
-                        x1="0" y1="0" x2="1436" y2="0">
-          <stop offset="0%"   stop-color="white" stop-opacity="0"/>
-          <stop offset="3%"   stop-color="white" stop-opacity="1"/>
-          <stop offset="97%"  stop-color="white" stop-opacity="1"/>
-          <stop offset="100%" stop-color="white" stop-opacity="0"/>
-        </linearGradient>
-
-        <!-- Large mask bbox hides off-screen overflow; gradient rect fades viewport edges -->
-        <mask id="edgeMask" maskUnits="userSpaceOnUse"
-              x="-3000" y="-3000" width="8000" height="8000">
-          <rect x="-3000" y="-3000" width="8000" height="8000" fill="black"/>
-          <rect x="0"     y="-3000" width="1436" height="8000"
-                fill="url(#edgeFadeG)"/>
-        </mask>
-
-      </defs>
-
-      <!-- 2 repetitions (temporary preview) -->
-      <text xml:space="preserve"
-            font-family="'Noto Sans Malayalam Local','Noto Sans Devanagari Local','Noto Sans',sans-serif"
-            font-size="22" fill="#8B1A1A" opacity="0.75"
-            mask="url(#edgeMask)">
-        <textPath href="#flowCurve" xlink:href="#flowCurve" startOffset="0%">
-          <animate attributeName="startOffset"
-                   from="-50%" to="0%"
-                   dur="40s" repeatCount="indefinite" calcMode="linear"/>
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
-        </textPath>
-      </text>
-    </svg>
-
-    <!-- Mobile curved text: bilingual artwork (PNG); same slot as former SVG textPath -->
-    <div id="heroTextSvgMob" aria-hidden="true">
-      <img src="images/hero-curve-text-mobile.png?cb=3" alt="" width="402" height="519" decoding="async" />
-    </div>
 
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">

@@ -676,19 +676,6 @@
     });
   })();
 
-  // Pause SMIL <animate> elements when user prefers reduced motion
-  // (CSS media query handles CSS animations; SMIL needs JS)
-  (function() {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    function applyRM(reduced) {
-      document.querySelectorAll('#heroTextSvg animate').forEach(el => {
-        reduced ? el.pauseAnimations() : el.beginElement();
-      });
-    }
-    // Run once after DOM is ready (SVGs already in DOM at this point)
-    applyRM(mq.matches);
-    mq.addEventListener('change', e => applyRM(e.matches));
-  })();
 
   // ── Background music ─────────────────────────────────────────────────────
   // Wrapped in DOMContentLoaded because <audio> and <button> are parsed
