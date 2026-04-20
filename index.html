@@ -348,6 +348,38 @@
       opacity: 0; clip-path: inset(100% 0 0 100%);
       animation: arcRevealBR 0.85s cubic-bezier(0.4,0,0.2,1) 1.1s forwards;
     }
+    /* Mobile curved text — figure-8 path, between arcs and photo in stacking order */
+    .hero-mob-curved-text {
+      grid-column: 1; grid-row: 1;
+      width: 320px; height: 455px;
+      margin-left: 0; margin-top: 0;
+      position: relative; overflow: visible;
+      pointer-events: none;
+      opacity: 0;
+      animation: gentleFadeIn 0.9s ease-out 2s forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-mob-curved-text { display: none; }
+    }
+    /* Desktop curved text — lemniscate spanning full hero width */
+    .hero-desktop-curved-text {
+      display: none;
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      top: 226px;
+      width: 1440px; height: 506px;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 1;
+      opacity: 0;
+      animation: gentleFadeIn 0.9s ease-out 3.2s forwards;
+    }
+    @media (min-width: 768px) {
+      .hero-desktop-curved-text { display: block; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-desktop-curved-text { display: none !important; }
+    }
     .hero-mob-oval {
       grid-column: 1; grid-row: 1;
       width: 278.66px; height: 408.038px;
@@ -1760,6 +1792,39 @@
     </div>
 
 
+    <!-- Desktop: lemniscate (figure-8) curved text — matches Figma node 488:1239 -->
+    <!-- Path: two loops crossing at the photo center (720, 253) in element coords.   -->
+    <!-- Upper-left loop traces the TL photo arc; lower-right traces the BR arc.      -->
+    <!-- z-index:0 keeps it behind hero-container (z-index:1) but above the bg.       -->
+    <svg class="hero-desktop-curved-text"
+         viewBox="0 0 1440 506"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true"
+         id="heroTextSvg">
+      <defs>
+        <path id="desktop-hero-text-path"
+          d="M 588,253
+             C 850,80 1420,30 1420,195
+             C 1420,360 850,370 588,253
+             C 350,170 20,210 20,343
+             C 20,476 350,480 588,253
+             Z"/>
+      </defs>
+      <text
+        font-family="'Noto Sans Malayalam Local', 'Noto Sans Devanagari Local', 'Noto Sans Malayalam', 'Noto Sans Devanagari', sans-serif"
+        font-size="11"
+        fill="#8B1A1A"
+        letter-spacing="2">
+        <textPath href="#desktop-hero-text-path">
+          <animate attributeName="startOffset"
+                   from="0%" to="100%"
+                   dur="80s"
+                   repeatCount="indefinite"/>
+          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार •
+        </textPath>
+      </text>
+    </svg>
+
     <!-- Mobile hero (≤767px) -->
     <div id="heroMobileContent">
       <p class="hero-mob-headline">We are getting married!!!</p>
@@ -1786,6 +1851,46 @@
           <div class="hero-mob-arc-br">
             <img src="images/figma/f897c83e-hero-mob-arc-br.svg" alt="" />
           </div>
+
+          <!-- Curved text along figure-8 path — sits behind photo oval -->
+          <svg class="hero-mob-curved-text"
+               viewBox="-20 -10 375 470"
+               xmlns="http://www.w3.org/2000/svg"
+               aria-hidden="true">
+            <defs>
+              <!--
+                Figure-8 path tracing the two red decorative arcs:
+                  upper loop → around the top-left arc (TL quadrant of photo grid)
+                  lower loop → around the bottom-right arc (BR quadrant)
+                Crossing at the photo center (~155, 228); that portion hides
+                behind the photo oval which sits on top in the stacking order.
+                Coordinate space: 320 × 455 px (photo grid dimensions).
+              -->
+              <path id="mob-hero-text-path"
+                d="M 155,228
+                   C 80,200 -15,168 -15,90
+                   C -15,12 78,-5 155,38
+                   C 232,81 260,170 155,228
+                   C 50,286 62,380 155,418
+                   C 248,456 335,432 335,354
+                   C 335,276 250,252 155,228
+                   Z"/>
+            </defs>
+            <text
+              font-family="'Noto Sans Malayalam Local', 'Noto Sans Devanagari Local', 'Noto Sans Malayalam', 'Noto Sans Devanagari', sans-serif"
+              font-size="8.5"
+              fill="#8B1A1A"
+              letter-spacing="1.3">
+              <textPath href="#mob-hero-text-path">
+                <animate attributeName="startOffset"
+                         from="0%" to="100%"
+                         dur="60s"
+                         repeatCount="indefinite"/>
+                രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार • രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം • दो दिल, दो भाषाएं, एक प्यार •
+              </textPath>
+            </text>
+          </svg>
+
           <div class="hero-mob-oval">
             <img src="images/figma/944004b3-hero-mob-photo.jpg" alt="Rahul and Kashish" />
           </div>
@@ -2332,6 +2437,66 @@
         <div class="c3d-slide" data-idx="5">
           <div class="c3d-frame">
             <img src="images/gallery-11.png?cb=1" alt="Rahul and Kashish at home with a celebration cake" loading="lazy" />
+          </div>
+          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
+            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span class="c3d-heart-count">0</span>
+          </button>
+        </div>
+
+        <div class="c3d-slide" data-idx="6">
+          <div class="c3d-frame">
+            <img src="images/gallery-12.png" alt="Rahul and Kashish in an elegant portrait together" loading="lazy" />
+          </div>
+          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
+            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span class="c3d-heart-count">0</span>
+          </button>
+        </div>
+
+        <div class="c3d-slide" data-idx="7">
+          <div class="c3d-frame">
+            <img src="images/gallery-13.png" alt="Rahul and Kashish smiling in a traditional portrait" loading="lazy" />
+          </div>
+          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
+            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span class="c3d-heart-count">0</span>
+          </button>
+        </div>
+
+        <div class="c3d-slide" data-idx="8">
+          <div class="c3d-frame">
+            <img src="images/gallery-14.png" alt="Rahul and Kashish laughing at a colorful celebration" loading="lazy" />
+          </div>
+          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
+            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span class="c3d-heart-count">0</span>
+          </button>
+        </div>
+
+        <div class="c3d-slide" data-idx="9">
+          <div class="c3d-frame">
+            <img src="images/gallery-15.png" alt="Rahul and Kashish sharing a candid selfie" loading="lazy" />
+          </div>
+          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
+            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span class="c3d-heart-count">0</span>
+          </button>
+        </div>
+
+        <div class="c3d-slide" data-idx="10">
+          <div class="c3d-frame">
+            <img src="images/gallery-16.png" alt="Rahul and Kashish celebrating together in traditional attire" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3315,7 +3480,7 @@
 
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     function applyRM(reduced) {
-      document.querySelectorAll('#heroTextSvg animate').forEach(el => {
+      document.querySelectorAll('#heroTextSvg animate, .hero-mob-curved-text animate').forEach(el => {
         reduced ? el.pauseAnimations() : el.beginElement();
       });
     }
