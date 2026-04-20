@@ -367,7 +367,7 @@
       position: absolute;
       left: 50%; transform: translateX(-50%);
       top: 226px;
-      width: 1440px; height: 506px;
+      width: 1436px; height: 507px;
       pointer-events: none;
       overflow: visible;
       z-index: 1;
@@ -556,9 +556,11 @@
       display: flex; flex-direction: column;
       align-items: center; gap: 36px;
     }
+    /* Match bottom flourish position with left/right cards */
+    .wedding-inner .inv-orn-flipped { margin-top: 44px; }
     .wedding-details {
       display: flex; flex-direction: column;
-      align-items: center; gap: 44px;
+      align-items: center; gap: 34px;
       color: #ae1919; text-align: center; width: 100%;
     }
 
@@ -616,12 +618,15 @@
     .wedding-venue {
       font-family: 'Raleway', sans-serif; font-weight: 600;
       text-transform: uppercase; text-align: center;
-      color: #ae1919; line-height: 0;
+      color: #ae1919; line-height: 1.5;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
       opacity: 0; transition: opacity 0.8s ease;
     }
     .wedding-venue.inv-show { opacity: 1; }
-    .wedding-venue-name { font-size: 19.237px; letter-spacing: 2.0776px; line-height: 2; display: block; }
-    .wedding-venue-loc  { font-size: 11.542px; letter-spacing: 2.0776px; line-height: 2; display: block; }
+    .wedding-venue-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .wedding-venue-time,
+    .wedding-venue-name,
+    .wedding-venue-loc  { font-size: 13px; letter-spacing: 1.5389px; line-height: 1.5; display: block; }
 
     /* ── Map link icon (shared across all venue mentions) ── */
     .venue-map-link {
@@ -748,14 +753,14 @@
       left: 50%; top: calc(50% - 0.14px);
       transform: translate(-50%, -50%);
       display: flex; flex-direction: column;
-      gap: 40px; align-items: center;
+      gap: 48px; align-items: center;
       width: 300px;
     }
 
     /* Inner content block: invited text, names-group, date, venue */
     .imob-content {
       display: flex; flex-direction: column;
-      gap: 33px; align-items: center;
+      gap: 27px; align-items: center;
       width: 100%;
     }
 
@@ -871,12 +876,15 @@
     .imob-venue {
       font-family: 'Raleway', sans-serif; font-weight: 600;
       text-transform: uppercase; text-align: center;
-      color: #ae1919; line-height: 0; flex-shrink: 0;
+      color: #ae1919; line-height: 1.5; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
       opacity: 0; transition: opacity 0.7s ease;
     }
     .imob-venue.inv-show { opacity: 1; }
-    .imob-venue-name { font-size: 16px; letter-spacing: 1.8692px; line-height: 1.5; display: block; }
-    .imob-venue-loc  { font-size: 10px;  letter-spacing: 1.8692px; line-height: 1.5; display: block; }
+    .imob-venue-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .imob-venue-time,
+    .imob-venue-name,
+    .imob-venue-loc  { font-size: 10px; letter-spacing: 1px; line-height: 1.5; display: block; }
 
     /* Bottom ornament */
     .imob-orn-bot {
@@ -1792,22 +1800,22 @@
     </div>
 
 
-    <!-- Desktop: lemniscate (figure-8) curved text — matches Figma node 488:1239 -->
-    <!-- Path: two loops crossing at the photo center (720, 253) in element coords.   -->
-    <!-- Upper-left loop traces the TL photo arc; lower-right traces the BR arc.      -->
-    <!-- z-index:0 keeps it behind hero-container (z-index:1) but above the bg.       -->
+    <!-- Desktop: S-curve text path — exact path data from Figma node 488:1239        -->
+    <!-- Path: open S-curve closed with a hidden return segment below the viewBox.    -->
+    <!-- z-index:1 keeps it behind hero-container (also z-index:1, later in DOM).     -->
     <svg class="hero-desktop-curved-text"
-         viewBox="0 0 1440 506"
+         viewBox="0 0 1436 507"
          xmlns="http://www.w3.org/2000/svg"
          aria-hidden="true"
          id="heroTextSvg">
       <defs>
         <path id="desktop-hero-text-path"
-          d="M 588,253
-             C 850,80 1420,30 1420,195
-             C 1420,360 850,370 588,253
-             C 350,170 20,210 20,343
-             C 20,476 350,480 588,253
+          d="M 0.5,186.5
+             C 0.5,186.5 18.5,444.5 240.5,497
+             C 462.5,549.5 641.5,374.5 686.5,256
+             C 731.5,137.5 885,-67 1147.5,22.5
+             C 1410,112 1435.5,405.5 1435.5,405.5
+             C 1435.5,1000 0.5,1000 0.5,186.5
              Z"/>
       </defs>
       <text
@@ -1852,28 +1860,17 @@
             <img src="images/figma/f897c83e-hero-mob-arc-br.svg" alt="" />
           </div>
 
-          <!-- Curved text along figure-8 path — sits behind photo oval -->
+          <!-- Curved text along S-curve path — exact path from Figma node 870:37 -->
           <svg class="hero-mob-curved-text"
-               viewBox="-20 -10 375 470"
+               viewBox="0 0 402 519"
                xmlns="http://www.w3.org/2000/svg"
                aria-hidden="true">
             <defs>
-              <!--
-                Figure-8 path tracing the two red decorative arcs:
-                  upper loop → around the top-left arc (TL quadrant of photo grid)
-                  lower loop → around the bottom-right arc (BR quadrant)
-                Crossing at the photo center (~155, 228); that portion hides
-                behind the photo oval which sits on top in the stacking order.
-                Coordinate space: 320 × 455 px (photo grid dimensions).
-              -->
               <path id="mob-hero-text-path"
-                d="M 155,228
-                   C 80,200 -15,168 -15,90
-                   C -15,12 78,-5 155,38
-                   C 232,81 260,170 155,228
-                   C 50,286 62,380 155,418
-                   C 248,456 335,432 335,354
-                   C 335,276 250,252 155,228
+                d="M 0.026,518.5
+                   C 0.026,518.5 200.026,507.5 200.026,257.5
+                   C 200.026,7.5 402.026,0.5 402.026,0.5
+                   C 402,700 0,700 0.026,518.5
                    Z"/>
             </defs>
             <text
@@ -2010,12 +2007,16 @@
                   <div class="wedding-date-block">
                     <p class="wedding-date-on">On</p>
                     <p class="wedding-date">June 21, 2026</p>
-                    <p class="wedding-time">9:15 AM Thalikeetu @ Uthralikkavu Bhagavathi Temple</p>
-                    <p class="wedding-time wedding-time--second">10 AM ONWARDS @ The River Retreat</p>
                   </div>
                   <div class="wedding-venue">
-                    <span class="wedding-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                    <span class="wedding-venue-loc">Cheruthuruthi, Thrissur, Kerala</span>
+                    <div class="wedding-venue-item">
+                      <span class="wedding-venue-time">9:15 AM THALIKEETU</span>
+                      <span class="wedding-venue-loc">UTHRALIKKAVU BHAGAVATHI TEMPLE<a href="https://maps.app.goo.gl/h44P8eshKvWamjZX8" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open Uthralikkavu Bhagavathi Temple in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                    </div>
+                    <div class="wedding-venue-item">
+                      <span class="wedding-venue-time">10 AM ONWARDS</span>
+                      <span class="wedding-venue-name">THE RIVER RETREAT<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                    </div>
                   </div>
                 </div>
                 <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
@@ -2130,14 +2131,18 @@
               <div class="imob-date-block">
                 <span class="imob-date-on" id="invMobDateOn">On</span>
                 <span class="imob-date" id="invMobDate">June 21, 2026</span>
-                <span class="imob-time">9:15 AM Thalikeetu @ Uthralikkavu Bhagavathi Temple</span>
-                <span class="imob-time imob-time--second">10 AM ONWARDS @ The River Retreat</span>
               </div>
 
               <!-- Venue -->
               <div class="imob-venue" id="invMobVenue">
-                <span class="imob-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                <span class="imob-venue-loc">Cheruthuruthi, Thrissur, Kerala</span>
+                <div class="imob-venue-item">
+                  <span class="imob-venue-time">9:15 AM THALIKEETU</span>
+                  <span class="imob-venue-loc">UTHRALIKKAVU BHAGAVATHI TEMPLE<a href="https://maps.app.goo.gl/h44P8eshKvWamjZX8" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open Uthralikkavu Bhagavathi Temple in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                </div>
+                <div class="imob-venue-item">
+                  <span class="imob-venue-time">10 AM ONWARDS</span>
+                  <span class="imob-venue-name">THE RIVER RETREAT<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                </div>
               </div>
 
             </div><!-- /imob-content -->
