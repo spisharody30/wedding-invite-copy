@@ -289,10 +289,12 @@
       /* Prevent horizontal scroll at the scroll-container level so the
          canvas can extend 120px beyond the hero section on each side. */
       #pageContainer { overflow-x: hidden; }
-      /* Section grows to natural content height */
+      /* Keep hero bounded on mobile (avoid stretched viewport look). */
       #heroSection {
         height: clamp(700px, 100svh, 800px) !important;
-        min-height: clamp(700px, 100svh, 800px);
+        min-height: 700px;
+        max-height: 800px;
+        overflow: hidden;
         /* overflow-x intentionally removed — #pageContainer clips instead */
         align-items: flex-start;
         justify-content: flex-start;
@@ -304,7 +306,7 @@
       flex-direction: column;
       align-items: center;
       gap: 24px;
-      padding: 36px 12px 24px;
+      padding: 36px 12px calc(clamp(24px, 6svh, 48px) + env(safe-area-inset-bottom));
       width: 100%;
       position: relative; z-index: 2;
     }
@@ -426,7 +428,7 @@
     .hero-mob-cta {
       display: flex; flex-direction: column;
       align-items: center; gap: 8px;
-      margin-top: clamp(24px, 6svh, 48px);
+      margin-top: clamp(20px, 4svh, 34px);
       opacity: 0; animation: gentleFadeIn 0.9s ease-out 1.6s forwards;
     }
     .hero-mob-date {
