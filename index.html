@@ -681,6 +681,20 @@
       color: inherit;
       text-transform: inherit;
     }
+    /* Avoid scaling full venue text when it's clickable */
+    .func-venue-name .venue-map-link,
+    .func-venue-addr .venue-map-link,
+    .fmob-venue-name .venue-map-link,
+    .fmob-venue-addr .venue-map-link {
+      transform: none;
+    }
+    .func-venue-name .venue-map-link:hover,
+    .func-venue-addr .venue-map-link:hover,
+    .fmob-venue-name .venue-map-link:hover,
+    .fmob-venue-addr .venue-map-link:hover {
+      transform: none;
+      opacity: 0.82;
+    }
     .venue-map-icon { width: 18px; height: 18px; display: block; }
     @media (max-width: 767px) { .venue-map-icon { width: 20px; height: 20px; } }
 
@@ -2283,8 +2297,8 @@
             </div>
             <p class="func-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
             <div class="func-venue">
-              <p class="func-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-              <p class="func-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+              <p class="func-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+              <p class="func-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
             </div>
           </div>
         </div>
@@ -2307,8 +2321,8 @@
             </div>
             <p class="func-body">Get ready for song battles, surprise choreography, and at least one uncle who thinks he's the main character. Dress to impress, dance to exhaust.</p>
             <div class="func-venue">
-              <p class="func-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-              <p class="func-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+              <p class="func-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+              <p class="func-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
             </div>
           </div>
         </div>
@@ -2331,8 +2345,8 @@
             </div>
             <p class="func-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
             <div class="func-venue func-venue--left">
-              <p class="func-venue-name">The Date Banquets<a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The Date Banquets in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-              <p class="func-venue-addr">Jhilmil Industrial Area, Delhi</p>
+              <p class="func-venue-name"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">The Date Banquets<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+              <p class="func-venue-addr"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi</a></p>
             </div>
           </div>
         </div>
@@ -2380,8 +2394,8 @@
                 </div>
                 <p class="fmob-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
                 <div class="fmob-venue">
-                  <p class="fmob-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-                  <p class="fmob-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+                  <p class="fmob-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+                  <p class="fmob-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
                 </div>
               </div>
             </div>
@@ -2398,8 +2412,8 @@
                 </div>
                 <p class="fmob-body">Get ready for song battles, surprise choreography, and at least one uncle who thinks he's the main character. Dress to impress, dance to exhaust.</p>
                 <div class="fmob-venue">
-                  <p class="fmob-venue-name">The River Retreat<a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The River Retreat in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-                  <p class="fmob-venue-addr">Cheruthuruthi, Thrissur, Kerala</p>
+                  <p class="fmob-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+                  <p class="fmob-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
                 </div>
               </div>
             </div>
@@ -2416,8 +2430,8 @@
                 </div>
                 <p class="fmob-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
                 <div class="fmob-venue">
-                  <p class="fmob-venue-name">The Date Banquets<a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link" aria-label="Open The Date Banquets in Google Maps" title="View on map"><svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-                  <p class="fmob-venue-addr fmob-venue-addr--spaced">Jhilmil Industrial Area, Delhi</p>
+                  <p class="fmob-venue-name"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">The Date Banquets<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+                  <p class="fmob-venue-addr fmob-venue-addr--spaced"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi</a></p>
                 </div>
               </div>
             </div>
