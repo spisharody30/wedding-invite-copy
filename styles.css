@@ -332,6 +332,38 @@
       opacity: 0; clip-path: inset(100% 0 0 100%);
       animation: arcRevealBR 0.85s cubic-bezier(0.4,0,0.2,1) 1.1s forwards;
     }
+    /* Desktop S-curve / lemniscate curved text — absolutely positioned in hero section */
+    .hero-desktop-curved-text {
+      display: none; /* shown only on desktop via media query below */
+      position: absolute;
+      left: 0; top: 226px;
+      width: 1440px; height: 506px;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 0;
+      opacity: 0;
+      animation: gentleFadeIn 0.9s ease-out 3.2s forwards;
+    }
+    @media (min-width: 768px) {
+      .hero-desktop-curved-text { display: block; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-desktop-curved-text { display: none !important; }
+    }
+
+    /* Curved text SVG — sits between arcs and photo oval in grid stacking order */
+    .hero-mob-curved-text {
+      grid-column: 1; grid-row: 1;
+      width: 320px; height: 455px;
+      margin-left: 0; margin-top: 0;
+      position: relative; overflow: visible;
+      pointer-events: none;
+      opacity: 0;
+      animation: gentleFadeIn 0.9s ease-out 2s forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-mob-curved-text { display: none; }
+    }
     .hero-mob-oval {
       grid-column: 1; grid-row: 1;
       width: 278.66px; height: 408.038px;

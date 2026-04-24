@@ -516,6 +516,10 @@
     }
     .inv-card--thick { border-width: 4.809px; }
     .inv-card--soft  { box-shadow: 0 7.695px 19.237px rgba(0,0,0,0.5); }
+    /* First wedding card: extra venue block (reception in Delhi) */
+    .inv-card--pill-extended {
+      height: 860px;
+    }
 
     /* Directional entrance states */
     .inv-card-center { transform: scale(0.9) translateY(20px); }
@@ -526,7 +530,7 @@
     .inv-card-right.inv-show  { opacity: 1; transform: none; }
 
     .inv-card-bg {
-      position: absolute; inset: 0;
+      position: absolute; inset: 0; z-index: 0;
       border-radius: 960.873px; background: #F8F4EC; overflow: hidden;
     }
     .inv-card-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -580,11 +584,53 @@
     .wedding-inner {
       position: absolute;
       left: 26.93px; top: 29.82px; width: 342.413px;
+      z-index: 1;
       display: flex; flex-direction: column;
       align-items: center; gap: 36px;
     }
     /* Match bottom flourish position with left/right cards */
     .wedding-inner .inv-orn-flipped { margin-top: 44px; }
+    /* Tall first card: fill pill height + pin flourish so venue copy is not clipped */
+    .wedding-inner--extended-pill {
+      top: 29.82px;
+      bottom: 36px;
+      gap: 0;
+      box-sizing: border-box;
+    }
+    .wedding-inner--extended-pill .inv-orn-mandala {
+      margin-bottom: 36px;
+    }
+    .wedding-inner--extended-pill .inv-orn-flipped {
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    /* Third card (reception): pin flourish + wider block gaps; top mandala aligns with cards 1 & 2 */
+    .wedding-inner--balance-bottom {
+      top: 29.82px;
+      bottom: 36px;
+      box-sizing: border-box;
+      gap: 0;
+      padding-top: 0;
+    }
+    .wedding-inner--balance-bottom .inv-orn-mandala {
+      margin-bottom: 36px; /* match base .wedding-inner gap below mandala */
+    }
+    .wedding-inner--balance-bottom .inv-orn-flipped {
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    .wedding-inner--balance-bottom .wedding-details {
+      gap: 48px;
+    }
+    .wedding-inner--balance-bottom .wedding-date-block {
+      gap: 12px;
+    }
+    .wedding-inner--balance-bottom .wedding-venue {
+      gap: 18px;
+    }
+    .wedding-inner--balance-bottom .wedding-venue-item {
+      gap: 10px;
+    }
     .wedding-details {
       display: flex; flex-direction: column;
       align-items: center; gap: 34px;
@@ -651,6 +697,68 @@
     }
     .wedding-venue.inv-show { opacity: 1; }
     .wedding-venue-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    /* ── Couple card (desktop middle) ── */
+    .couple-inner {
+      position: absolute;
+      left: 50%;
+      top: 29.82px; /* align top ornament with .wedding-inner */
+      bottom: 36px;
+      z-index: 1;
+      transform: translateX(-50%);
+      width: calc(100% - 48px);
+      max-width: 336px;
+      display: flex; flex-direction: column;
+      align-items: center;
+      gap: 36px; /* match mandala→copy gap on wedding cards */
+      box-sizing: border-box;
+    }
+    .couple-inner .inv-orn-flipped {
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    .couple-text-block {
+      display: flex; flex-direction: column;
+      align-items: stretch;
+      gap: 26px;
+      width: 100%;
+      text-align: center;
+    }
+    .couple-and {
+      font-family: 'Brittany Signature', cursive;
+      font-size: 52px;
+      line-height: 0.9;
+      color: #ae1919;
+      margin: 6px 0 32px;
+      width: 100%;
+      text-align: center;
+    }
+    .couple-text-block .person-name {
+      font-size: 62px !important;
+      line-height: 0.88 !important;
+      width: 100%;
+      text-align: center;
+    }
+    .couple-text-block .person-parentage {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 1.5389px;
+      line-height: 1.5;
+      text-transform: uppercase;
+      color: #ae1919;
+      max-width: none;
+      width: 100%;
+      margin: 0;
+      text-align: center;
+      box-sizing: border-box;
+      /* Letter-spacing adds trailing gap; pad so lines look optically centered */
+      padding-right: 1.5389px;
+    }
+    .couple-text-block .couple-parent-top {
+      margin-bottom: 0;
+    }
+    .couple-name-top { margin-bottom: 0; }
+    .couple-name-bot { margin-top: 4px; margin-bottom: 0; }
     .wedding-venue-time,
     .wedding-venue-name,
     .wedding-venue-loc  {
@@ -726,10 +834,10 @@
       text-transform: uppercase; line-height: 1.5;
     }
 
-    /* ── Mobile invitation: 402×940 scale-root canvas ── */
+    /* ── Mobile invitation: 402×1040 scale-root canvas (taller for reception block) ── */
     #invMobileRoot {
       display: none;
-      width: 402px; height: 940px;
+      width: 402px; height: 1040px;
       position: absolute; z-index: 1; overflow: hidden;
       transform-origin: top left;
     }
@@ -787,9 +895,9 @@
       position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
     }
 
-    /* Single main card: 354×674px */
+    /* Single main card: extended pill for reception venue lines */
     .imob-card {
-      width: 354px; height: 706px;
+      width: 354px; height: 820px;
       border-radius: 170px;
       border: 3px solid #873f3a;
       overflow: hidden; position: relative; flex-shrink: 0;
@@ -2058,30 +2166,11 @@
         <!-- Three invitation cards -->
         <div class="inv-cards-row">
 
-          <!-- Card 1: Rahul — slides in from left -->
+          <!-- Card 1: Wedding details card -->
           <div class="inv-card-wrap">
-            <div class="inv-card inv-card--thick inv-card-left">
+            <div class="inv-card inv-card-left inv-card--pill-extended">
               <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
-              <div class="rahul-inner">
-                <div class="inv-orn" style="width:80.794px;height:36.55px;">
-                  <img src="images/figma/fc40016f-b8f8-4773-801a-42749c518e46.svg" alt=""/>
-                </div>
-                <div class="rahul-name-block">
-                  <p class="person-name" style="font-size:82px;">Rahul</p>
-                  <p class="person-parentage">(S/O Mrs. Raji Pisharody &amp; Mr. K. P. Sreehari)</p>
-                </div>
-                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
-                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: Wedding Details — scales up from center -->
-          <div class="inv-card-wrap">
-            <div class="inv-card inv-card-center">
-              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
-              <div class="wedding-inner">
+              <div class="wedding-inner wedding-inner--extended-pill">
                 <div class="inv-orn-mandala" style="width:58.015px;height:71.176px;">
                   <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
                 </div>
@@ -2100,6 +2189,11 @@
                       <span class="wedding-venue-time">10:30 AM ONWARDS &amp; LUNCH THEREAFTER</span>
                       <span class="wedding-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">THE RIVER RETREAT, CHERUTHURUTHI<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
                     </div>
+                    <div class="wedding-venue-item">
+                      <span class="wedding-venue-time">June 27, 2026 @ 7 PM onwards</span>
+                      <span class="wedding-venue-time">The Date Banquets</span>
+                      <span class="wedding-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=The%20Date%20Banquets%20Jhilmil%20Industrial%20Area%20Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                    </div>
                   </div>
                 </div>
                 <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
@@ -2109,17 +2203,49 @@
             </div>
           </div>
 
-          <!-- Card 3: Kashish — slides in from right -->
+          <!-- Card 2: Rahul and Kashish couple card -->
+          <div class="inv-card-wrap">
+            <div class="inv-card inv-card-center">
+              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
+              <div class="couple-inner">
+                <div class="inv-orn" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/fc40016f-b8f8-4773-801a-42749c518e46.svg" alt=""/>
+                </div>
+                <div class="couple-text-block">
+                  <p class="person-parentage couple-parent-top">(S/O Mrs. Raji Pisharody &amp; Mr. K. P. Sreehari)</p>
+                  <p class="person-name couple-name-top">Rahul</p>
+                  <p class="couple-and">and</p>
+                  <p class="person-name couple-name-bot">Kashish</p>
+                  <p class="person-parentage">(D/O. Mrs. Jaya &amp; Mr. Mahesh Chandra)</p>
+                </div>
+                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Wedding details (same as card 1) — slides in from right -->
           <div class="inv-card-wrap">
             <div class="inv-card inv-card--soft inv-card-right">
               <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
-              <div class="kashish-inner">
-                <div class="inv-orn" style="width:80.794px;height:36.55px;">
-                  <img src="images/figma/c3e53c1d-60bd-46e4-9449-06321290f394.svg" alt=""/>
+              <div class="wedding-inner wedding-inner--balance-bottom">
+                <div class="inv-orn-mandala" style="width:58.015px;height:71.176px;">
+                  <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
                 </div>
-                <div class="kashish-name-block">
-                  <p class="person-name" style="font-size:72px;">Kashish</p>
-                  <p class="person-parentage">(D/O. Mrs. Jaya &amp; Mr. Mahesh Chandra)</p>
+                <div class="wedding-details">
+                  <p class="wedding-invited">You are Cordially invited<br>to join the Reception</p>
+                  <div class="wedding-date-block">
+                    <p class="wedding-date-on">On</p>
+                    <p class="wedding-date">June 27, 2026</p>
+                  </div>
+                  <div class="wedding-venue">
+                    <div class="wedding-venue-item">
+                      <span class="wedding-venue-time">7 PM onwards</span>
+                      <span class="wedding-venue-time">The Date Banquets</span>
+                      <span class="wedding-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=The%20Date%20Banquets%20Jhilmil%20Industrial%20Area%20Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                    </div>
+                  </div>
                 </div>
                 <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
                   <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
@@ -2226,6 +2352,11 @@
                   <span class="imob-venue-time">10:30 AM ONWARDS &amp; LUNCH THEREAFTER</span>
                   <span class="imob-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">THE RIVER RETREAT, CHERUTHURUTHI<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
                 </div>
+                <div class="imob-venue-item">
+                  <span class="imob-venue-time">June 27, 2026 @ 7 PM onwards</span>
+                  <span class="imob-venue-time">The Date Banquets</span>
+                  <span class="imob-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=The%20Date%20Banquets%20Jhilmil%20Industrial%20Area%20Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                </div>
               </div>
 
             </div><!-- /imob-content -->
@@ -2253,198 +2384,6 @@
     </div><!-- /invMobileRoot -->
 
   </section><!-- /invitationSection -->
-
-  <!-- ══════════════════════════════════════════
-       SECTION 3: FUNCTION DETAILS
-  ══════════════════════════════════════════ -->
-  <section class="page-section" id="functionSection">
-
-    <!-- Background: paper texture — outside scale-root, fills viewport natively -->
-    <div class="section-bg" style="background:#f0ebe0;">
-      <div class="func-bg-wrap">
-        <img src="images/figma/5d7ff280-c0ca-4dd3-8fa4-b0a1435b25bf.jpg" alt=""/>
-      </div>
-    </div>
-
-    <!-- Scale-root: cards, ornament, quote only -->
-    <div id="funcDesktopRoot" class="scale-root">
-
-      <!-- SVG filter defs for brush stroke effect (hidden, 0×0) -->
-      <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
-        <defs>
-          <filter id="func-brush" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="linearRGB">
-            <feTurbulence type="fractalNoise" baseFrequency="0.045 0.03" numOctaves="4" seed="7" result="noise"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
-          </filter>
-        </defs>
-      </svg>
-
-      <!-- Decorative kolam ornament (top-right, left:1004 top:0) -->
-      <div class="func-orn" id="funcOrn">
-        <div class="func-orn-a"><img src="images/figma/37e6c26a-4590-49a9-887e-f63498c4ad67.svg" alt=""/></div>
-        <div class="func-orn-b"><img src="images/figma/37c37c41-3592-48be-b111-b3f62ba5795b.svg" alt=""/></div>
-      </div>
-
-      <!-- Script quote (left:767 top:354) -->
-      <p class="func-script" id="funcScript">Come celebrate with us as we begin our forever.</p>
-
-      <!-- ── Haldi: top-left(220,85) ── -->
-      <div class="func-card-pos func-card-pos--from-left" style="left:196px;top:85px;" id="funcCardHaldi">
-        <div class="func-card">
-          <div class="func-card-inner">
-            <div class="func-title">
-              <p class="func-event-name">Haldi</p>
-              <p class="func-event-meta">June 20, 2026</p>
-              <p class="func-event-meta">9 AM onwards</p>
-            </div>
-            <p class="func-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
-            <div class="func-venue">
-              <p class="func-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-              <p class="func-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
-            </div>
-          </div>
-        </div>
-        <!-- Brush stroke border: radius 0 200px 0 200px -->
-        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
-          <path class="func-border-path"
-            d="M 0,0 L 292,0 A 200,200 0 0,1 492,200 L 492,665 L 200,665 A 200,200 0 0,1 0,465 Z"
-            filter="url(#func-brush)"/>
-        </svg>
-      </div>
-
-      <!-- ── Sangeet: top-left(761,521) ── -->
-      <div class="func-card-pos func-card-pos--from-right" style="left:752px;top:521px;" id="funcCardSangeet">
-        <div class="func-card">
-          <div class="func-card-inner">
-            <div class="func-title">
-              <p class="func-event-name">Sangeet</p>
-              <p class="func-event-meta">June 20, 2026</p>
-              <p class="func-event-meta">4 PM onwards</p>
-            </div>
-            <p class="func-body">Get ready for song battles, surprise choreography, and at least one uncle who thinks he's the main character. Dress to impress, dance to exhaust.</p>
-            <div class="func-venue">
-              <p class="func-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-              <p class="func-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
-            </div>
-          </div>
-        </div>
-        <!-- Brush stroke border: radius 0 200px 0 200px -->
-        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
-          <path class="func-border-path"
-            d="M 0,0 L 292,0 A 200,200 0 0,1 492,200 L 492,665 L 200,665 A 200,200 0 0,1 0,465 Z"
-            filter="url(#func-brush)"/>
-        </svg>
-      </div>
-
-      <!-- ── Reception: top-left(220,799); mirrored shape ── -->
-      <div class="func-card-pos func-card-pos--from-left" style="left:196px;top:814px;" id="funcCardReception">
-        <div class="func-card func-card--alt">
-          <div class="func-card-inner func-card-inner--right">
-            <div class="func-title">
-              <p class="func-event-name">Reception</p>
-              <p class="func-event-meta">June 27, 2026</p>
-              <p class="func-event-meta">7 PM onwards</p>
-            </div>
-            <p class="func-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
-            <div class="func-venue func-venue--left">
-              <p class="func-venue-name"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">The Date Banquets<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-              <p class="func-venue-addr"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi</a></p>
-            </div>
-          </div>
-        </div>
-        <!-- Brush stroke border: radius 200px 0 200px 0 -->
-        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
-          <path class="func-border-path"
-            d="M 0,200 A 200,200 0 0,1 200,0 L 492,0 L 492,465 A 200,200 0 0,1 292,665 L 0,665 Z"
-            filter="url(#func-brush)"/>
-        </svg>
-      </div>
-
-    </div><!-- /funcDesktopRoot -->
-
-    <!-- ── Mobile canvas (402px wide, height auto) ── -->
-    <div id="funcMobileRoot">
-
-      <!-- Background image -->
-      <div class="fmob-bg"><img src="images/figma/3e264533-3301-446e-92e4-aedb09046cc4.jpg" alt=""/></div>
-
-      <!-- Main flex container: quote + ornaments row, then cards -->
-      <div class="fmob-main">
-
-        <!-- Quote (row 1, left) -->
-        <div class="fmob-script-wrap" id="funcMobScript">
-          <p class="fmob-script">Come celebrate with us as we begin our forever.</p>
-        </div>
-
-        <!-- Ornaments (row 1, right) -->
-        <div class="fmob-orn" id="funcMobOrn">
-          <div class="fmob-orn-a"><img src="images/figma/b7c75bbd-fmob-orn-a.svg" alt=""/></div>
-          <div class="fmob-orn-b"><img src="images/figma/9f96f251-fmob-orn-b.svg" alt=""/></div>
-        </div>
-
-        <!-- Cards (row 2, full width) -->
-        <div class="fmob-cards">
-
-          <!-- Haldi -->
-          <div class="fmob-card-wrap" id="funcMobHaldi">
-            <div class="fmob-card">
-              <div class="fmob-inner">
-                <div>
-                  <p class="fmob-name">Haldi</p>
-                  <p class="fmob-meta">June 20, 2026</p>
-                  <p class="fmob-meta">9 AM onwards</p>
-                </div>
-                <p class="fmob-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
-                <div class="fmob-venue">
-                  <p class="fmob-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-                  <p class="fmob-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sangeet -->
-          <div class="fmob-card-wrap" id="funcMobSangeet">
-            <div class="fmob-card">
-              <div class="fmob-inner">
-                <div>
-                  <p class="fmob-name">Sangeet</p>
-                  <p class="fmob-meta">June 20, 2026</p>
-                  <p class="fmob-meta">4 PM onwards</p>
-                </div>
-                <p class="fmob-body">Get ready for song battles, surprise choreography, and at least one uncle who thinks he's the main character. Dress to impress, dance to exhaust.</p>
-                <div class="fmob-venue">
-                  <p class="fmob-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">The River Retreat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-                  <p class="fmob-venue-addr"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">Cheruthuruthi, Thrissur, Kerala</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Reception -->
-          <div class="fmob-card-wrap" id="funcMobReception">
-            <div class="fmob-card">
-              <div class="fmob-inner">
-                <div>
-                  <p class="fmob-name">Reception</p>
-                  <p class="fmob-meta">June 27, 2026</p>
-                  <p class="fmob-meta">7 PM onwards</p>
-                </div>
-                <p class="fmob-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
-                <div class="fmob-venue">
-                  <p class="fmob-venue-name"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">The Date Banquets<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
-                  <p class="fmob-venue-addr fmob-venue-addr--spaced"><a href="https://maps.app.goo.gl/6wTbp1smbATxFPa78" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /fmob-cards -->
-
-      </div><!-- /fmob-main -->
-    </div><!-- /funcMobileRoot -->
-
-  </section><!-- /functionSection -->
 
   <!-- ══════════════════════════════════════════
        SECTION 4 — PHOTO GALLERY
@@ -2629,7 +2568,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">What's the dress code?</p>
               </div>
-              <p class="faq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black. For Haldi, wear something light-colored that you don't mind getting turmeric on — it's going to get messy!</p>
+              <p class="faq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black.</p>
             </div>
 
             <div class="faq-item">
@@ -2645,7 +2584,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">How do I get to the venue?</p>
               </div>
-              <p class="faq-answer">For The River Retreat (Haldi, Sangeet, and Wedding Ceremony): The venue is located 300 meters from Cheruthuruthi Ayurveda College stop on the main Thrissur-Shoranur State Highway, and about 1.8 km from Shoranur Railway Station. Once you reach Cheruthuruthi, local cabs or auto-rickshaws can easily get you to The River Retreat. From Thrissur town, it's approximately 25-30 KM away, and a taxi ride will take around 45 minutes to an hour depending on traffic.<br><br>For The Date Banquets (Reception): The Date Banquets reception venue is easily accessible via Metro, taxi, or car rides. The exact location (Metro Pillar No. 52-55, Jhilmil Industrial Area, Delhi) is pinned on your reception card — just follow the map!</p>
+              <p class="faq-answer">For The River Retreat (Wedding): The venue is located 300 meters from Cheruthuruthi Ayurveda College stop on the main Thrissur-Shoranur State Highway, and about 1.8 km from Shoranur Railway Station. Once you reach Cheruthuruthi, local cabs or auto-rickshaws can easily get you to The River Retreat. From Thrissur town, it's approximately 25-30 KM away, and a taxi ride will take around 45 minutes to an hour depending on traffic.<br><br>For The Date Banquets (Reception): The Date Banquets reception venue is easily accessible via Metro, taxi, or car rides. The exact location (Metro Pillar No. 52-55, Jhilmil Industrial Area, Delhi) is pinned on your reception card — just follow the map!</p>
             </div>
 
             <div class="faq-item">
@@ -2653,7 +2592,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">Is there parking at the venue?</p>
               </div>
-              <p class="faq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events (Haldi and Sangeet). For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
+              <p class="faq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events. For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
             </div>
 
             <div class="faq-item">
@@ -2730,7 +2669,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">What's the dress code?</p>
               </div>
-              <p class="fmfaq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black. For Haldi, wear something light-colored that you don't mind getting turmeric on — it's going to get messy!</p>
+              <p class="fmfaq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black.</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2746,7 +2685,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">How do I get to the venue?</p>
               </div>
-              <p class="fmfaq-answer">For The River Retreat (Haldi, Sangeet, and Wedding Ceremony): The venue is located 300 meters from Cheruthuruthi Ayurveda College stop on the main Thrissur-Shoranur State Highway, and about 1.8 km from Shoranur Railway Station. Once you reach Cheruthuruthi, local cabs or auto-rickshaws can easily get you to The River Retreat. From Thrissur town, it's approximately 25-30 KM away, and a taxi ride will take around 45 minutes to an hour depending on traffic.<br><br>For The Date Banquets (Reception): The Date Banquets reception venue is easily accessible via Metro, taxi, or car rides. The exact location (Metro Pillar No. 52-55, Jhilmil Industrial Area, Delhi) is pinned on your reception card — just follow the map!</p>
+              <p class="fmfaq-answer">For The River Retreat (Wedding): The venue is located 300 meters from Cheruthuruthi Ayurveda College stop on the main Thrissur-Shoranur State Highway, and about 1.8 km from Shoranur Railway Station. Once you reach Cheruthuruthi, local cabs or auto-rickshaws can easily get you to The River Retreat. From Thrissur town, it's approximately 25-30 KM away, and a taxi ride will take around 45 minutes to an hour depending on traffic.<br><br>For The Date Banquets (Reception): The Date Banquets reception venue is easily accessible via Metro, taxi, or car rides. The exact location (Metro Pillar No. 52-55, Jhilmil Industrial Area, Delhi) is pinned on your reception card — just follow the map!</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2754,7 +2693,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">Is there parking at the venue?</p>
               </div>
-              <p class="fmfaq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events (Haldi and Sangeet). For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
+              <p class="fmfaq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events. For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2824,8 +2763,6 @@
 <script>
   const invDesktopRoot  = document.getElementById('invDesktopRoot');
   const invMobileRoot   = document.getElementById('invMobileRoot');
-  const funcDesktopRoot = document.getElementById('funcDesktopRoot');
-  const funcMobileRoot  = document.getElementById('funcMobileRoot');
   const faqRoot         = document.getElementById('faqRoot');
   const faqMobileRoot   = document.getElementById('faqMobileRoot');
 
@@ -2833,29 +2770,6 @@
   function applyScale() {
     const W = window.innerWidth;
     const isMobile = W < 768;
-
-    // Function details: mobile 402×1582, desktop 1440×1550 — width-only scaling
-    if (isMobile) {
-      funcDesktopRoot.style.display  = 'none';
-      funcMobileRoot.style.display   = 'block';
-      funcMobileRoot.style.position  = 'relative';
-      funcMobileRoot.style.marginBottom = '';          // clear first so offsetHeight is clean
-      const sf = W / 402;
-      funcMobileRoot.style.transform = `scale(${sf})`;
-      const fmobH = funcMobileRoot.offsetHeight;       // natural height in flow (accurate, font-independent for fixed-height cards)
-      // scale shrinks visual height to fmobH*sf but layout footprint stays fmobH;
-      // pull up by the difference so the section is exactly fmobH*sf tall
-      funcMobileRoot.style.marginBottom = -Math.round(fmobH * (1 - sf)) + 'px';
-      document.getElementById('functionSection').style.height = '';  // let CSS height:auto take over
-    } else {
-      funcMobileRoot.style.display      = 'none';
-      funcMobileRoot.style.position     = '';          // restore CSS default (absolute)
-      funcMobileRoot.style.marginBottom = '';
-      funcDesktopRoot.style.display = 'block';
-      const sf = W / 1440;
-      funcDesktopRoot.style.transform = `scale(${sf})`;
-      document.getElementById('functionSection').style.height = Math.round(1550 * sf) + 'px';
-    }
 
     // FAQ & RSVP section: mobile 402×auto, desktop 1440×720
     if (isMobile) {
@@ -2878,13 +2792,13 @@
       document.getElementById('faqSection').style.height = Math.round(820 * sfq) + 'px';
     }
 
-    // Invitation section: desktop 1440×1024, mobile 402×940 — width-only scaling
+    // Invitation section: desktop 1440×1024, mobile 402×1040 — width-only scaling
     if (isMobile) {
       invDesktopRoot.style.display = 'none';
       invMobileRoot.style.display  = 'block';
       const si = W / 402;
       invMobileRoot.style.transform = `scale(${si})`;
-      document.getElementById('invitationSection').style.height = Math.round(940 * si) + 'px';
+      document.getElementById('invitationSection').style.height = Math.round(1040 * si) + 'px';
     } else {
       invMobileRoot.style.display  = 'none';
       invDesktopRoot.style.display = 'block';
@@ -2905,12 +2819,12 @@
   const invCardC    = invSect.querySelector('.inv-card-center');
   const invCardL    = invSect.querySelector('.inv-card-left');
   const invCardR    = invSect.querySelector('.inv-card-right');
-  const invMandala  = invSect.querySelector('.inv-orn-mandala');
-  const invInvited  = invSect.querySelector('.wedding-invited');
-  const invDateOn   = invSect.querySelector('.wedding-date-on');
-  const invDate     = invSect.querySelector('.wedding-date');
+  const invMandalas = invSect.querySelectorAll('.inv-orn-mandala');
+  const invInviteds = invSect.querySelectorAll('.wedding-invited');
+  const invDateOns  = invSect.querySelectorAll('.wedding-date-on');
+  const invDates    = invSect.querySelectorAll('.wedding-date');
   const invTimes    = invSect.querySelectorAll('.wedding-time');
-  const invVenue    = invSect.querySelector('.wedding-venue');
+  const invVenues   = invSect.querySelectorAll('.wedding-venue');
   const invOrns     = invSect.querySelectorAll('.inv-orn, .inv-orn-flipped');
   // Mobile single-card elements
   const invMobCard    = document.getElementById('invMobCard');
@@ -2942,20 +2856,20 @@
     setTimeout(() => show(invCardC), 1000);
 
     // 3. Mandala icon with golden glow (1.5 s)
-    setTimeout(() => show(invMandala), 1500);
+    setTimeout(() => invMandalas.forEach(m => show(m)), 1500);
 
     // 4. Invited text line by line (2 s)
-    setTimeout(() => show(invInvited), 2000);
+    setTimeout(() => invInviteds.forEach(p => show(p)), 2000);
 
     // 5. "On" label + date elegant scale-up (2.5 s)
     setTimeout(() => {
-      show(invDateOn);
-      show(invDate);
+      invDateOns.forEach(e => show(e));
+      invDates.forEach(e => show(e));
       invTimes.forEach(t => show(t));
     }, 2500);
 
     // 6. Venue details (3 s)
-    setTimeout(() => show(invVenue), 3000);
+    setTimeout(() => invVenues.forEach(v => show(v)), 3000);
 
     // 7. Left + right cards arrive together (3.5 s — couple coming together)
     setTimeout(() => { show(invCardL); show(invCardR); }, 3500);
@@ -2982,33 +2896,6 @@
     setTimeout(() => { show(invMobOrnBot); show(invMobBB); }, 3000);     // ornament + bottom border
   }, { threshold: 0.15 });
   invObserver.observe(invSect);
-
-  // ── Function details section: entrance animation ──
-  const funcSect = document.getElementById('functionSection');
-  let funcFired = false;
-  const funcObserver = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting || funcFired) return;
-    funcFired = true;
-    funcObserver.disconnect();
-
-    const fshow = el => el && el.classList.add('func-show');
-
-    // Desktop
-    fshow(document.getElementById('funcOrn'));
-    setTimeout(() => fshow(document.getElementById('funcScript')),       300);
-    setTimeout(() => fshow(document.getElementById('funcCardHaldi')),    500);
-    setTimeout(() => fshow(document.getElementById('funcCardSangeet')),  700);
-    setTimeout(() => fshow(document.getElementById('funcCardReception')),900);
-
-    // Mobile
-    fshow(document.getElementById('funcMobOrn'));
-    setTimeout(() => fshow(document.getElementById('funcMobScript')),    300);
-    setTimeout(() => fshow(document.getElementById('funcMobHaldi')),     500);
-    setTimeout(() => fshow(document.getElementById('funcMobSangeet')),   700);
-    setTimeout(() => fshow(document.getElementById('funcMobReception')), 900);
-  }, { threshold: 0.1 });
-  funcObserver.observe(funcSect);
-
 
   // ══════════════════════════════════════════════════════════════════════
   // SMOOTH SCROLL ENGINE (desktop only — mobile keeps native scroll)

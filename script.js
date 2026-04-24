@@ -1,7 +1,5 @@
   const invDesktopRoot  = document.getElementById('invDesktopRoot');
   const invMobileRoot   = document.getElementById('invMobileRoot');
-  const funcDesktopRoot = document.getElementById('funcDesktopRoot');
-  const funcMobileRoot  = document.getElementById('funcMobileRoot');
   const faqRoot         = document.getElementById('faqRoot');
   const faqMobileRoot   = document.getElementById('faqMobileRoot');
 
@@ -9,29 +7,6 @@
   function applyScale() {
     const W = window.innerWidth;
     const isMobile = W < 768;
-
-    // Function details: mobile 402×1582, desktop 1440×1550 — width-only scaling
-    if (isMobile) {
-      funcDesktopRoot.style.display  = 'none';
-      funcMobileRoot.style.display   = 'block';
-      funcMobileRoot.style.position  = 'relative';
-      funcMobileRoot.style.marginBottom = '';          // clear first so offsetHeight is clean
-      const sf = W / 402;
-      funcMobileRoot.style.transform = `scale(${sf})`;
-      const fmobH = funcMobileRoot.offsetHeight;       // natural height in flow (accurate, font-independent for fixed-height cards)
-      // scale shrinks visual height to fmobH*sf but layout footprint stays fmobH;
-      // pull up by the difference so the section is exactly fmobH*sf tall
-      funcMobileRoot.style.marginBottom = -Math.round(fmobH * (1 - sf)) + 'px';
-      document.getElementById('functionSection').style.height = '';  // let CSS height:auto take over
-    } else {
-      funcMobileRoot.style.display      = 'none';
-      funcMobileRoot.style.position     = '';          // restore CSS default (absolute)
-      funcMobileRoot.style.marginBottom = '';
-      funcDesktopRoot.style.display = 'block';
-      const sf = W / 1440;
-      funcDesktopRoot.style.transform = `scale(${sf})`;
-      document.getElementById('functionSection').style.height = Math.round(1550 * sf) + 'px';
-    }
 
     // FAQ & RSVP section: mobile 402×auto, desktop 1440×720
     if (isMobile) {
@@ -148,33 +123,6 @@
     setTimeout(() => { show(invMobOrnBot); show(invMobBB); }, 3000);     // ornament + bottom border
   }, { threshold: 0.15 });
   invObserver.observe(invSect);
-
-  // ── Function details section: entrance animation ──
-  const funcSect = document.getElementById('functionSection');
-  let funcFired = false;
-  const funcObserver = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting || funcFired) return;
-    funcFired = true;
-    funcObserver.disconnect();
-
-    const fshow = el => el && el.classList.add('func-show');
-
-    // Desktop
-    fshow(document.getElementById('funcOrn'));
-    setTimeout(() => fshow(document.getElementById('funcScript')),       300);
-    setTimeout(() => fshow(document.getElementById('funcCardHaldi')),    500);
-    setTimeout(() => fshow(document.getElementById('funcCardSangeet')),  700);
-    setTimeout(() => fshow(document.getElementById('funcCardReception')),900);
-
-    // Mobile
-    fshow(document.getElementById('funcMobOrn'));
-    setTimeout(() => fshow(document.getElementById('funcMobScript')),    300);
-    setTimeout(() => fshow(document.getElementById('funcMobHaldi')),     500);
-    setTimeout(() => fshow(document.getElementById('funcMobSangeet')),   700);
-    setTimeout(() => fshow(document.getElementById('funcMobReception')), 900);
-  }, { threshold: 0.1 });
-  funcObserver.observe(funcSect);
-
 
   // ══════════════════════════════════════════════════════════════════════
   // SMOOTH SCROLL ENGINE (desktop only — mobile keeps native scroll)
