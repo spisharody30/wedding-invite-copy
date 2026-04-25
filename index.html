@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rahul &amp; Kashish — 21.06.2026</title>
+  <title>Arjun &amp; Priya — 12.12.2026</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;500&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet">
@@ -234,6 +234,7 @@
       position: absolute; left: 0.06%; top: 0;
       width: 109.82%; height: 100%;
       object-fit: cover; max-width: none;
+      filter: grayscale(100%);
     }
 
     /* Date + envelope (Figma: top:419/533=78.6%, left/right:110/364=30.2% of photo) */
@@ -422,6 +423,7 @@
       position: absolute; left: 0.06%; top: 0;
       width: 109.82%; height: 100%; max-width: none; display: block;
       object-fit: cover;
+      filter: grayscale(100%);
     }
 
     /* Date + arrow row */
@@ -516,6 +518,7 @@
     }
     .inv-card--thick { border-width: 4.809px; }
     .inv-card--soft  { box-shadow: 0 7.695px 19.237px rgba(0,0,0,0.5); }
+
     /* Directional entrance states */
     .inv-card-center { transform: scale(0.9) translateY(20px); }
     .inv-card-center.inv-show { opacity: 1; transform: none; }
@@ -525,7 +528,7 @@
     .inv-card-right.inv-show  { opacity: 1; transform: none; }
 
     .inv-card-bg {
-      position: absolute; inset: 0; z-index: 0;
+      position: absolute; inset: 0;
       border-radius: 960.873px; background: #F8F4EC; overflow: hidden;
     }
     .inv-card-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -579,42 +582,15 @@
     .wedding-inner {
       position: absolute;
       left: 26.93px; top: 29.82px; width: 342.413px;
-      z-index: 1;
+      height: 534.611px;
       display: flex; flex-direction: column;
       align-items: center; gap: 36px;
     }
-    /* Match bottom flourish position with left/right cards */
-    .wedding-inner .inv-orn-flipped { margin-top: 44px; }
-    /* Third card (reception): pin flourish + wider block gaps; top mandala aligns with cards 1 & 2 */
-    .wedding-inner--balance-bottom {
-      top: 29.82px;
-      bottom: 36px;
-      box-sizing: border-box;
-      gap: 0;
-      padding-top: 0;
-    }
-    .wedding-inner--balance-bottom .inv-orn-mandala {
-      margin-bottom: 36px; /* match base .wedding-inner gap below mandala */
-    }
-    .wedding-inner--balance-bottom .inv-orn-flipped {
-      margin-top: auto;
-      flex-shrink: 0;
-    }
-    .wedding-inner--balance-bottom .wedding-details {
-      gap: 48px;
-    }
-    .wedding-inner--balance-bottom .wedding-date-block {
-      gap: 12px;
-    }
-    .wedding-inner--balance-bottom .wedding-venue {
-      gap: 18px;
-    }
-    .wedding-inner--balance-bottom .wedding-venue-item {
-      gap: 10px;
-    }
+    /* Push bottom flourish to same vertical position as left/right cards */
+    .wedding-inner .inv-orn-flipped { margin-top: auto; }
     .wedding-details {
       display: flex; flex-direction: column;
-      align-items: center; gap: 34px;
+      align-items: center; gap: 28px;
       color: #ae1919; text-align: center; width: 100%;
     }
 
@@ -674,78 +650,17 @@
       text-transform: uppercase; text-align: center;
       color: #ae1919; line-height: 1.5;
       display: flex; flex-direction: column; align-items: center; gap: 22px;
+      margin-top: 18px;
       opacity: 0; transition: opacity 0.8s ease;
     }
     .wedding-venue.inv-show { opacity: 1; }
     .wedding-venue-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    /* ── Couple card (desktop middle) ── */
-    .couple-inner {
-      position: absolute;
-      left: 50%;
-      top: 29.82px; /* align top ornament with .wedding-inner */
-      bottom: 36px;
-      z-index: 1;
-      transform: translateX(-50%);
-      width: calc(100% - 48px);
-      max-width: 336px;
-      display: flex; flex-direction: column;
-      align-items: center;
-      gap: 36px; /* match mandala→copy gap on wedding cards */
-      box-sizing: border-box;
-    }
-    .couple-inner .inv-orn-flipped {
-      margin-top: auto;
-      flex-shrink: 0;
-    }
-    .couple-text-block {
-      display: flex; flex-direction: column;
-      align-items: stretch;
-      gap: 26px;
-      width: 100%;
-      text-align: center;
-    }
-    .couple-and {
-      font-family: 'Brittany Signature', cursive;
-      font-size: 52px;
-      line-height: 0.9;
-      color: #ae1919;
-      margin: 6px 0 32px;
-      width: 100%;
-      text-align: center;
-    }
-    .couple-text-block .person-name {
-      font-size: 62px !important;
-      line-height: 0.88 !important;
-      width: 100%;
-      text-align: center;
-    }
-    .couple-text-block .person-parentage {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 600;
-      font-size: 14px;
-      letter-spacing: 1.5389px;
-      line-height: 1.5;
-      text-transform: uppercase;
-      color: #ae1919;
-      max-width: none;
-      width: 100%;
-      margin: 0;
-      text-align: center;
-      box-sizing: border-box;
-      /* Letter-spacing adds trailing gap; pad so lines look optically centered */
-      padding-right: 1.5389px;
-    }
-    .couple-text-block .couple-parent-top {
-      margin-bottom: 0;
-    }
-    .couple-name-top { margin-bottom: 0; }
-    .couple-name-bot { margin-top: 4px; margin-bottom: 0; }
     .wedding-venue-time,
     .wedding-venue-name,
     .wedding-venue-loc  {
       font-family: 'Raleway', sans-serif;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 15.5px;
       letter-spacing: 1.5389px;
       text-transform: uppercase;
       line-height: 1.5;
@@ -815,10 +730,10 @@
       text-transform: uppercase; line-height: 1.5;
     }
 
-    /* ── Mobile invitation: 402×1040 scale-root canvas (taller for reception block) ── */
+    /* ── Mobile invitation: 402×940 scale-root canvas ── */
     #invMobileRoot {
       display: none;
-      width: 402px; height: 1040px;
+      width: 402px; height: 940px;
       position: absolute; z-index: 1; overflow: hidden;
       transform-origin: top left;
     }
@@ -876,9 +791,9 @@
       position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; display: block;
     }
 
-    /* Single main card: extended pill for reception venue lines */
+    /* Single main card: 354×674px */
     .imob-card {
-      width: 354px; height: 820px;
+      width: 354px; height: 706px;
       border-radius: 170px;
       border: 3px solid #873f3a;
       overflow: hidden; position: relative; flex-shrink: 0;
@@ -1982,14 +1897,19 @@
           <rect x="0" y="-3000" width="1436" height="8000"
                 fill="url(#edgeFadeG)"/>
         </mask>
+        <filter id="curveGlow" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="0" stdDeviation="2.1" flood-color="#F8F4EC" flood-opacity="0.9"/>
+          <feDropShadow dx="0" dy="0" stdDeviation="4.2" flood-color="#8B1A1A" flood-opacity="0.3"/>
+        </filter>
       </defs>
 
       <text xml:space="preserve"
-            font-family="'Noto Serif Malayalam','Noto Serif Devanagari','Noto Serif',serif"
-            font-size="22" fill="#8B1A1A" opacity="0.75"
+            font-family="'Raleway','Noto Serif Devanagari','Noto Serif',serif"
+            font-size="24" fill="#8B1A1A" opacity="0.88"
+            filter="url(#curveGlow)"
             mask="url(#edgeMask)">
         <textPath href="#flowCurve" startOffset="-50%">
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
+          From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦ From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦ From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦ From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦
         </textPath>
       </text>
     </svg>
@@ -2001,14 +1921,10 @@
       <!-- Malayalam strip — right-to-left, 28s -->
       <div class="hmq-track" aria-hidden="true">
         <span class="hmq-inner hmq-inner--ml">
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
-          രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
         </span>
       </div>
 
@@ -2048,38 +1964,39 @@
                 <rect x="0" y="-1000" width="402.042" height="3000"
                       fill="url(#edgeFadeGMob)"/>
               </mask>
+              <filter id="curveGlowMob" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#F8F4EC" flood-opacity="0.88"/>
+                <feDropShadow dx="0" dy="0" stdDeviation="3.4" flood-color="#8B1A1A" flood-opacity="0.32"/>
+              </filter>
             </defs>
 
             <text xml:space="preserve"
-                  font-family="'Noto Serif Malayalam','Noto Serif Devanagari','Noto Serif',serif"
-                  font-size="16" fill="#8B1A1A" opacity="0.75"
+                  font-family="'Raleway','Noto Serif Devanagari','Noto Serif',serif"
+                  font-size="17" fill="#8B1A1A" opacity="0.9"
+                  filter="url(#curveGlowMob)"
                   mask="url(#edgeMaskMob)">
               <textPath href="#flowCurveMob" startOffset="-50%">
-                രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦  രണ്ട് ഹൃദയങ്ങൾ, രണ്ട് സംസ്കാരങ്ങൾ, രണ്ട് ഭാഷകൾ, ഒരു പ്രണയം ✦  दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार ✦
+                From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦ From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦ From Two Worlds, One Story ✦ दो दुनिया, एक कहानी ✦
               </textPath>
             </text>
           </svg>
 
           <div class="hero-mob-oval">
-            <img src="images/figma/944004b3-hero-mob-photo.jpg" alt="Rahul and Kashish" />
+            <img src="images/couple-demo.jpg" alt="Arjun and Priya" />
           </div>
         </div>
         <div class="hero-mob-cta">
-          <p class="hero-mob-date">21.06.2026 ❤️</p>
+          <p class="hero-mob-date">12.12.2026 ❤️</p>
         </div>
       </div>
 
       <!-- Hindi strip — left-to-right (reversed), 35s -->
       <div class="hmq-track" aria-hidden="true">
         <span class="hmq-inner hmq-inner--hi">
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
-          दो दिल, दो संस्कृतियाँ, दो भाषाएँ, एक प्यार &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
+          From Two Worlds, One Story &nbsp;✦&nbsp; दो दुनिया, एक कहानी &nbsp;✦&nbsp;
         </span>
       </div>
 
@@ -2089,7 +2006,7 @@
     <div class="hero-container">
       <p class="hero-headline">We are getting married!!!</p>
       <div class="hero-composition">
-        <span class="hero-name hero-name--left">Rahul</span>
+        <span class="hero-name hero-name--left">Arjun</span>
         <div class="hero-photo-grid">
           <div class="hero-arc-top">
             <div class="arc-wipe"><img src="images/figma/f7a90727-85f1-4e7a-bcd1-e8ea31a72a81.svg" alt="" /></div>
@@ -2098,13 +2015,13 @@
             <div class="arc-wipe"><img src="images/figma/08c721d8-8ae5-4ffc-97d4-685a9ef61e3e.svg" alt="" /></div>
           </div>
           <div class="hero-photo">
-            <img class="photo-img" src="images/figma/a89c2883-b694-407f-9691-7da7eff29120.jpg" alt="Rahul and Kashish" />
+            <img class="photo-img" src="images/couple-demo.jpg" alt="Arjun and Priya" />
             <div class="hero-date-cta">
-              <span class="hero-date">21.06.2026 ❤️</span>
+              <span class="hero-date">12.12.2026 ❤️</span>
             </div>
           </div>
         </div>
-        <span class="hero-name hero-name--right">Kashish</span>
+        <span class="hero-name hero-name--right">Priya</span>
       </div>
     </div>
 
@@ -2147,28 +2064,43 @@
         <!-- Three invitation cards -->
         <div class="inv-cards-row">
 
-          <!-- Card 1: Wedding details card -->
+          <!-- Card 1: Rahul — slides in from left -->
           <div class="inv-card-wrap">
-            <div class="inv-card inv-card-left">
+            <div class="inv-card inv-card--thick inv-card-left">
+              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
+              <div class="rahul-inner">
+                <div class="inv-orn" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/fc40016f-b8f8-4773-801a-42749c518e46.svg" alt=""/>
+                </div>
+                <div class="rahul-name-block">
+                  <p class="person-name" style="font-size:82px;">Arjun</p>
+                  <p class="person-parentage">(S/O Shri Rajesh Kumar &amp; Smt. Anjali Kumar)</p>
+                </div>
+                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Wedding Details — scales up from center -->
+          <div class="inv-card-wrap">
+            <div class="inv-card inv-card-center">
               <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
               <div class="wedding-inner">
                 <div class="inv-orn-mandala" style="width:58.015px;height:71.176px;">
                   <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
                 </div>
                 <div class="wedding-details">
-                  <p class="wedding-invited">You are Cordially Invited<br>to join the wedding ceremony</p>
+                  <p class="wedding-invited">YOU ARE CORDIALLY INVITED TO JOIN THE WEDDING CEREMONY OF</p>
                   <div class="wedding-date-block">
                     <p class="wedding-date-on">On</p>
-                    <p class="wedding-date">June 21, 2026</p>
+                    <p class="wedding-date">12.12.2026</p>
                   </div>
                   <div class="wedding-venue">
                     <div class="wedding-venue-item">
-                      <span class="wedding-venue-time">9:15 AM THALIKETTU</span>
-                      <span class="wedding-venue-loc"><a href="https://maps.app.goo.gl/h44P8eshKvWamjZX8" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open Uthralikkavu Bhagavathi Temple in Google Maps" title="View on map">UTHRALIKKAVU BHAGAVATHI TEMPLE<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                    </div>
-                    <div class="wedding-venue-item">
-                      <span class="wedding-venue-time">10:30 AM ONWARDS &amp; LUNCH THEREAFTER</span>
-                      <span class="wedding-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">THE RIVER RETREAT, CHERUTHURUTHI<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                      <span class="wedding-venue-time">WEDDING CEREMONY · 4:00 PM</span>
+                      <span class="wedding-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=Taj+View+Hotel+Agra" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open Taj View Hotel, Agra in Google Maps" title="View on map">TAJ VIEW HOTEL, AGRA<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
                     </div>
                   </div>
                 </div>
@@ -2179,49 +2111,17 @@
             </div>
           </div>
 
-          <!-- Card 2: Rahul and Kashish couple card -->
-          <div class="inv-card-wrap">
-            <div class="inv-card inv-card-center">
-              <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
-              <div class="couple-inner">
-                <div class="inv-orn" style="width:80.794px;height:36.55px;">
-                  <img src="images/figma/fc40016f-b8f8-4773-801a-42749c518e46.svg" alt=""/>
-                </div>
-                <div class="couple-text-block">
-                  <p class="person-parentage couple-parent-top">(S/O Mrs. Raji Pisharody &amp; Mr. K. P. Sreehari)</p>
-                  <p class="person-name couple-name-top">Rahul</p>
-                  <p class="couple-and">and</p>
-                  <p class="person-name couple-name-bot">Kashish</p>
-                  <p class="person-parentage">(D/O. Mrs. Jaya &amp; Mr. Mahesh Chandra)</p>
-                </div>
-                <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
-                  <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3: Wedding details (same as card 1) — slides in from right -->
+          <!-- Card 3: Kashish — slides in from right -->
           <div class="inv-card-wrap">
             <div class="inv-card inv-card--soft inv-card-right">
               <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
-              <div class="wedding-inner wedding-inner--balance-bottom">
-                <div class="inv-orn-mandala" style="width:58.015px;height:71.176px;">
-                  <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
+              <div class="kashish-inner">
+                <div class="inv-orn" style="width:80.794px;height:36.55px;">
+                  <img src="images/figma/c3e53c1d-60bd-46e4-9449-06321290f394.svg" alt=""/>
                 </div>
-                <div class="wedding-details">
-                  <p class="wedding-invited">You are Cordially invited<br>to join the Reception</p>
-                  <div class="wedding-date-block">
-                    <p class="wedding-date-on">On</p>
-                    <p class="wedding-date">June 27, 2026</p>
-                  </div>
-                  <div class="wedding-venue">
-                    <div class="wedding-venue-item">
-                      <span class="wedding-venue-time">7 PM onwards</span>
-                      <span class="wedding-venue-time">The Date Banquets</span>
-                      <span class="wedding-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=The%20Date%20Banquets%20Jhilmil%20Industrial%20Area%20Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                    </div>
-                  </div>
+                <div class="kashish-name-block">
+                  <p class="person-name" style="font-size:72px;">Priya</p>
+                  <p class="person-parentage">(D/O Shri Vikram Singh &amp; Smt. Neha Singh)</p>
                 </div>
                 <div class="inv-orn-flipped" style="width:80.794px;height:36.55px;">
                   <img src="images/figma/839fe576-d972-48f1-a241-4922776336cf.svg" alt=""/>
@@ -2290,15 +2190,15 @@
             <div class="imob-content">
 
               <!-- Invited text -->
-              <p class="imob-invited" id="invMobInvited">You are Cordially Invited to join the wedding ceremony of</p>
+              <p class="imob-invited" id="invMobInvited">YOU ARE CORDIALLY INVITED TO JOIN THE WEDDING CEREMONY OF</p>
 
               <!-- Names group: tighter 24px gap (Figma) vs outer 36px sections -->
               <div class="imob-names-group">
 
                 <!-- Rahul: parentage above name -->
                 <div class="imob-names">
-                  <p class="imob-parentage" id="invMobParentR">(S/O Mrs. Raji Pisharody &amp; Mr. K. P. Sreehari)</p>
-                  <p class="imob-name" id="invMobNameR">Rahul</p>
+                  <p class="imob-parentage" id="invMobParentR">(S/O Shri Rajesh Kumar &amp; Smt. Anjali Kumar)</p>
+                  <p class="imob-name" id="invMobNameR">Arjun</p>
                 </div>
 
                 <!-- Script "and" connector -->
@@ -2306,8 +2206,8 @@
 
                 <!-- Kashish: name above parentage -->
                 <div class="imob-names">
-                  <p class="imob-name" id="invMobNameK">Kashish</p>
-                  <p class="imob-parentage" id="invMobParentK">(D/O. Mrs. Jaya &amp; Mr. Mahesh Chandra)</p>
+                  <p class="imob-name" id="invMobNameK">Priya</p>
+                  <p class="imob-parentage" id="invMobParentK">(D/O Shri Vikram Singh &amp; Smt. Neha Singh)</p>
                 </div>
 
               </div><!-- /imob-names-group -->
@@ -2315,23 +2215,14 @@
               <!-- Date block -->
               <div class="imob-date-block">
                 <span class="imob-date-on" id="invMobDateOn">On</span>
-                <span class="imob-date" id="invMobDate">June 21, 2026</span>
+                <span class="imob-date" id="invMobDate">12.12.2026</span>
               </div>
 
               <!-- Venue -->
               <div class="imob-venue" id="invMobVenue">
                 <div class="imob-venue-item">
-                  <span class="imob-venue-time">9:15 AM THALIKETTU</span>
-                  <span class="imob-venue-loc"><a href="https://maps.app.goo.gl/h44P8eshKvWamjZX8" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open Uthralikkavu Bhagavathi Temple in Google Maps" title="View on map">UTHRALIKKAVU BHAGAVATHI TEMPLE<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                </div>
-                <div class="imob-venue-item">
-                  <span class="imob-venue-time">10:30 AM ONWARDS &amp; LUNCH THEREAFTER</span>
-                  <span class="imob-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">THE RIVER RETREAT, CHERUTHURUTHI<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                </div>
-                <div class="imob-venue-item">
-                  <span class="imob-venue-time">June 27, 2026 @ 7 PM onwards</span>
-                  <span class="imob-venue-time">The Date Banquets</span>
-                  <span class="imob-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=The%20Date%20Banquets%20Jhilmil%20Industrial%20Area%20Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
+                  <span class="imob-venue-time">WEDDING CEREMONY · 4:00 PM</span>
+                  <span class="imob-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=Taj+View+Hotel+Agra" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open Taj View Hotel, Agra in Google Maps" title="View on map">TAJ VIEW HOTEL, AGRA<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
                 </div>
               </div>
 
@@ -2362,6 +2253,198 @@
   </section><!-- /invitationSection -->
 
   <!-- ══════════════════════════════════════════
+       SECTION 3: FUNCTION DETAILS
+  ══════════════════════════════════════════ -->
+  <section class="page-section" id="functionSection">
+
+    <!-- Background: paper texture — outside scale-root, fills viewport natively -->
+    <div class="section-bg" style="background:#f0ebe0;">
+      <div class="func-bg-wrap">
+        <img src="images/figma/5d7ff280-c0ca-4dd3-8fa4-b0a1435b25bf.jpg" alt=""/>
+      </div>
+    </div>
+
+    <!-- Scale-root: cards, ornament, quote only -->
+    <div id="funcDesktopRoot" class="scale-root">
+
+      <!-- SVG filter defs for brush stroke effect (hidden, 0×0) -->
+      <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <defs>
+          <filter id="func-brush" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="linearRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045 0.03" numOctaves="4" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+      </svg>
+
+      <!-- Decorative kolam ornament (top-right, left:1004 top:0) -->
+      <div class="func-orn" id="funcOrn">
+        <div class="func-orn-a"><img src="images/figma/37e6c26a-4590-49a9-887e-f63498c4ad67.svg" alt=""/></div>
+        <div class="func-orn-b"><img src="images/figma/37c37c41-3592-48be-b111-b3f62ba5795b.svg" alt=""/></div>
+      </div>
+
+      <!-- Script quote (left:767 top:354) -->
+      <p class="func-script" id="funcScript">Come celebrate with us as we begin our forever.</p>
+
+      <!-- ── Haldi: top-left(220,85) ── -->
+      <div class="func-card-pos func-card-pos--from-left" style="left:196px;top:85px;" id="funcCardHaldi">
+        <div class="func-card">
+          <div class="func-card-inner">
+            <div class="func-title">
+              <p class="func-event-name">Haldi</p>
+              <p class="func-event-meta">11.12.2026</p>
+              <p class="func-event-meta">10:00 AM</p>
+            </div>
+            <p class="func-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
+            <div class="func-venue">
+              <p class="func-venue-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">The Leela Palace, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+              <p class="func-venue-addr"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">Diplomatic Enclave, New Delhi, 110023</a></p>
+            </div>
+          </div>
+        </div>
+        <!-- Brush stroke border: radius 0 200px 0 200px -->
+        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
+          <path class="func-border-path"
+            d="M 0,0 L 292,0 A 200,200 0 0,1 492,200 L 492,665 L 200,665 A 200,200 0 0,1 0,465 Z"
+            filter="url(#func-brush)"/>
+        </svg>
+      </div>
+
+      <!-- ── Sangeet: top-left(761,521) ── -->
+      <div class="func-card-pos func-card-pos--from-right" style="left:752px;top:521px;" id="funcCardSangeet">
+        <div class="func-card">
+          <div class="func-card-inner">
+            <div class="func-title">
+              <p class="func-event-name">Sangeet</p>
+              <p class="func-event-meta">11.12.2026</p>
+              <p class="func-event-meta">5:00 PM</p>
+            </div>
+            <p class="func-body">Get ready for song battles, surprise choreography, and at least one uncle who thinks he's the main character. Dress to impress, dance to exhaust.</p>
+            <div class="func-venue">
+              <p class="func-venue-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">The Leela Palace, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+              <p class="func-venue-addr"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">Diplomatic Enclave, New Delhi, 110023</a></p>
+            </div>
+          </div>
+        </div>
+        <!-- Brush stroke border: radius 0 200px 0 200px -->
+        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
+          <path class="func-border-path"
+            d="M 0,0 L 292,0 A 200,200 0 0,1 492,200 L 492,665 L 200,665 A 200,200 0 0,1 0,465 Z"
+            filter="url(#func-brush)"/>
+        </svg>
+      </div>
+
+      <!-- ── Reception: top-left(220,799); mirrored shape ── -->
+      <div class="func-card-pos func-card-pos--from-left" style="left:196px;top:814px;" id="funcCardReception">
+        <div class="func-card func-card--alt">
+          <div class="func-card-inner func-card-inner--right">
+            <div class="func-title">
+              <p class="func-event-name">Reception</p>
+              <p class="func-event-meta">13.12.2026</p>
+              <p class="func-event-meta">7:00 PM</p>
+            </div>
+            <p class="func-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
+            <div class="func-venue func-venue--left">
+              <p class="func-venue-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=ITC+Grand+Bharat+Gurugram" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open ITC Grand Bharat, Gurugram in Google Maps" title="View on map">ITC Grand Bharat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+              <p class="func-venue-addr"><a href="https://www.google.com/maps/search/?api=1&amp;query=ITC+Grand+Bharat+Gurugram" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open ITC Grand Bharat, Gurugram in Google Maps" title="View on map">NH 8, Gurugram</a></p>
+            </div>
+          </div>
+        </div>
+        <!-- Brush stroke border: radius 200px 0 200px 0 -->
+        <svg class="func-card-border" viewBox="0 0 492 665" xmlns="http://www.w3.org/2000/svg">
+          <path class="func-border-path"
+            d="M 0,200 A 200,200 0 0,1 200,0 L 492,0 L 492,465 A 200,200 0 0,1 292,665 L 0,665 Z"
+            filter="url(#func-brush)"/>
+        </svg>
+      </div>
+
+    </div><!-- /funcDesktopRoot -->
+
+    <!-- ── Mobile canvas (402px wide, height auto) ── -->
+    <div id="funcMobileRoot">
+
+      <!-- Background image -->
+      <div class="fmob-bg"><img src="images/figma/3e264533-3301-446e-92e4-aedb09046cc4.jpg" alt=""/></div>
+
+      <!-- Main flex container: quote + ornaments row, then cards -->
+      <div class="fmob-main">
+
+        <!-- Quote (row 1, left) -->
+        <div class="fmob-script-wrap" id="funcMobScript">
+          <p class="fmob-script">Come celebrate with us as we begin our forever.</p>
+        </div>
+
+        <!-- Ornaments (row 1, right) -->
+        <div class="fmob-orn" id="funcMobOrn">
+          <div class="fmob-orn-a"><img src="images/figma/b7c75bbd-fmob-orn-a.svg" alt=""/></div>
+          <div class="fmob-orn-b"><img src="images/figma/9f96f251-fmob-orn-b.svg" alt=""/></div>
+        </div>
+
+        <!-- Cards (row 2, full width) -->
+        <div class="fmob-cards">
+
+          <!-- Haldi -->
+          <div class="fmob-card-wrap" id="funcMobHaldi">
+            <div class="fmob-card">
+              <div class="fmob-inner">
+                <div>
+                  <p class="fmob-name">Haldi</p>
+                  <p class="fmob-meta">11.12.2026</p>
+                  <p class="fmob-meta">10:00 AM</p>
+                </div>
+                <p class="fmob-body">Things are about to get messy, golden, and beautiful. Wear something you don't love too much.</p>
+                <div class="fmob-venue">
+                  <p class="fmob-venue-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">The Leela Palace, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+                  <p class="fmob-venue-addr"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">Diplomatic Enclave, New Delhi, 110023</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sangeet -->
+          <div class="fmob-card-wrap" id="funcMobSangeet">
+            <div class="fmob-card">
+              <div class="fmob-inner">
+                <div>
+                  <p class="fmob-name">Sangeet</p>
+                  <p class="fmob-meta">11.12.2026</p>
+                  <p class="fmob-meta">5:00 PM</p>
+                </div>
+                <p class="fmob-body">Get ready for song battles, surprise choreography, and at least one uncle who thinks he's the main character. Dress to impress, dance to exhaust.</p>
+                <div class="fmob-venue">
+                  <p class="fmob-venue-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">The Leela Palace, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+                  <p class="fmob-venue-addr"><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Leela+Palace+New+Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Leela Palace, Delhi in Google Maps" title="View on map">Diplomatic Enclave, New Delhi, 110023</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reception -->
+          <div class="fmob-card-wrap" id="funcMobReception">
+            <div class="fmob-card">
+              <div class="fmob-inner">
+                <div>
+                  <p class="fmob-name">Reception</p>
+                  <p class="fmob-meta">13.12.2026</p>
+                  <p class="fmob-meta">7:00 PM</p>
+                </div>
+                <p class="fmob-body">All dressed up, officially married, and ready to celebrate. Join us for the grand finale</p>
+                <div class="fmob-venue">
+                  <p class="fmob-venue-name"><a href="https://www.google.com/maps/search/?api=1&amp;query=ITC+Grand+Bharat+Gurugram" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open ITC Grand Bharat, Gurugram in Google Maps" title="View on map">ITC Grand Bharat<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></p>
+                  <p class="fmob-venue-addr fmob-venue-addr--spaced"><a href="https://www.google.com/maps/search/?api=1&amp;query=ITC+Grand+Bharat+Gurugram" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open ITC Grand Bharat, Gurugram in Google Maps" title="View on map">NH 8, Gurugram</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /fmob-cards -->
+
+      </div><!-- /fmob-main -->
+    </div><!-- /funcMobileRoot -->
+
+  </section><!-- /functionSection -->
+
+  <!-- ══════════════════════════════════════════
        SECTION 4 — PHOTO GALLERY
   ══════════════════════════════════════════ -->
   <section class="page-section" id="gallerySection">
@@ -2379,7 +2462,7 @@
 
         <div class="c3d-slide" data-idx="0">
           <div class="c3d-frame">
-            <img src="images/gallery-5.jpg?cb=4" alt="Rahul and Kashish holding their wedding rings" loading="lazy" />
+            <img src="images/gallery-1.jpg" alt="Couple walking together outdoors" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2391,7 +2474,7 @@
 
         <div class="c3d-slide" data-idx="1">
           <div class="c3d-frame">
-            <img src="images/gallery-6.jpeg?cb=4" alt="Rahul and Kashish laughing at a celebration" loading="lazy" />
+            <img src="images/gallery-2.jpg" alt="Couple proposal moment at home entrance" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2403,7 +2486,7 @@
 
         <div class="c3d-slide" data-idx="2">
           <div class="c3d-frame">
-            <img src="images/gallery-7.jpeg?cb=4" alt="Singing performance at the wedding celebration" loading="lazy" />
+            <img src="images/gallery-3.jpg" alt="Couple walking in casual city photoshoot" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2415,7 +2498,7 @@
 
         <div class="c3d-slide" data-idx="3">
           <div class="c3d-frame">
-            <img src="images/gallery-9.jpeg?cb=4" alt="Couple selfie together" loading="lazy" />
+            <img src="images/gallery-4.jpg" alt="Couple candid on staircase indoor shoot" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2427,7 +2510,7 @@
 
         <div class="c3d-slide" data-idx="4">
           <div class="c3d-frame">
-            <img src="images/gallery-10.jpeg?cb=4" alt="Bride and groom dancing at the wedding" loading="lazy" />
+            <img src="images/gallery-5.jpg" alt="Couple smiling together in daylight portrait" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2439,7 +2522,7 @@
 
         <div class="c3d-slide" data-idx="5">
           <div class="c3d-frame">
-            <img src="images/gallery-11.png?cb=1" alt="Rahul and Kashish at home with a celebration cake" loading="lazy" />
+            <img src="images/gallery-6.jpg" alt="Couple candid lifestyle portrait" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2451,7 +2534,7 @@
 
         <div class="c3d-slide" data-idx="6">
           <div class="c3d-frame">
-            <img src="images/gallery-12.png" alt="Rahul and Kashish in an elegant portrait together" loading="lazy" />
+            <img src="images/gallery-7.jpg" alt="Couple portrait in natural outdoor light" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2463,7 +2546,7 @@
 
         <div class="c3d-slide" data-idx="7">
           <div class="c3d-frame">
-            <img src="images/gallery-13.png" alt="Rahul and Kashish smiling in a traditional portrait" loading="lazy" />
+            <img src="images/gallery-8.jpg" alt="Couple romantic photoshoot portrait" loading="lazy" />
           </div>
           <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
             <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2473,41 +2556,6 @@
           </button>
         </div>
 
-        <div class="c3d-slide" data-idx="8">
-          <div class="c3d-frame">
-            <img src="images/gallery-14.png" alt="Rahul and Kashish laughing at a colorful celebration" loading="lazy" />
-          </div>
-          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
-            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-            <span class="c3d-heart-count">0</span>
-          </button>
-        </div>
-
-        <div class="c3d-slide" data-idx="9">
-          <div class="c3d-frame">
-            <img src="images/gallery-15.png" alt="Rahul and Kashish sharing a candid selfie" loading="lazy" />
-          </div>
-          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
-            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-            <span class="c3d-heart-count">0</span>
-          </button>
-        </div>
-
-        <div class="c3d-slide" data-idx="10">
-          <div class="c3d-frame">
-            <img src="images/gallery-16.png" alt="Rahul and Kashish celebrating together in traditional attire" loading="lazy" />
-          </div>
-          <button class="c3d-heart" aria-label="Like this photo" aria-pressed="false">
-            <svg class="c3d-heart-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="c3d-heart-path" d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 12 4.5 12 4.5C12 4.5 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z" stroke="#8B1A1A" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-            <span class="c3d-heart-count">0</span>
-          </button>
-        </div>
 
       </div><!-- /c3dViewport -->
       </div><!-- /c3dClip -->
@@ -2544,7 +2592,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">What's the dress code?</p>
               </div>
-              <p class="faq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black.</p>
+              <p class="faq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black. For Haldi, wear something light-colored that you don't mind getting turmeric on — it's going to get messy!</p>
             </div>
 
             <div class="faq-item">
@@ -2552,7 +2600,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">Is there an airport nearby?</p>
               </div>
-              <p class="faq-answer">Yes — there are a few convenient airport options nearby. Cochin International Airport (COK) is about 100 km from The River Retreat. Calicut International Airport (CCJ) is around 80 km away. Coimbatore International Airport (CJB) is another option and is approximately 110 km from the venue. From any of these airports, you can take a cab or pre-booked taxi to Cheruthuruthi. The drive is usually about 2 to 2.5 hours depending on traffic.</p>
+              <p class="faq-answer">Indira Gandhi International Airport (DEL) in New Delhi is the nearest major airport, about 200 km from Agra. The drive is approximately 3 to 3.5 hours. You can take a taxi, pre-booked cab, or arrange transport with us.</p>
             </div>
 
             <div class="faq-item">
@@ -2560,7 +2608,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">How do I get to the venue?</p>
               </div>
-              <p class="faq-answer">For The River Retreat (Wedding): The venue is located 300 meters from Cheruthuruthi Ayurveda College stop on the main Thrissur-Shoranur State Highway, and about 1.8 km from Shoranur Railway Station. Once you reach Cheruthuruthi, local cabs or auto-rickshaws can easily get you to The River Retreat. From Thrissur town, it's approximately 25-30 KM away, and a taxi ride will take around 45 minutes to an hour depending on traffic.<br><br>For The Date Banquets (Reception): The Date Banquets reception venue is easily accessible via Metro, taxi, or car rides. The exact location (Metro Pillar No. 52-55, Jhilmil Industrial Area, Delhi) is pinned on your reception card — just follow the map!</p>
+              <p class="faq-answer">For Haldi &amp; Sangeet (The Leela Palace, Delhi): The venue is located in the Diplomatic Enclave, easily accessible from New Delhi. Just 30 minutes from IGI Airport. Local cabs and metro access available.<br><br>For Wedding Ceremony (Taj View Hotel, Agra): Located 300 meters from Taj Mahal on The Mall Road, Agra. Easily accessible by local transport. Approximately 3.5 hours from Delhi by car.<br><br>For Reception (ITC Grand Bharat, Gurugram): Located on National Highway 8 in Gurugram, just 10 minutes from Delhi airport. Easily accessible by taxi or car.</p>
             </div>
 
             <div class="faq-item">
@@ -2568,7 +2616,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">Is there parking at the venue?</p>
               </div>
-              <p class="faq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events. For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
+              <p class="faq-answer">Yes, ample parking is available at all venues:<br>- The Leela Palace: In-house parking available<br>- Taj View Hotel: Comfortable parking facilities<br>- ITC Grand Bharat: Valet parking available</p>
             </div>
 
             <div class="faq-item">
@@ -2576,7 +2624,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">Can I take photos?</p>
               </div>
-              <p class="faq-answer">Yes, take ALL the photos. We've spent way too much money on this day to not have it documented from 47 angles. Just don't be the person who lifts an iPad over the crowd during the ceremony. You know who you are. Don't be that person. 💕</p>
+              <p class="faq-answer">Yes, take ALL the photos. We've spent way too much money on this to not have it documented from every angle. Just don't be the person who lifts an iPad over the crowd during the ceremony. You know who you are. Don't be that person. 💕</p>
             </div>
 
             <div class="faq-item">
@@ -2584,7 +2632,7 @@
                 <div class="faq-plus"><img src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" /></div>
                 <p class="faq-q-text">What do I gift the couple?</p>
               </div>
-              <p class="faq-answer">Just show up and dance badly with us. That's it. If you really must bring something, our honeymoon fund will love you forever. (No crockery, please. We have enough plates to feed a small village.)</p>
+              <p class="faq-answer">Just show up and celebrate with us. That's it. If you really must bring something, our honeymoon fund (Maldives trip!) will love you forever. No crockery, please — we have enough plates!</p>
             </div>
 
           </div>
@@ -2599,7 +2647,7 @@
             <img src="images/figma/696f87ff-9e9e-485b-98b0-838915ccd70d.svg" alt="" />
           </div>
           <div class="faq-photo-oval">
-            <img src="images/figma/175fe0cb-7bf7-4b5e-9743-14bc3cadb53b.jpg" alt="Rahul and Kashish" />
+            <img src="images/couple-demo.jpg" alt="Arjun and Priya" />
           </div>
         </div>
 
@@ -2645,7 +2693,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">What's the dress code?</p>
               </div>
-              <p class="fmfaq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black.</p>
+              <p class="fmfaq-answer">Smart traditional or ethnic wear. Think kurtas, sarees, lehengas, or sherwanis. Please avoid white or black. For Haldi, wear something light-colored that you don't mind getting turmeric on — it's going to get messy!</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2653,7 +2701,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">Is there an airport nearby?</p>
               </div>
-              <p class="fmfaq-answer">Yes — there are a few convenient airport options nearby. Cochin International Airport (COK) is about 100 km from The River Retreat. Calicut International Airport (CCJ) is around 80 km away. Coimbatore International Airport (CJB) is another option and is approximately 110 km from the venue. From any of these airports, you can take a cab or pre-booked taxi to Cheruthuruthi. The drive is usually about 2 to 2.5 hours depending on traffic.</p>
+              <p class="fmfaq-answer">Indira Gandhi International Airport (DEL) in New Delhi is the nearest major airport, about 200 km from Agra. The drive is approximately 3 to 3.5 hours. You can take a taxi, pre-booked cab, or arrange transport with us.</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2661,7 +2709,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">How do I get to the venue?</p>
               </div>
-              <p class="fmfaq-answer">For The River Retreat (Wedding): The venue is located 300 meters from Cheruthuruthi Ayurveda College stop on the main Thrissur-Shoranur State Highway, and about 1.8 km from Shoranur Railway Station. Once you reach Cheruthuruthi, local cabs or auto-rickshaws can easily get you to The River Retreat. From Thrissur town, it's approximately 25-30 KM away, and a taxi ride will take around 45 minutes to an hour depending on traffic.<br><br>For The Date Banquets (Reception): The Date Banquets reception venue is easily accessible via Metro, taxi, or car rides. The exact location (Metro Pillar No. 52-55, Jhilmil Industrial Area, Delhi) is pinned on your reception card — just follow the map!</p>
+              <p class="fmfaq-answer">For Haldi &amp; Sangeet (The Leela Palace, Delhi): The venue is located in the Diplomatic Enclave, easily accessible from New Delhi. Just 30 minutes from IGI Airport. Local cabs and metro access available.<br><br>For Wedding Ceremony (Taj View Hotel, Agra): Located 300 meters from Taj Mahal on The Mall Road, Agra. Easily accessible by local transport. Approximately 3.5 hours from Delhi by car.<br><br>For Reception (ITC Grand Bharat, Gurugram): Located on National Highway 8 in Gurugram, just 10 minutes from Delhi airport. Easily accessible by taxi or car.</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2669,7 +2717,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">Is there parking at the venue?</p>
               </div>
-              <p class="fmfaq-answer">Yes, ample parking is available at The River Retreat for the wedding ceremony and pre-wedding events. For the reception at The Date Banquets, valet parking is available at Metro Pillar No. 52-55 in the Jhilmil Industrial Area — just hand over your keys and we'll take care of it!</p>
+              <p class="fmfaq-answer">Yes, ample parking is available at all venues:<br>- The Leela Palace: In-house parking available<br>- Taj View Hotel: Comfortable parking facilities<br>- ITC Grand Bharat: Valet parking available</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2677,7 +2725,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">Can I take photos?</p>
               </div>
-              <p class="fmfaq-answer">Yes, take ALL the photos. We've spent way too much money on this day to not have it documented from 47 angles. Just don't be the person who lifts an iPad over the crowd during the ceremony. You know who you are. Don't be that person. 💕</p>
+              <p class="fmfaq-answer">Yes, take ALL the photos. We've spent way too much money on this to not have it documented from every angle. Just don't be the person who lifts an iPad over the crowd during the ceremony. You know who you are. Don't be that person. 💕</p>
             </div>
 
             <div class="fmfaq-item">
@@ -2685,7 +2733,7 @@
                 <img class="fmfaq-plus" src="images/figma/39c8c5f5-faq-mob-plus.svg" alt="" />
                 <p class="fmfaq-q-text">What do I gift the couple?</p>
               </div>
-              <p class="fmfaq-answer">Just show up and dance badly with us. That's it. If you really must bring something, our honeymoon fund will love you forever. (No crockery, please. We have enough plates to feed a small village.)</p>
+              <p class="fmfaq-answer">Just show up and celebrate with us. That's it. If you really must bring something, our honeymoon fund (Maldives trip!) will love you forever. No crockery, please — we have enough plates!</p>
             </div>
 
           </div>
@@ -2700,7 +2748,7 @@
             <img src="images/figma/aa1ec703-faq-mob-arc-br.svg" alt="" />
           </div>
           <div class="fmfaq-oval">
-            <img src="images/figma/6c3c616e-faq-mob-photo.jpg" alt="Rahul and Kashish" />
+            <img src="images/couple-demo.jpg" alt="Arjun and Priya" />
           </div>
         </div>
 
@@ -2739,6 +2787,8 @@
 <script>
   const invDesktopRoot  = document.getElementById('invDesktopRoot');
   const invMobileRoot   = document.getElementById('invMobileRoot');
+  const funcDesktopRoot = document.getElementById('funcDesktopRoot');
+  const funcMobileRoot  = document.getElementById('funcMobileRoot');
   const faqRoot         = document.getElementById('faqRoot');
   const faqMobileRoot   = document.getElementById('faqMobileRoot');
 
@@ -2746,6 +2796,29 @@
   function applyScale() {
     const W = window.innerWidth;
     const isMobile = W < 768;
+
+    // Function details: mobile 402×1582, desktop 1440×1550 — width-only scaling
+    if (isMobile) {
+      funcDesktopRoot.style.display  = 'none';
+      funcMobileRoot.style.display   = 'block';
+      funcMobileRoot.style.position  = 'relative';
+      funcMobileRoot.style.marginBottom = '';          // clear first so offsetHeight is clean
+      const sf = W / 402;
+      funcMobileRoot.style.transform = `scale(${sf})`;
+      const fmobH = funcMobileRoot.offsetHeight;       // natural height in flow (accurate, font-independent for fixed-height cards)
+      // scale shrinks visual height to fmobH*sf but layout footprint stays fmobH;
+      // pull up by the difference so the section is exactly fmobH*sf tall
+      funcMobileRoot.style.marginBottom = -Math.round(fmobH * (1 - sf)) + 'px';
+      document.getElementById('functionSection').style.height = '';  // let CSS height:auto take over
+    } else {
+      funcMobileRoot.style.display      = 'none';
+      funcMobileRoot.style.position     = '';          // restore CSS default (absolute)
+      funcMobileRoot.style.marginBottom = '';
+      funcDesktopRoot.style.display = 'block';
+      const sf = W / 1440;
+      funcDesktopRoot.style.transform = `scale(${sf})`;
+      document.getElementById('functionSection').style.height = Math.round(1550 * sf) + 'px';
+    }
 
     // FAQ & RSVP section: mobile 402×auto, desktop 1440×720
     if (isMobile) {
@@ -2768,13 +2841,13 @@
       document.getElementById('faqSection').style.height = Math.round(820 * sfq) + 'px';
     }
 
-    // Invitation section: desktop 1440×1024, mobile 402×1040 — width-only scaling
+    // Invitation section: desktop 1440×1024, mobile 402×940 — width-only scaling
     if (isMobile) {
       invDesktopRoot.style.display = 'none';
       invMobileRoot.style.display  = 'block';
       const si = W / 402;
       invMobileRoot.style.transform = `scale(${si})`;
-      document.getElementById('invitationSection').style.height = Math.round(1040 * si) + 'px';
+      document.getElementById('invitationSection').style.height = Math.round(940 * si) + 'px';
     } else {
       invMobileRoot.style.display  = 'none';
       invDesktopRoot.style.display = 'block';
@@ -2795,12 +2868,12 @@
   const invCardC    = invSect.querySelector('.inv-card-center');
   const invCardL    = invSect.querySelector('.inv-card-left');
   const invCardR    = invSect.querySelector('.inv-card-right');
-  const invMandalas = invSect.querySelectorAll('.inv-orn-mandala');
-  const invInviteds = invSect.querySelectorAll('.wedding-invited');
-  const invDateOns  = invSect.querySelectorAll('.wedding-date-on');
-  const invDates    = invSect.querySelectorAll('.wedding-date');
+  const invMandala  = invSect.querySelector('.inv-orn-mandala');
+  const invInvited  = invSect.querySelector('.wedding-invited');
+  const invDateOn   = invSect.querySelector('.wedding-date-on');
+  const invDate     = invSect.querySelector('.wedding-date');
   const invTimes    = invSect.querySelectorAll('.wedding-time');
-  const invVenues   = invSect.querySelectorAll('.wedding-venue');
+  const invVenue    = invSect.querySelector('.wedding-venue');
   const invOrns     = invSect.querySelectorAll('.inv-orn, .inv-orn-flipped');
   // Mobile single-card elements
   const invMobCard    = document.getElementById('invMobCard');
@@ -2832,20 +2905,20 @@
     setTimeout(() => show(invCardC), 1000);
 
     // 3. Mandala icon with golden glow (1.5 s)
-    setTimeout(() => invMandalas.forEach(m => show(m)), 1500);
+    setTimeout(() => show(invMandala), 1500);
 
     // 4. Invited text line by line (2 s)
-    setTimeout(() => invInviteds.forEach(p => show(p)), 2000);
+    setTimeout(() => show(invInvited), 2000);
 
     // 5. "On" label + date elegant scale-up (2.5 s)
     setTimeout(() => {
-      invDateOns.forEach(e => show(e));
-      invDates.forEach(e => show(e));
+      show(invDateOn);
+      show(invDate);
       invTimes.forEach(t => show(t));
     }, 2500);
 
     // 6. Venue details (3 s)
-    setTimeout(() => invVenues.forEach(v => show(v)), 3000);
+    setTimeout(() => show(invVenue), 3000);
 
     // 7. Left + right cards arrive together (3.5 s — couple coming together)
     setTimeout(() => { show(invCardL); show(invCardR); }, 3500);
@@ -2872,6 +2945,33 @@
     setTimeout(() => { show(invMobOrnBot); show(invMobBB); }, 3000);     // ornament + bottom border
   }, { threshold: 0.15 });
   invObserver.observe(invSect);
+
+  // ── Function details section: entrance animation ──
+  const funcSect = document.getElementById('functionSection');
+  let funcFired = false;
+  const funcObserver = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || funcFired) return;
+    funcFired = true;
+    funcObserver.disconnect();
+
+    const fshow = el => el && el.classList.add('func-show');
+
+    // Desktop
+    fshow(document.getElementById('funcOrn'));
+    setTimeout(() => fshow(document.getElementById('funcScript')),       300);
+    setTimeout(() => fshow(document.getElementById('funcCardHaldi')),    500);
+    setTimeout(() => fshow(document.getElementById('funcCardSangeet')),  700);
+    setTimeout(() => fshow(document.getElementById('funcCardReception')),900);
+
+    // Mobile
+    fshow(document.getElementById('funcMobOrn'));
+    setTimeout(() => fshow(document.getElementById('funcMobScript')),    300);
+    setTimeout(() => fshow(document.getElementById('funcMobHaldi')),     500);
+    setTimeout(() => fshow(document.getElementById('funcMobSangeet')),   700);
+    setTimeout(() => fshow(document.getElementById('funcMobReception')), 900);
+  }, { threshold: 0.1 });
+  funcObserver.observe(funcSect);
+
 
   // ══════════════════════════════════════════════════════════════════════
   // SMOOTH SCROLL ENGINE (desktop only — mobile keeps native scroll)
@@ -3559,9 +3659,8 @@
         if (!ctx) return;
 
         var fontFamily = textEl.getAttribute('font-family') ||
-          "'Noto Serif Malayalam','Noto Serif Devanagari','Noto Serif',serif";
+          "'Raleway','Noto Serif Devanagari','Noto Serif',serif";
         var fontSize = parseFloat(textEl.getAttribute('font-size') || '16');
-        var fillColor = textEl.getAttribute('fill') || '#8B1A1A';
         var baseAlpha = parseFloat(textEl.getAttribute('opacity') || '0.75');
 
         // Apply page→viewBox transform once; all draw calls are in viewBox units.
@@ -3575,7 +3674,13 @@
         ctx.font = fontSize + 'px ' + fontFamily;
         ctx.textBaseline = 'alphabetic';
         ctx.textAlign = 'left';
-        ctx.fillStyle = fillColor;
+        var textGradient = ctx.createLinearGradient(0, 0, vbW, 0);
+        textGradient.addColorStop(0, '#6E0F0F');
+        textGradient.addColorStop(0.5, '#8B1A1A');
+        textGradient.addColorStop(1, '#B42828');
+        ctx.fillStyle = textGradient;
+        ctx.shadowColor = 'rgba(248, 244, 236, 0.9)';
+        ctx.shadowBlur = 5.5;
 
         // Split into grapheme clusters so Indic conjuncts stay together.
         var text = textPathEl.textContent.replace(/\s+/g, ' ').trim();
