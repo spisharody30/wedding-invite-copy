@@ -516,11 +516,6 @@
     }
     .inv-card--thick { border-width: 4.809px; }
     .inv-card--soft  { box-shadow: 0 7.695px 19.237px rgba(0,0,0,0.5); }
-    /* First wedding card: extra venue block (reception in Delhi) */
-    .inv-card--pill-extended {
-      height: 860px;
-    }
-
     /* Directional entrance states */
     .inv-card-center { transform: scale(0.9) translateY(20px); }
     .inv-card-center.inv-show { opacity: 1; transform: none; }
@@ -590,20 +585,6 @@
     }
     /* Match bottom flourish position with left/right cards */
     .wedding-inner .inv-orn-flipped { margin-top: 44px; }
-    /* Tall first card: fill pill height + pin flourish so venue copy is not clipped */
-    .wedding-inner--extended-pill {
-      top: 29.82px;
-      bottom: 36px;
-      gap: 0;
-      box-sizing: border-box;
-    }
-    .wedding-inner--extended-pill .inv-orn-mandala {
-      margin-bottom: 36px;
-    }
-    .wedding-inner--extended-pill .inv-orn-flipped {
-      margin-top: auto;
-      flex-shrink: 0;
-    }
     /* Third card (reception): pin flourish + wider block gaps; top mandala aligns with cards 1 & 2 */
     .wedding-inner--balance-bottom {
       top: 29.82px;
@@ -2168,9 +2149,9 @@
 
           <!-- Card 1: Wedding details card -->
           <div class="inv-card-wrap">
-            <div class="inv-card inv-card-left inv-card--pill-extended">
+            <div class="inv-card inv-card-left">
               <div class="inv-card-bg"><img src="images/figma/b89f8317-03d5-49e1-8531-2b472107f613.jpg" alt=""/></div>
-              <div class="wedding-inner wedding-inner--extended-pill">
+              <div class="wedding-inner">
                 <div class="inv-orn-mandala" style="width:58.015px;height:71.176px;">
                   <img src="images/figma/7ed2f0d7-8d36-47ff-8f82-27ba4251477b.svg" alt=""/>
                 </div>
@@ -2188,11 +2169,6 @@
                     <div class="wedding-venue-item">
                       <span class="wedding-venue-time">10:30 AM ONWARDS &amp; LUNCH THEREAFTER</span>
                       <span class="wedding-venue-name"><a href="https://maps.app.goo.gl/Bk2B8TBugR6kkq2d9" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The River Retreat in Google Maps" title="View on map">THE RIVER RETREAT, CHERUTHURUTHI<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
-                    </div>
-                    <div class="wedding-venue-item">
-                      <span class="wedding-venue-time">June 27, 2026 @ 7 PM onwards</span>
-                      <span class="wedding-venue-time">The Date Banquets</span>
-                      <span class="wedding-venue-loc"><a href="https://www.google.com/maps/search/?api=1&amp;query=The%20Date%20Banquets%20Jhilmil%20Industrial%20Area%20Delhi" target="_blank" rel="noopener noreferrer" class="venue-map-link venue-map-link--inline" aria-label="Open The Date Banquets in Google Maps" title="View on map">Jhilmil Industrial Area, Delhi<svg class="venue-map-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4.12567 11.5257L3.66667 11.0667L10.3872 4.33333H4.19233V3.66667H11.5257V11H10.859V4.80517L4.12567 11.5257Z" fill="#AE1919"/></svg></a></span>
                     </div>
                   </div>
                 </div>
